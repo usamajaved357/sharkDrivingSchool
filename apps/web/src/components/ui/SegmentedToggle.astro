@@ -1,0 +1,50 @@
+---
+/**
+ * Manual / Automatic pill toggle. Behaviour lives in scripts/segmented.ts:
+ * clicking an option sets aria-pressed and broadcasts a `segmented:change`
+ * event with { group, value } so sections can react (labels, prices, form state).
+ */
+interface Option {
+  value: string;
+  label: string;
+}
+interface Props {
+  group: string;
+  label: string;
+  options?: Option[];
+  value?: string;
+  variant?: 'default' | 'outlined' | 'dark';
+  class?: string;
+}
+const {
+  group,
+  label,
+  options = [
+    { value: 'manual', label: 'Manual' },
+    { value: 'automatic', label: 'Automatic' },
+  ],
+  value = options[0]?.value,
+  variant = 'default',
+  class: className,
+} = Astro.props;
+---
+
+<div
+  role="group"
+  aria-label={label}
+  class:list={['seg-group', `seg-group--${variant}`, className]}
+  data-segmented={group}
+>
+  {
+    options.map((o) => (
+      <button type="button" class="seg" data-value={o.value} aria-pressed={o.value === value ? 'true' : 'false'}>
+        {o.label}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  import { initSegmented } from '@/scripts/segmented';
+  initSegmented();
+</script>

@@ -1,0 +1,91 @@
+---
+import Fin from '@/components/ui/Fin.astro';
+import { site } from '@/config/site';
+---
+
+<aside class="sum" aria-label="Booking summary">
+  <Fin width={140} class="sum__fin" />
+  <h2 class="sum__title">Booking summary</h2>
+  <dl class="sum__list">
+    <div><dt>Gearbox</dt><dd data-summary="transmission">Manual</dd></div>
+    <div><dt>Lesson</dt><dd data-summary="lesson">—</dd></div>
+    <div><dt>Date</dt><dd data-summary="date">—</dd></div>
+    <div><dt>Time</dt><dd data-summary="time">—</dd></div>
+  </dl>
+  <div class="sum__total">
+    <span>Total</span>
+    <span class="d" data-summary="price">—</span>
+  </div>
+  <p class="sum__note">Free cancellation up to {site.cancellationHours} hours before.</p>
+</aside>
+
+<style>
+  .sum {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: var(--r-xl);
+    padding: 30px;
+    position: sticky;
+    top: 24px;
+    overflow: hidden;
+  }
+  .sum :global(.sum__fin) {
+    position: absolute;
+    right: -20px;
+    bottom: -14px;
+    opacity: 0.5;
+  }
+  .sum__title {
+    margin: 0 0 22px;
+    font-size: 20px;
+    font-weight: 800;
+    position: relative;
+  }
+  .sum__list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 15px;
+    position: relative;
+  }
+  .sum__list div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .sum__list dt {
+    color: var(--on-dark-subtle);
+  }
+  .sum__list dd {
+    margin: 0;
+    font-weight: 700;
+    text-align: right;
+  }
+  .sum__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    position: relative;
+  }
+  .sum__total > span:first-child {
+    color: var(--on-dark-subtle);
+  }
+  .sum__total .d {
+    font-size: 40px;
+  }
+  .sum__note {
+    margin: 18px 0 0;
+    font-size: 13px;
+    color: var(--on-dark-subtle);
+    position: relative;
+  }
+  @media (max-width: 960px) {
+    .sum {
+      position: static;
+    }
+  }
+</style>

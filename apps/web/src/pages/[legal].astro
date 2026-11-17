@@ -1,0 +1,39 @@
+---
+/**
+ * Placeholder legal pages (/privacy, /terms, /cookies).
+ * TODO(owner): replace with real policies before launch (booking collects personal data → UK GDPR).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/config/site';
+
+export function getStaticPaths() {
+  return [
+    { params: { legal: 'privacy' }, props: { title: 'Privacy policy' } },
+    { params: { legal: 'terms' }, props: { title: 'Terms & conditions' } },
+    { params: { legal: 'cookies' }, props: { title: 'Cookie policy' } },
+  ];
+}
+
+const { title } = Astro.props;
+---
+
+<BaseLayout title={title} chrome="compact">
+  <section class="legal">
+    <div class="wrap">
+      <h1 class="d h-md">{title}</h1>
+      <p>[{title} for {site.name} — to be supplied by the owner.]</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding: 100px 0;
+    min-height: 50vh;
+  }
+  .legal p {
+    color: var(--muted);
+    font-size: 17px;
+    margin-top: 24px;
+  }
+</style>

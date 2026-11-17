@@ -1,0 +1,150 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import SegmentedToggle from '@/components/ui/SegmentedToggle.astro';
+import { homePackages } from '@/data/pricing';
+
+const transText = { manual: 'Manual · ', automatic: 'Automatic · ' };
+---
+
+<section class="pricing bg-paper section">
+  <div class="wrap">
+    <div class="pricing__head reveal">
+      <span class="eyebrow">Simple pricing</span>
+      <h2 class="d h-md pricing__title">No hidden fees. Ever.</h2>
+      <p class="lead">Pay as you go or save with a block. Same great instructors either way.</p>
+      <SegmentedToggle group="price-trans" label="Show prices for" variant="outlined" class="pricing__seg" />
+    </div>
+
+    <div class="g4 pricing__grid">
+      {
+        homePackages.map((p, i) => (
+          <div class:list={['card', 'reveal', 'pkg', { 'pkg--popular': p.popular }]} style={`--reveal-delay:${i * 0.1}s`}>
+            {p.badge && <span class="badge pkg__badge">{p.badge}</span>}
+            <div>
+              <h3 class="pkg__name">{p.name}</h3>
+              <p class="pkg__sub">
+                <span data-bind-group="price-trans" data-text-manual={transText.manual} data-text-automatic={transText.automatic}>
+                  {transText.manual}
+                </span>
+                {p.sub}
+              </p>
+            </div>
+            <div class="pkg__price">
+              <span class="d">{p.price}</span>
+              <span class="pkg__unit">{p.unit}</span>
+            </div>
+            <ul class="pkg__features">
+              {p.features.map((f) => (
+                <li>
+                  <Icon name="check" size={18} strokeWidth={2.8} class="pkg__tick" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <a class:list={['btn', 'btn--block', p.popular ? 'btn--red' : 'btn--blue']} href="/book">
+              Book now
+            </a>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="pricing__note">
+      Showing <b data-bind-group="price-trans" data-text-manual="manual" data-text-automatic="automatic">manual</b> prices. Final prices
+      to be confirmed by Shark Driving School.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pricing__head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .pricing__title {
+    margin-top: 16px;
+  }
+  .pricing__head :global(.pricing__seg) {
+    display: inline-flex;
+    width: 300px;
+    margin-top: 30px;
+  }
+  .pricing__grid {
+    margin-top: 64px;
+    align-items: stretch;
+  }
+  .pkg {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+  }
+  .pkg--popular {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+    transform: translateY(-12px);
+  }
+  .pkg--popular:hover {
+    transform: translateY(-18px);
+  }
+  .pkg__badge {
+    position: absolute;
+    top: -14px;
+    left: 32px;
+  }
+  .pkg__name {
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .pkg__sub {
+    margin: 6px 0 0;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+  .pkg__price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .pkg__price .d {
+    font-size: 54px;
+  }
+  .pkg__unit {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+  .pkg__features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+    flex: 1;
+  }
+  .pkg__features li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .pkg__features :global(.pkg__tick) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--red);
+  }
+  .pricing__note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    margin: 40px 0 0;
+  }
+  @media (max-width: 1000px) {
+    .pkg--popular {
+      transform: none;
+    }
+  }
+</style>

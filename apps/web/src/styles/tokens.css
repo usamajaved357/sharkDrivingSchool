@@ -1,0 +1,59 @@
+/*
+ * Design tokens — the single source of truth for brand colours, type and motion.
+ * Brand colours come from the Shark Driving School logo (red wordmark, royal-blue shark).
+ */
+:root {
+  /* Colour */
+  --navy: #06142e;
+  --navy-2: #0a2152;
+  --blue: #0b4dba;
+  --sky: #4c8dff;
+  --sky-soft: #7faeff;
+  --red: #e10600;
+  --red-2: #b80500;
+  --red-tint: #ffe1df;
+  --ink: #0b1530;
+  --muted: #4e5d78;
+  --on-dark-muted: #c3d0ea;
+  --on-dark-subtle: #9fb2d9;
+  --line: #e2e8f3;
+  --paper: #f4f7fc;
+  --white: #ffffff;
+  --success-bg: #e8f7ee;
+  --success: #11743b;
+  --star: #f5a400;
+  --whatsapp: #1fa855;
+
+  /* Type — "Motorsport" pairing (approved). Swap here to change the whole site. */
+  --font-display: 'Saira', 'Archivo', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --display-stretch: 108%;
+  --display-weight: 800;
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: 32px;
+  --header-h: 84px;
+
+  /* Radius */
+  --r-sm: 14px;
+  --r-md: 20px;
+  --r-lg: 24px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-pill: 999px;
+
+  /* Elevation */
+  --shadow-card: 0 30px 60px -30px rgba(6, 20, 46, 0.35);
+  --shadow-float: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+  --shadow-red: 0 14px 30px -12px rgba(225, 6, 0, 0.7);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 18px;
+  }
+}

@@ -1,0 +1,147 @@
+---
+import Logo from '@/components/ui/Logo.astro';
+import { footerNav, site, telHref, whatsappHref } from '@/config/site';
+
+interface Props {
+  variant?: 'full' | 'compact';
+}
+const { variant = 'full' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+{
+  variant === 'compact' ? (
+    <footer class="footer footer--compact">
+      <div class="wrap footer__compact">
+        <span>
+          © {year} {site.name}
+        </span>
+        <a href={telHref} class="footer__phone-sm">
+          {site.phone.display}
+        </a>
+      </div>
+    </footer>
+  ) : (
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer__grid">
+          <div>
+            <Logo height={56} tile />
+            <p class="footer__blurb">Manual and automatic driving lessons across {site.region}.</p>
+          </div>
+          {footerNav.map((col) => (
+            <div>
+              <h3 class="footer__title">{col.title}</h3>
+              <div class="footer__links">
+                {col.links.map((l) => (
+                  <a href={l.href}>{l.label}</a>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div>
+            <h3 class="footer__title">Contact</h3>
+            <div class="footer__links">
+              <a href={telHref} class="footer__phone">
+                {site.phone.display}
+              </a>
+              <a href={whatsappHref}>WhatsApp us</a>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <span>{site.city}, UK</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <span>
+            © {year} {site.name}. All rights reserved.
+          </span>
+          <span class="footer__legal">
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/cookies">Cookies</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+<style>
+  .footer {
+    background: var(--navy);
+    color: var(--white);
+    padding: 80px 0 36px;
+  }
+  .footer--compact {
+    padding: 36px 0;
+    color: #8fa2c8;
+    font-size: 14px;
+  }
+  .footer__compact {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer__phone-sm {
+    color: var(--white);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+  }
+  .footer__blurb {
+    color: #b9c6e0;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 20px 0 0;
+    max-width: 280px;
+  }
+  .footer__title {
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sky-soft);
+    margin: 0 0 18px;
+  }
+  .footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer a,
+  .footer__links span {
+    color: #b9c6e0;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .footer a:hover {
+    color: var(--white);
+  }
+  .footer .footer__phone {
+    color: var(--white);
+    font-weight: 800;
+    font-size: 22px;
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: #8fa2c8;
+    font-size: 14px;
+  }
+  .footer__legal {
+    display: flex;
+    gap: 20px;
+  }
+  .footer__legal a {
+    font-size: 14px;
+  }
+</style>

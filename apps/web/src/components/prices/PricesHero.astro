@@ -1,0 +1,61 @@
+---
+import SegmentedToggle from '@/components/ui/SegmentedToggle.astro';
+import { site } from '@/config/site';
+---
+
+<section class="ph">
+  <div aria-hidden="true" class="d ph__watermark">PRICES</div>
+  <div class="wrap ph__body">
+    <nav aria-label="Breadcrumb" class="rise ph__crumbs"><a href="/">Home</a> / Courses &amp; prices</nav>
+    <h1 class="d rise dl1 h-lg ph__title">Courses &amp; prices that <span>make sense</span></h1>
+    <p class="rise dl2 ph__lead">Transparent prices for {site.region}. Pick your gearbox, then choose how fast you want to go.</p>
+    <SegmentedToggle group="prices-trans" label="Transmission" variant="dark" class="rise dl3 ph__seg" />
+  </div>
+</section>
+
+<style>
+  .ph {
+    background: var(--navy);
+    color: var(--white);
+    padding: 90px 0 120px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ph__watermark {
+    position: absolute;
+    right: -30px;
+    bottom: -60px;
+    font-size: 260px;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.06);
+  }
+  .ph__body {
+    position: relative;
+  }
+  .ph__crumbs {
+    font-size: 14px;
+    color: var(--on-dark-subtle);
+  }
+  .ph__crumbs a {
+    color: var(--on-dark-subtle);
+  }
+  .ph__title {
+    margin-top: 22px;
+    max-width: 900px;
+  }
+  .ph__title span {
+    color: var(--red);
+  }
+  .ph__lead {
+    font-size: 19px;
+    color: var(--on-dark-muted);
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 24px 0 0;
+  }
+  .ph :global(.ph__seg) {
+    margin-top: 36px;
+    width: 320px;
+    max-width: 100%;
+  }
+</style>

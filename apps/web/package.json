@@ -1,0 +1,21 @@
+{
+  "name": "@shark/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "deploy": "astro build && wrangler pages deploy dist --project-name shark-driving-school"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.5",
+    "@shark/shared": "*",
+    "astro": "^7.4.12"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12"
+  }
+}

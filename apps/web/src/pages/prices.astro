@@ -1,0 +1,18 @@
+---
+import CompareTable from '@/components/prices/CompareTable.astro';
+import HelpCards from '@/components/prices/HelpCards.astro';
+import PriceTabs from '@/components/prices/PriceTabs.astro';
+import PricesHero from '@/components/prices/PricesHero.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Driving Lesson Prices in Manchester"
+  description="Pay-as-you-go, block bookings, intensive courses and Pass Plus prices for manual and automatic driving lessons in Greater Manchester."
+  chrome="compact"
+>
+  <PricesHero />
+  <PriceTabs />
+  <CompareTable />
+  <HelpCards />
+</BaseLayout>

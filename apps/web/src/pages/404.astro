@@ -1,0 +1,42 @@
+---
+import Fin from '@/components/ui/Fin.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" chrome="compact">
+  <section class="nf">
+    <div class="wrap nf__body">
+      <Fin width={120} class="fin-bob" />
+      <h1 class="d h-lg">Wrong turn.</h1>
+      <p>This page doesn't exist. Let's get you back on the road.</p>
+      <div class="nf__actions">
+        <a class="btn btn--red" href="/">Back to home</a>
+        <a class="btn btn--ghost" href="/book">Book a lesson</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    background: var(--navy);
+    color: var(--white);
+    padding: 120px 0;
+  }
+  .nf__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .nf p {
+    color: var(--on-dark-muted);
+    font-size: 19px;
+    margin: 0;
+  }
+  .nf__actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+</style>

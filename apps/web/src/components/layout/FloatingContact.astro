@@ -1,0 +1,53 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { site, telHref, whatsappHref } from '@/config/site';
+---
+
+<div class="fab">
+  <a class="fab__btn fab__btn--wa" href={whatsappHref} aria-label="WhatsApp us"><Icon name="whatsapp" size={28} strokeWidth={2} /></a>
+  <a class="fab__btn fab__btn--call" href={telHref} aria-label={`Call ${site.phone.display}`}><Icon name="phone" size={26} /></a>
+</div>
+
+<style>
+  .fab {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fab__btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    text-decoration: none;
+    transition: transform 0.25s;
+  }
+  .fab__btn:hover {
+    transform: scale(1.06);
+    color: var(--white);
+  }
+  .fab__btn--call {
+    background: var(--red);
+    animation: pulse 2s infinite;
+  }
+  .fab__btn--wa {
+    background: var(--whatsapp);
+  }
+  @media (max-width: 640px) {
+    .fab {
+      right: 16px;
+      bottom: 16px;
+    }
+    .fab__btn {
+      width: 54px;
+      height: 54px;
+    }
+  }
+</style>

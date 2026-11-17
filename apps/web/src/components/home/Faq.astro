@@ -1,0 +1,135 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { site, telHref } from '@/config/site';
+import { faqs } from '@/data/faqs';
+
+// FAQPage structured data for Google rich results.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<section id="faq" class="faq">
+  <div class="wrap faq__grid">
+    <div class="reveal">
+      <span class="eyebrow eyebrow--dash">FAQ</span>
+      <h2 class="d h-md faq__title">Got questions?</h2>
+      <p class="lead faq__lead">Can't find what you need? Call or WhatsApp — we reply fast.</p>
+      <a class="btn btn--blue" href={telHref}>Call {site.phone.display}</a>
+    </div>
+
+    <div class="faq__list reveal" data-accordion>
+      {
+        faqs.map((f, i) => (
+          <div class:list={['acc-item', { 'is-open': i === 0 }]}>
+            <h3>
+              <button type="button" data-acc-trigger aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`faq-${i}`}>
+                {f.q}
+                <span class="acc-plus">
+                  <Icon name="plus" size={18} strokeWidth={2.6} />
+                </span>
+              </button>
+            </h3>
+            <div id={`faq-${i}`} class="acc-panel" role="region" inert={i !== 0}>
+              <div>
+                <p>{f.a}</p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+<script>
+  import { initAccordions } from '@/scripts/accordion';
+  initAccordions();
+</script>
+
+<style>
+  .faq {
+    padding: 0 0 120px;
+  }
+  .faq__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 56px;
+  }
+  .faq__title {
+    margin-top: 16px;
+  }
+  .faq__lead {
+    margin-bottom: 28px;
+  }
+  .faq__list {
+    border-top: 1px solid var(--line);
+  }
+  .acc-item {
+    border-bottom: 1px solid var(--line);
+  }
+  .acc-item h3 {
+    font-size: inherit;
+  }
+  .acc-item button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    background: none;
+    border: 0;
+    padding: 26px 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+  }
+  .acc-plus {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s, background 0.3s, color 0.3s;
+  }
+  .is-open .acc-plus {
+    transform: rotate(45deg);
+    background: var(--red);
+    color: var(--white);
+  }
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease-out);
+  }
+  .acc-panel > div {
+    overflow: hidden;
+  }
+  .is-open .acc-panel {
+    grid-template-rows: 1fr;
+  }
+  .acc-panel p {
+    margin: 0 0 26px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  @media (max-width: 640px) {
+    .faq__grid {
+      grid-template-columns: 1fr;
+    }
+    .acc-item button {
+      font-size: 17px;
+    }
+  }
+</style>

@@ -1,0 +1,237 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import Logo from '@/components/ui/Logo.astro';
+import { mainNav, site, telHref } from '@/config/site';
+
+interface Props {
+  /** Booking page uses a minimal header (logo + help line). */
+  variant?: 'full' | 'minimal';
+}
+const { variant = 'full' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => !href.includes('#') && href === path;
+---
+
+<header class:list={['header', { 'header--minimal': variant === 'minimal' }]}>
+  <div class="wrap header__inner">
+    <a href="/" aria-label={`${site.name} home`} class="header__logo"><Logo height={variant === 'minimal' ? 56 : 58} /></a>
+
+    {
+      variant === 'full' ? (
+        <>
+          <nav class="header__nav" aria-label="Main">
+            {mainNav.map((l) => (
+              <a class="nav-link" href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            ))}
+          </nav>
+          <div class="header__actions">
+            <a class="header__phone" href={telHref}>
+              <span class="header__phone-ic">
+                <Icon name="phone" size={18} />
+              </span>
+              <span class="header__phone-txt">
+                <span>Call or text</span>
+                <strong>{site.phone.display}</strong>
+              </span>
+            </a>
+            <a class="btn btn--red btn--sm" href="/book">
+              Book a lesson
+            </a>
+            <button class="header__menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+              <Icon name="menu" size={24} />
+            </button>
+          </div>
+        </>
+      ) : (
+        <a class="header__help" href={telHref}>
+          Need help? {site.phone.display}
+        </a>
+      )
+    }
+  </div>
+
+  {
+    variant === 'full' && (
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile" hidden>
+        {mainNav.map((l) => (
+          <a href={l.href}>{l.label}</a>
+        ))}
+        <a class="btn btn--blue btn--block" href={telHref}>
+          Call {site.phone.display}
+        </a>
+      </nav>
+    )
+  }
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.header__menu');
+  const panel = document.getElementById('mobile-nav');
+  if (btn && panel) {
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      panel.hidden = !open;
+    };
+    btn.addEventListener('click', () => set(panel.hidden));
+    panel.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) set(false);
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header--minimal {
+    position: static;
+    background: var(--white);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    gap: 24px;
+  }
+  .header__logo {
+    display: flex;
+    align-items: center;
+  }
+  .header__nav {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+  }
+  .nav-link {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px 4px;
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 2px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+  .nav-link[aria-current='page'] {
+    color: var(--red);
+  }
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header__phone {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .header__phone-ic {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+  }
+  .header__phone-txt {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .header__phone-txt span {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .header__phone-txt strong {
+    font-weight: 800;
+    font-size: 17px;
+  }
+  .header__help {
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .header__menu {
+    display: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--white);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px var(--gutter) 20px;
+    border-top: 1px solid var(--line);
+    background: var(--white);
+  }
+  .mobile-nav[hidden] {
+    display: none;
+  }
+  .mobile-nav a:not(.btn) {
+    padding: 14px 4px;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .mobile-nav .btn {
+    margin-top: 14px;
+  }
+
+  @media (max-width: 1000px) {
+    .header__nav,
+    .header__phone {
+      display: none;
+    }
+    .header__menu {
+      display: inline-flex;
+    }
+  }
+  @media (min-width: 1001px) {
+    .mobile-nav {
+      display: none !important;
+    }
+  }
+  @media (max-width: 420px) {
+    .header__actions .btn {
+      display: none;
+    }
+  }
+</style>

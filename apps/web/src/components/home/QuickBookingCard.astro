@@ -1,0 +1,127 @@
+---
+/**
+ * Hero "Find your instructor" card. Submits as a GET to /book so the
+ * booking wizard opens with transmission, lesson and postcode prefilled.
+ */
+import Fin from '@/components/ui/Fin.astro';
+import SegmentedToggle from '@/components/ui/SegmentedToggle.astro';
+import { whatsappHref } from '@/config/site';
+import { bookableLessons } from '@/data/pricing';
+---
+
+<div class="rise dl3 qbc">
+  <Fin width={96} layered class="fin-bob qbc__fin" />
+  <form class="qbc__card" action="/book" method="get" data-quick-booking>
+    <div class="qbc__head">
+      <div>
+        <h2 class="qbc__title">Find your instructor</h2>
+        <p class="qbc__sub">See free slots near you in seconds.</p>
+      </div>
+      <span class="qbc__chip">Slots this week</span>
+    </div>
+
+    <SegmentedToggle group="hero-trans" label="Transmission" class="qbc__seg" />
+    <input type="hidden" name="transmission" value="manual" />
+
+    <div class="qbc__fields">
+      <div class="field">
+        <label for="qbc-postcode">Your postcode</label>
+        <input id="qbc-postcode" name="postcode" type="text" placeholder="e.g. M14 5RB" autocomplete="postal-code" />
+      </div>
+      <div class="field">
+        <label for="qbc-lesson">What do you need?</label>
+        <select id="qbc-lesson" name="lesson">
+          {bookableLessons.map((l) => <option value={l.id}>{l.name}</option>)}
+        </select>
+      </div>
+      <button class="btn btn--red btn--block qbc__submit" type="submit">
+        Check availability — <span data-bind-group="hero-trans" data-text-manual="Manual" data-text-automatic="Automatic">Manual</span>
+      </button>
+      <p class="qbc__alt">Prefer to chat? <a href={whatsappHref}>WhatsApp us</a></p>
+    </div>
+  </form>
+</div>
+
+<script>
+  import { SEGMENTED_EVENT, type SegmentedChangeDetail } from '@/scripts/segmented';
+  const form = document.querySelector<HTMLFormElement>('[data-quick-booking]');
+  form?.addEventListener(SEGMENTED_EVENT, (e) => {
+    const { value } = (e as CustomEvent<SegmentedChangeDetail>).detail;
+    const hidden = form.querySelector<HTMLInputElement>('input[name="transmission"]');
+    if (hidden) hidden.value = value;
+  });
+</script>
+
+<style>
+  .qbc {
+    position: relative;
+  }
+  .qbc :global(.qbc__fin) {
+    position: absolute;
+    right: 28px;
+    top: -58px;
+    z-index: 0;
+  }
+  .qbc__card {
+    position: relative;
+    z-index: 1;
+    background: var(--white);
+    color: var(--ink);
+    border-radius: var(--r-xl);
+    padding: 32px;
+    box-shadow: var(--shadow-float);
+  }
+  .qbc__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .qbc__title {
+    font-size: 24px;
+    font-weight: 800;
+  }
+  .qbc__sub {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .qbc__chip {
+    background: var(--success-bg);
+    color: var(--success);
+    font-size: 12px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+  }
+  .qbc :global(.qbc__seg) {
+    margin-top: 24px;
+  }
+  .qbc__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .qbc__submit {
+    margin-top: 6px;
+  }
+  .qbc__alt {
+    margin: 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .qbc__alt a {
+    font-weight: 700;
+  }
+  @media (max-width: 640px) {
+    .qbc__card {
+      padding: 24px;
+    }
+    .qbc__submit {
+      white-space: normal;
+    }
+  }
+</style>

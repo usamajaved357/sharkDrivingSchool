@@ -1,0 +1,19 @@
+---
+import BookingWizard from '@/components/booking/BookingWizard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Book a Driving Lesson"
+  description="Book manual or automatic driving lessons in Manchester online in under a minute."
+  chrome="focused"
+  bodyClass="page-book"
+>
+  <BookingWizard />
+</BaseLayout>
+
+<style is:global>
+  body.page-book {
+    background: var(--paper);
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { stats } from '@/data/home';
+---
+
+<section class="stats" aria-label="Shark Driving School in numbers">
+  <div class="wrap g4">
+    {
+      stats.map((s, i) => (
+        <div class="reveal" style={`--reveal-delay:${i * 0.1}s`}>
+          <div class:list={['d', 'stats__value', `stats__value--${s.tone}`]}>{s.value}</div>
+          <p class="stats__label">{s.label}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding: 110px 0 40px;
+  }
+  .stats__value {
+    font-size: 64px;
+  }
+  .stats__value--blue {
+    color: var(--blue);
+  }
+  .stats__value--red {
+    color: var(--red);
+  }
+  .stats__label {
+    margin: 10px 0 0;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    .stats__value {
+      font-size: 52px;
+    }
+  }
+</style>

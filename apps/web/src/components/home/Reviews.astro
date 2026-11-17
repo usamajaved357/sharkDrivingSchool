@@ -1,0 +1,126 @@
+---
+import GoogleLogo from '@/components/ui/GoogleLogo.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { site } from '@/config/site';
+import { reviews } from '@/data/home';
+---
+
+<section id="reviews" class="section-lg">
+  <div class="wrap">
+    <div class="rv__head">
+      <SectionHeader eyebrow="Reviews" title="Learners who passed" />
+      <div class="card rv__badge reveal">
+        <GoogleLogo />
+        <div>
+          <div class="rv__score">{site.googleRating} <span class="rv__stars">★★★★★</span></div>
+          <div class="rv__count">{site.googleReviewCount} Google reviews</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g3 rv__grid">
+      {
+        reviews.map((r, i) => (
+          <figure class="card rv__card reveal" style={`--reveal-delay:${i * 0.1}s`}>
+            <div class="rv__top">
+              <span class="rv__stars rv__stars--lg" aria-label="5 out of 5 stars">
+                ★★★★★
+              </span>
+              <Icon name="quote" size={34} class="rv__quote" />
+            </div>
+            <blockquote class="rv__text">{r.text}</blockquote>
+            <figcaption class="rv__by">
+              <span class="rv__avatar" style={`background:${r.color}`}>
+                {r.initial}
+              </span>
+              <div>
+                <div class="rv__name">{r.name}</div>
+                <div class="rv__meta">{r.meta}</div>
+              </div>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .rv__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .rv__badge {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .rv__score {
+    font-weight: 800;
+    font-size: 20px;
+  }
+  .rv__stars {
+    color: var(--star);
+  }
+  .rv__stars--lg {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+  .rv__count {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .rv__grid {
+    margin-top: 56px;
+  }
+  .rv__card {
+    margin: 0;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .rv__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rv__card :global(.rv__quote) {
+    color: #e8f0ff;
+  }
+  .rv__text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.65;
+    flex: 1;
+  }
+  .rv__by {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .rv__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+  }
+  .rv__name {
+    font-weight: 800;
+  }
+  .rv__meta {
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

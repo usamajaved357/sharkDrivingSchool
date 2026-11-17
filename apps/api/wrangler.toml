@@ -1,0 +1,24 @@
+# Cloudflare Worker for the Shark Driving School API.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/
+name = "shark-api"
+main = "src/worker.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Serve the API on the same domain as the site so the browser calls /api/* (no CORS needed).
+# Uncomment once the domain is on Cloudflare:
+# routes = [{ pattern = "sharkdrivingschool.co.uk/api/*", zone_name = "sharkdrivingschool.co.uk" }]
+
+[vars]
+ALLOWED_ORIGINS = "http://localhost:4321,https://sharkdrivingschool.co.uk,https://www.sharkdrivingschool.co.uk"
+NOTIFY_EMAIL = ""   # where new-booking alerts go (owner inbox)
+FROM_EMAIL = ""     # verified sender, e.g. bookings@sharkdrivingschool.co.uk
+
+# Secrets (set with `npx wrangler secret put RESEND_API_KEY`):
+#   RESEND_API_KEY
+
+[[d1_databases]]
+binding = "DB"
+database_name = "shark-db"
+database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+migrations_dir = "migrations"

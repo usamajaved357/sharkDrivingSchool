@@ -1,0 +1,75 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { steps } from '@/data/home';
+---
+
+<section class="how section-lg">
+  <div class="wrap">
+    <SectionHeader eyebrow="How it works" title="From provisional to pass in 4 moves" />
+    <div class="how__track">
+      <div class="how__line hide-sm" aria-hidden="true"></div>
+      <ol class="g4 how__steps">
+        {
+          steps.map((s, i) => (
+            <li class="reveal" style={`--reveal-delay:${i * 0.12}s`}>
+              <div class:list={['d', 'how__num', `how__num--${s.tone}`]}>{s.n}</div>
+              <h3 class="how__title">{s.title}</h3>
+              <p class="how__text">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how__track {
+    position: relative;
+    margin-top: 70px;
+  }
+  .how__line {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 39px;
+    height: 6px;
+    border-radius: 6px;
+    background: repeating-linear-gradient(90deg, var(--blue) 0 34px, transparent 34px 56px);
+    animation: road-scroll 1.2s linear infinite;
+  }
+  @keyframes road-scroll {
+    from { background-position: 0 0; }
+    to { background-position: 56px 0; }
+  }
+  .how__steps {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .how__num {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    box-shadow: 0 0 0 10px var(--white);
+  }
+  .how__num--red { background: var(--red); }
+  .how__num--navy { background: var(--navy); }
+  .how__num--blue { background: var(--blue); }
+  .how__title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 26px 0 8px;
+  }
+  .how__text {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>

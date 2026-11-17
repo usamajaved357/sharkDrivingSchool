@@ -1,0 +1,48 @@
+---
+import Fin from '@/components/ui/Fin.astro';
+import { areas } from '@/data/areas';
+// Duplicated so the -50% translate loops seamlessly.
+const loop = [...areas, ...areas];
+---
+
+<div class="marquee" aria-label={`Areas we cover: ${areas.join(', ')}`} role="region">
+  <div class="marquee__track d" aria-hidden="true">
+    {
+      loop.map((a) => (
+        <span class="marquee__item">
+          {a}
+          <Fin width={22} color="#fff" />
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    background: var(--red);
+    color: var(--white);
+    overflow: hidden;
+    padding: 18px 0;
+    transform: rotate(-1.2deg);
+    margin-top: -26px;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 16px 30px -18px rgba(225, 6, 0, 0.7);
+  }
+  .marquee__track {
+    display: flex;
+    gap: 48px;
+    width: max-content;
+    font-size: 26px;
+    animation: marquee 38s linear infinite;
+  }
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 48px;
+  }
+</style>

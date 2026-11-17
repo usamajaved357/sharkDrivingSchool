@@ -1,0 +1,32 @@
+---
+import { site } from '@/config/site';
+
+interface Props {
+  height?: number;
+  /** On dark backgrounds the logo sits on a white tile. */
+  tile?: boolean;
+}
+const { height = 58, tile = false } = Astro.props;
+// Source image is 740×295.
+const width = Math.round((height * 740) / 295);
+---
+
+<span class:list={['logo', { 'logo--tile': tile }]} style={`--logo-h:${height}px`}>
+  <img src="/images/logo.webp" alt={site.name} width={width} height={height} loading="eager" decoding="async" />
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+  }
+  .logo img {
+    height: var(--logo-h, 58px);
+    width: auto;
+    mix-blend-mode: multiply; /* knocks out the off-white logo background */
+  }
+  .logo--tile {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 10px 14px;
+  }
+</style>

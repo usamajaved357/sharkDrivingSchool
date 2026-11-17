@@ -1,0 +1,29 @@
+{
+  "name": "shark-driving-school",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c red,blue \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:web": "npm run dev -w @shark/web",
+    "dev:api": "npm run dev -w @shark/api",
+    "dev:api:worker": "npm run dev:worker -w @shark/api",
+    "build": "npm run build -w @shark/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:migrate:local": "npm run db:migrate:local -w @shark/api",
+    "db:migrate:remote": "npm run db:migrate:remote -w @shark/api",
+    "deploy:web": "npm run deploy -w @shark/web",
+    "deploy:api": "npm run deploy -w @shark/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^4.163.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

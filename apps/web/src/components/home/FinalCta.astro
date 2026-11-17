@@ -1,0 +1,59 @@
+---
+import Fin from '@/components/ui/Fin.astro';
+import { site, telHref } from '@/config/site';
+---
+
+<section class="cta">
+  <div class="cta__waterline" aria-hidden="true"></div>
+  <Fin width={90} color="var(--navy)" class="cta__fin" />
+  <div class="wrap cta__body reveal">
+    <h2 class="d h-lg">Ready to hit the road?</h2>
+    <p class="cta__text">Book your first lesson today. Spaces fill fast in your area.</p>
+    <div class="cta__actions">
+      <a class="btn btn--white-red" href="/book">Book a lesson</a>
+      <a class="btn btn--navy" href={telHref}>Call {site.phone.display}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: var(--red);
+    color: var(--white);
+    padding: 110px 0 120px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta__waterline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 34px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .cta :global(.cta__fin) {
+    position: absolute;
+    left: 0;
+    bottom: 34px;
+    animation: swim 14s linear infinite;
+  }
+  .cta__body {
+    text-align: center;
+    position: relative;
+  }
+  .cta__text {
+    font-size: 20px;
+    color: var(--red-tint);
+    margin: 20px auto 0;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  .cta__actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+</style>

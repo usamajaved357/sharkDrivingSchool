@@ -1,0 +1,158 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { features } from '@/data/home';
+---
+
+<section class="why bg-navy section-lg">
+  <div class="why__dots" aria-hidden="true"></div>
+  <div class="wrap split why__grid">
+    <div class="why__media reveal">
+      <!-- TODO(owner): replace with a real photo of an instructor + branded car (public/images/). -->
+      <div class="why__placeholder">
+        <Icon name="image" size={56} strokeWidth={1.6} />
+        <p>[Photo: instructor with branded Shark car]</p>
+      </div>
+      <div class="why__toast">
+        <span class="why__toast-ic"><Icon name="trophy" size={24} /></span>
+        <div>
+          <div class="why__toast-title">Another pass this week</div>
+          <div class="why__toast-meta">[Learner name] · [Test centre]</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="reveal">
+        <span class="eyebrow why__eyebrow">Why Shark</span>
+        <h2 class="d h-md why__title">Calm in the car. Ruthless about results.</h2>
+        <p class="why__lead">
+          Our instructors are patient with nerves and serious about getting you through the test. Every lesson has a goal, and you always
+          know where you stand.
+        </p>
+      </div>
+      <ul class="g2 why__features">
+        {
+          features.map((f, i) => (
+            <li class="reveal" style={`--reveal-delay:${i * 0.06}s`}>
+              <span class="ic why__ic">
+                <Icon name={f.icon} size={22} />
+              </span>
+              <div>
+                <h3>{f.title}</h3>
+                <p>{f.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why {
+    position: relative;
+    overflow: hidden;
+  }
+  .why__dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+  .why__grid {
+    position: relative;
+  }
+  .why__media {
+    position: relative;
+    border-radius: 32px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: repeating-linear-gradient(135deg, #0d2a60 0 18px, #0b2454 18px 36px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .why__placeholder {
+    text-align: center;
+    color: var(--on-dark-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .why__placeholder p {
+    margin: 12px 0 0;
+    font-weight: 600;
+  }
+  .why__toast {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    right: 24px;
+    background: var(--white);
+    color: var(--ink);
+    border-radius: var(--r-md);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .why__toast-ic {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .why__toast-title {
+    font-weight: 800;
+  }
+  .why__toast-meta {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .why__eyebrow {
+    color: #ff6a63;
+  }
+  .why__title {
+    margin-top: 16px;
+  }
+  .why__lead {
+    font-size: 18px;
+    color: var(--on-dark-muted);
+    line-height: 1.7;
+    margin: 22px 0 0;
+  }
+  .why__features {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    gap: 28px;
+  }
+  .why__features li {
+    display: flex;
+    gap: 14px;
+  }
+  .why__ic {
+    background: rgba(76, 141, 255, 0.16);
+    color: var(--sky-soft);
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+  .why__features h3 {
+    font-size: 17px;
+    font-weight: 800;
+  }
+  .why__features p {
+    margin: 4px 0 0;
+    color: #afc0e2;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+</style>

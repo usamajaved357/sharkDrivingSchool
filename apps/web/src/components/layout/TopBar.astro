@@ -1,0 +1,50 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { site } from '@/config/site';
+---
+
+<div class="topbar">
+  <div class="wrap topbar__inner">
+    <div class="topbar__left">
+      <span><Icon name="check" size={14} strokeWidth={2.4} class="tb-ic" />Manual &amp; automatic lessons</span>
+      <span class="hide-sm"><Icon name="check" size={14} strokeWidth={2.4} class="tb-ic" />Covering all of {site.region}</span>
+    </div>
+    <span class="topbar__rating hide-sm"><Icon name="star" size={14} class="tb-star" />{site.googleRating} rated on Google</span>
+  </div>
+</div>
+
+<style>
+  .topbar {
+    background: var(--navy);
+    color: var(--on-dark-muted);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .topbar__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    gap: 16px;
+  }
+  .topbar__left {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+  .topbar span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar__rating {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .topbar :global(.tb-ic) {
+    color: var(--sky);
+  }
+  .topbar :global(.tb-star) {
+    color: #ffc531;
+  }
+</style>

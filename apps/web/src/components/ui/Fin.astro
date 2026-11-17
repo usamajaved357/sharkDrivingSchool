@@ -1,0 +1,22 @@
+---
+/** The shark-fin brand motif (decorative). */
+interface Props {
+  width?: number;
+  color?: string;
+  /** Adds the lighter highlight layer used on the hero booking card. */
+  layered?: boolean;
+  class?: string;
+  style?: string;
+}
+const { width = 80, color = 'var(--blue)', layered = false, class: className, style } = Astro.props;
+const height = Math.round(width * 0.8);
+---
+
+<svg class={className} style={style} width={width} height={height} viewBox="0 0 80 64" aria-hidden="true">
+  <path d="M2 62 C 22 46 34 14 66 2 C 58 24 60 44 78 62 Z" fill={color}></path>
+  {
+    layered && (
+      <path d="M2 62 C 22 46 34 14 66 2 C 60 18 58 30 60 40 C 46 42 24 52 2 62 Z" fill="var(--sky)" opacity=".55" />
+    )
+  }
+</svg>

@@ -1,0 +1,72 @@
+/* Keyframes + animation utilities. All motion respects prefers-reduced-motion. */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dash {
+  from { background-position: 0 0; }
+  to { background-position: 0 180px; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-8px) rotate(-3deg); }
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(225, 6, 0, 0.55); }
+  100% { box-shadow: 0 0 0 20px rgba(225, 6, 0, 0); }
+}
+@keyframes swim {
+  from { transform: translateX(-160px); }
+  to { transform: translateX(calc(100vw + 160px)); }
+}
+@keyframes pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Load-in animation (hero) */
+.rise { animation: rise 0.9s var(--ease-out) both; }
+.dl1 { animation-delay: 0.08s; }
+.dl2 { animation-delay: 0.18s; }
+.dl3 { animation-delay: 0.3s; }
+.dl4 { animation-delay: 0.42s; }
+.dl5 { animation-delay: 0.55s; }
+
+/*
+ * Scroll-reveal: scripts/reveal.ts adds .is-visible when in view.
+ * Uses the independent `translate` property so it never fights a component's
+ * own `transform` (e.g. card hover lift).
+ */
+.reveal {
+  opacity: 0;
+  translate: 0 28px;
+  transition: opacity 0.8s var(--ease-out), translate 0.8s var(--ease-out), transform 0.35s var(--ease-out),
+    box-shadow 0.35s, border-color 0.35s;
+  transition-delay: var(--reveal-delay, 0s), var(--reveal-delay, 0s), 0s, 0s, 0s;
+}
+.reveal.is-visible {
+  opacity: 1;
+  translate: none;
+}
+/* If JS is unavailable, never hide content */
+.no-js .reveal { opacity: 1; translate: none; }
+
+.fin-bob { animation: bob 3.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; translate: none; }
+}

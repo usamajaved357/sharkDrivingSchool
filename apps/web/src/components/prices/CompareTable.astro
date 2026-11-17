@@ -1,0 +1,76 @@
+---
+import { weeklyVsIntensive } from '@/data/pricing';
+---
+
+<section class="bg-paper section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Compare</span>
+      <h2 class="d h-md cmp__title">Weekly lessons vs intensive</h2>
+    </div>
+    <div class="cmp reveal">
+      <table>
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="col">Weekly lessons</th>
+            <th scope="col" class="cmp__hl">Intensive course</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            weeklyVsIntensive.map((r) => (
+              <tr>
+                <th scope="row">{r.label}</th>
+                <td>{r.weekly}</td>
+                <td>
+                  <b>{r.intensive}</b>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cmp__title {
+    margin: 14px 0 40px;
+  }
+  .cmp {
+    overflow-x: auto;
+    background: var(--white);
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+  }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 16px;
+    min-width: 560px;
+  }
+  th,
+  td {
+    padding: 18px 22px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  thead th {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  thead .cmp__hl {
+    color: var(--red);
+  }
+  tbody th {
+    font-weight: 700;
+  }
+</style>

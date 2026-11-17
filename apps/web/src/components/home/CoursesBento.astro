@@ -1,0 +1,244 @@
+---
+import Fin from '@/components/ui/Fin.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { courseTiles } from '@/data/courses';
+---
+
+<section id="courses" class="courses">
+  <div class="wrap">
+    <div class="courses__head">
+      <SectionHeader eyebrow="Courses" title="A course for every kind of learner" />
+      <a class="btn btn--blue reveal" href="/prices">See all courses &amp; prices</a>
+    </div>
+
+    <div class="bento">
+      {
+        courseTiles.map((t, i) => {
+          const delay = `--reveal-delay:${(i % 4) * 0.08}s`;
+          if (t.variant === 'feature')
+            return (
+              <a class="card reveal tile tile--feature" href={t.href} style={delay}>
+                <Fin width={220} class="fin-bob tile__fin" />
+                <div>
+                  {t.badge && <span class="badge">{t.badge}</span>}
+                  <h3 class="d tile__feature-title">
+                    Beginner
+                    <br />
+                    lessons
+                  </h3>
+                  <p class="tile__feature-text">{t.text}</p>
+                </div>
+                <span class="more tile__more-light">
+                  {t.cta} <Icon name="arrow-right" size={16} strokeWidth={2.6} />
+                </span>
+              </a>
+            );
+          if (t.variant === 'wide-red')
+            return (
+              <a class="card reveal tile tile--red" href={t.href} style={delay}>
+                <div class="tile__red-body">
+                  <div>
+                    <h3 class="d tile__red-title">{t.title}</h3>
+                    <p class="tile__red-text">{t.text}</p>
+                  </div>
+                  <span class="more tile__more-light">
+                    {t.cta} <Icon name="arrow-right" size={16} strokeWidth={2.6} />
+                  </span>
+                </div>
+                {t.icon && <Icon name={t.icon} size={130} strokeWidth={1.2} class="hide-sm tile__red-icon" />}
+              </a>
+            );
+          if (t.variant === 'wide-paper')
+            return (
+              <a class="card reveal tile tile--paper" href={t.href} style={delay}>
+                <span class="tile__paper-ic">{t.icon && <Icon name={t.icon} size={34} strokeWidth={2} />}</span>
+                <div class="tile__paper-body">
+                  <h3 class="tile__title">{t.title}</h3>
+                  <p class="tile__text">{t.text}</p>
+                </div>
+                <Icon name="arrow-right" size={22} strokeWidth={2.6} class="tile__paper-arrow" />
+              </a>
+            );
+          return (
+            <a class="card reveal tile tile--small" href={t.href} style={delay}>
+              <div>
+                <div class:list={['ic', t.tone === 'red' ? 'ic--red' : 'ic--blue']}>
+                  {t.icon && <Icon name={t.icon} size={26} strokeWidth={2} />}
+                </div>
+                <h3 class="tile__title tile__title--sm">{t.title}</h3>
+                <p class="tile__text">{t.text}</p>
+              </div>
+              <span class:list={['more', t.tone === 'red' ? 'tile__more-red' : 'tile__more-blue']}>
+                {t.cta} <Icon name="arrow-right" size={16} strokeWidth={2.6} />
+              </span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .courses {
+    padding: 80px 0 110px;
+  }
+  .courses__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 240px;
+    gap: 20px;
+  }
+  .tile {
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tile__title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 6px;
+  }
+  .tile__title--sm {
+    font-size: 21px;
+    margin-top: 18px;
+  }
+  .tile__text {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .tile__more-blue {
+    color: var(--blue);
+  }
+  .tile__more-red {
+    color: var(--red);
+  }
+  .tile__more-light {
+    color: var(--white);
+    position: relative;
+  }
+
+  /* Feature (navy, 2 rows) */
+  .tile--feature {
+    grid-row: span 2;
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+    padding: 36px;
+  }
+  .tile--feature :global(.tile__fin) {
+    position: absolute;
+    right: -30px;
+    bottom: -20px;
+    opacity: 0.9;
+  }
+  .tile__feature-title {
+    font-size: 44px;
+    margin: 22px 0 0;
+  }
+  .tile__feature-text {
+    color: var(--on-dark-muted);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 280px;
+    margin: 16px 0 0;
+    position: relative;
+  }
+
+  /* Wide red */
+  .tile--red {
+    grid-column: span 2;
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+    padding: 32px;
+    flex-direction: row;
+    gap: 24px;
+  }
+  .tile__red-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .tile__red-title {
+    font-size: 38px;
+  }
+  .tile__red-text {
+    color: var(--red-tint);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 380px;
+    margin: 12px 0 0;
+  }
+  .tile--red :global(.tile__red-icon) {
+    flex: none;
+    align-self: center;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Wide paper */
+  .tile--paper {
+    grid-column: span 2;
+    background: var(--paper);
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+  .tile__paper-ic {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: var(--blue);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .tile__paper-body {
+    flex: 1;
+  }
+  .tile--paper :global(.tile__paper-arrow) {
+    flex: none;
+    color: var(--blue);
+  }
+
+  @media (max-width: 1000px) {
+    .bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .bento {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+    }
+    .tile--red,
+    .tile--paper {
+      grid-column: auto;
+    }
+    .tile--feature {
+      grid-row: auto;
+      min-height: 360px;
+    }
+    .tile--small {
+      min-height: 220px;
+    }
+  }
+</style>

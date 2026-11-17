@@ -1,0 +1,145 @@
+---
+import { areas, mapPins } from '@/data/areas';
+import { site } from '@/config/site';
+---
+
+<section id="areas" class="bg-paper section-lg">
+  <div class="wrap split">
+    <div class="reveal">
+      <span class="eyebrow eyebrow--dash">Areas we cover</span>
+      <h2 class="d h-md areas__title">Lessons across {site.region}</h2>
+      <p class="lead">We pick you up from home, work, college or uni. Learn on the same roads you will be tested on.</p>
+      <ul class="areas__chips">
+        {
+          areas.map((a) => (
+            <li>
+              <a class="chip" href="/book">
+                {a}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="map reveal">
+      <div class="map__grid" aria-hidden="true"></div>
+      <svg aria-hidden="true" viewBox="0 0 400 400" class="map__roads">
+        <path d="M30 300 C 120 260 140 140 220 150 S 340 90 380 40" fill="none" stroke="rgba(76,141,255,.45)" stroke-width="10" stroke-linecap="round"></path>
+        <path d="M60 60 C 130 120 170 220 200 240 S 300 330 370 360" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6" stroke-linecap="round"></path>
+        <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(225,6,0,.35)" stroke-width="2" stroke-dasharray="6 8"></circle>
+      </svg>
+      {
+        mapPins.map((p) => (
+          <span class="map__pin" style={`left:${p.left}%;top:${p.top}%`} aria-hidden="true">
+            <i />
+            {p.label}
+          </span>
+        ))
+      }
+      <div class="map__search">
+        <form class="map__form" data-coverage-form>
+          <label for="coverage-postcode" class="sr-only">Postcode</label>
+          <input id="coverage-postcode" name="postcode" type="text" placeholder="Enter your postcode" autocomplete="postal-code" />
+          <button class="btn btn--red map__btn" type="submit">Check</button>
+        </form>
+        <p class="map__result" data-coverage-result role="status" hidden></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initCoverageForms } from '@/scripts/coverage-check';
+  initCoverageForms();
+</script>
+
+<style>
+  .areas__title {
+    margin-top: 16px;
+  }
+  .areas__chips {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 32px 0 0;
+  }
+  .map {
+    position: relative;
+    border-radius: 32px;
+    background: var(--navy);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+  .map__grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .map__roads {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .map__pin {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    background: rgba(6, 20, 46, 0.85);
+    padding: 6px 12px 6px 6px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+  }
+  .map__pin i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--red);
+    display: block;
+    animation: pulse 1.8s infinite;
+  }
+  .map__search {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+  }
+  .map__form {
+    background: var(--white);
+    border-radius: var(--r-md);
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  .map__form input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    font-size: 16px;
+    padding: 0 12px;
+    background: transparent;
+  }
+  .map__btn {
+    height: 48px;
+    padding: 0 20px;
+  }
+  .map__result {
+    margin: 10px 0 0;
+    background: var(--white);
+    color: var(--ink);
+    border-radius: var(--r-sm);
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+</style>

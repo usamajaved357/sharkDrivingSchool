@@ -1,0 +1,34 @@
+---
+/** Eyebrow + display heading used at the top of most sections. */
+interface Props {
+  eyebrow: string;
+  title: string;
+  align?: 'left' | 'center';
+  tone?: 'light' | 'dark';
+  dash?: boolean;
+  maxWidth?: string;
+}
+const { eyebrow, title, align = 'left', tone = 'light', dash = true, maxWidth = '720px' } = Astro.props;
+---
+
+<div class:list={['sh', `sh--${align}`, `sh--${tone}`, 'reveal']} style={`--sh-max:${maxWidth}`}>
+  <span class:list={['eyebrow', { 'eyebrow--dash': dash }]}>{eyebrow}</span>
+  <h2 class="d h-md">{title}</h2>
+  <slot />
+</div>
+
+<style>
+  .sh {
+    max-width: var(--sh-max);
+  }
+  .sh h2 {
+    margin-top: 16px;
+  }
+  .sh--center {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .sh--dark .eyebrow {
+    color: #ff6a63;
+  }
+</style>
