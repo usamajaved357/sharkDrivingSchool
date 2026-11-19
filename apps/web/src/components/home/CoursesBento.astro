@@ -33,7 +33,7 @@ const tiles = { feature: FeatureTile, 'wide-red': IntensiveTile, small: SmallTil
 
 <style>
   .courses {
-    padding: clamp(56px, 6vw, 72px) 0 clamp(64px, 8vw, 96px);
+    padding: clamp(32px, min(5vw, 5vh), 64px) 0 clamp(40px, min(6vw, 6vh), 72px);
   }
   .courses__head {
     display: flex;
@@ -41,15 +41,16 @@ const tiles = { feature: FeatureTile, 'wide-red': IntensiveTile, small: SmallTil
     align-items: flex-end;
     gap: 24px;
     flex-wrap: wrap;
-    margin-bottom: 44px;
+    margin-bottom: clamp(24px, 4vh, 36px);
   }
   .bento {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     /* Rows are at least 228px but grow if a tile's content needs more (e.g. narrower laptops). */
-    grid-auto-rows: minmax(228px, auto);
+    /* Rows shrink a little on short screens so the whole grid fits one screen. */
+    grid-auto-rows: minmax(clamp(164px, 22vh, 216px), auto);
     /* Two tile rows, then the full-width "mock tests" strip sized to its content. */
-    grid-template-rows: minmax(228px, auto) minmax(228px, auto) auto;
+    grid-template-rows: minmax(clamp(164px, 22vh, 216px), auto) minmax(clamp(164px, 22vh, 216px), auto) auto;
     gap: 18px;
   }
 

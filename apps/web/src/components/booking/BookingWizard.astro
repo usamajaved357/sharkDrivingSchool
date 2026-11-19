@@ -4,10 +4,12 @@
  * Markup is static; behaviour is in scripts/booking-wizard.ts.
  * Days and time slots are rendered client-side (they depend on "today" and live availability).
  */
-import Icon from '@/components/ui/Icon.astro';
 import { mailtoHref, site, telHref } from '@/config/site';
-import { bookableLessons, defaultPrice } from '@/data/pricing';
 import BookingSummary from './BookingSummary.astro';
+import StepDetails from './StepDetails.astro';
+import StepLesson from './StepLesson.astro';
+import StepWhen from './StepWhen.astro';
+import StepDone from './StepDone.astro';
 
 const steps = ['Choose lesson', 'Date & time', 'Your details'];
 ---
@@ -34,119 +36,10 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
           <a href={mailtoHref}>{site.email}</a> to book.</p>
       </noscript>
 
-      <!-- Step 1 -->
-      <section class="bk__panel" data-step-panel="1" aria-labelledby="bk-s1">
-        <h2 id="bk-s1" class="bk__h">What would you like to book?</h2>
-        <p class="bk__sub">Choose your gearbox and lesson type.</p>
-
-        <fieldset class="bk__fs bk__two">
-          <legend class="sr-only">Gearbox</legend>
-          <label class="opt">
-            <input class="opt__input" type="radio" name="transmission" value="manual" checked data-label="Manual" />
-            <span class="opt__dot" aria-hidden="true"></span>
-            <span><b>Manual</b><br /><small>Drive any car after you pass</small></span>
-          </label>
-          <label class="opt">
-            <input class="opt__input" type="radio" name="transmission" value="automatic" data-label="Automatic" />
-            <span class="opt__dot" aria-hidden="true"></span>
-            <span><b>Automatic</b><br /><small>No clutch, quicker to learn</small></span>
-          </label>
-        </fieldset>
-
-        <fieldset class="bk__fs bk__stack">
-          <legend class="sr-only">Lesson type</legend>
-          {
-            bookableLessons.map((l, i) => {
-              const price = typeof l.price === 'string' ? { manual: l.price, automatic: l.price } : l.price;
-              return (
-                <label class="opt">
-                  <input
-                    class="opt__input"
-                    type="radio"
-                    name="lessonType"
-                    value={l.id}
-                    checked={i === 1}
-                    data-label={l.name}
-                    data-price-manual={price.manual}
-                    data-price-automatic={price.automatic}
-                  />
-                  <span class="opt__dot" aria-hidden="true" />
-                  <span class="opt__grow">
-                    <b>{l.name}</b>
-                    <br />
-                    <small>{l.desc}</small>
-                  </span>
-                  <span class="d opt__price" data-lesson-price>
-                    {defaultPrice(l.price)}
-                  </span>
-                </label>
-              );
-            })
-          }
-        </fieldset>
-      </section>
-
-      <!-- Step 2 -->
-      <section class="bk__panel" data-step-panel="2" aria-labelledby="bk-s2" hidden>
-        <h2 id="bk-s2" class="bk__h">Pick a day &amp; time</h2>
-        <p class="bk__sub">Live availability for instructors near you.</p>
-        <fieldset class="bk__fs">
-          <legend class="sr-only">Day</legend>
-          <div class="bk__days" data-days></div>
-        </fieldset>
-        <fieldset class="bk__fs">
-          <legend class="sr-only">Start time</legend>
-          <div class="bk__slots" data-slots aria-live="polite"></div>
-        </fieldset>
-        <p class="bk__status" data-slots-status role="status" hidden></p>
-      </section>
-
-      <!-- Step 3 -->
-      <section class="bk__panel" data-step-panel="3" aria-labelledby="bk-s3" hidden>
-        <h2 id="bk-s3" class="bk__h">Your details</h2>
-        <p class="bk__sub">We'll confirm by text within the hour.</p>
-        <div class="bk__fields">
-          <div class="field">
-            <label for="bk-name">Full name</label>
-            <input id="bk-name" name="fullName" type="text" autocomplete="name" aria-describedby="err-fullName" />
-            <span class="field-error" id="err-fullName" data-error-for="fullName"></span>
-          </div>
-          <div class="field">
-            <label for="bk-phone">Mobile number</label>
-            <input id="bk-phone" name="phone" type="tel" autocomplete="tel" aria-describedby="err-phone" />
-            <span class="field-error" id="err-phone" data-error-for="phone"></span>
-          </div>
-          <div class="field">
-            <label for="bk-email">Email</label>
-            <input id="bk-email" name="email" type="email" autocomplete="email" aria-describedby="err-email" />
-            <span class="field-error" id="err-email" data-error-for="email"></span>
-          </div>
-          <div class="field">
-            <label for="bk-postcode">Pick-up postcode</label>
-            <input id="bk-postcode" name="postcode" type="text" autocomplete="postal-code" aria-describedby="err-postcode" />
-            <span class="field-error" id="err-postcode" data-error-for="postcode"></span>
-          </div>
-        </div>
-        <label class="bk__check">
-          <input type="checkbox" name="hasProvisionalLicence" value="true" aria-describedby="err-hasProvisionalLicence" />
-          I hold a valid UK provisional licence
-        </label>
-        <span class="field-error" id="err-hasProvisionalLicence" data-error-for="hasProvisionalLicence"></span>
-      </section>
-
-      <!-- Step 4: confirmation -->
-      <section class="bk__panel bk__done" data-step-panel="4" hidden tabindex="-1">
-        <div class="bk__tick"><Icon name="check" size={44} strokeWidth={3} /></div>
-        <h2 class="d bk__done-title">You're booked in!</h2>
-        <p class="bk__done-text">
-          Your reference is <b data-booking-ref>—</b>. We've sent a confirmation and your instructor will meet you at your pick-up address.
-        </p>
-        <p class="bk__done-text bk__done-contact">
-          Need to change something? Call <a href={telHref}>{site.phone.display}</a> or email
-          <a href={mailtoHref}>{site.email}</a>.
-        </p>
-        <a class="btn btn--outline" href="/">Back to home</a>
-      </section>
+      <StepLesson />
+      <StepWhen />
+      <StepDetails />
+      <StepDone />
 
       <p class="bk__form-error" data-form-error role="alert" hidden></p>
 
@@ -237,229 +130,22 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
     padding: 36px;
     border: 1px solid var(--line);
   }
-  .bk__panel:not([hidden]) {
+  .bk :global(.bk__panel:not([hidden])) {
     animation: rise 0.5s var(--ease-out) both;
   }
-  .bk__h {
+  .bk :global(.bk__h) {
     font-size: 26px;
     font-weight: 800;
     margin: 0 0 6px;
   }
-  .bk__sub {
+  .bk :global(.bk__sub) {
     margin: 0 0 26px;
     color: var(--muted);
   }
-  .bk__fs {
+  .bk :global(.bk__fs) {
     border: 0;
     padding: 0;
     margin: 0;
-  }
-  .bk__two {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  .bk__stack {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  /* Radio option cards */
-  .opt {
-    position: relative;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    padding: 20px;
-    border-radius: 18px;
-    border: 2px solid var(--line);
-    background: var(--white);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .opt:hover {
-    border-color: #b9cbea;
-  }
-  .opt b {
-    font-size: 17px;
-  }
-  .opt small {
-    color: var(--muted);
-    font-size: 14px;
-  }
-  .opt__input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .opt__dot {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid #b9c3d6;
-    flex: none;
-  }
-  .opt:has(.opt__input:checked) {
-    border-color: var(--red);
-    box-shadow: 0 12px 30px -18px rgba(225, 6, 0, 0.6);
-  }
-  .opt:has(.opt__input:checked) .opt__dot {
-    border-color: var(--red);
-    background: var(--red);
-    box-shadow: inset 0 0 0 4px var(--white);
-  }
-  .opt:has(.opt__input:focus-visible) {
-    outline: 3px solid var(--sky);
-    outline-offset: 2px;
-  }
-  .opt__grow {
-    flex: 1;
-  }
-  .opt__price {
-    font-size: 26px;
-  }
-
-  /* Days + slots (rendered by script → :global) */
-  .bk__days {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 6px;
-  }
-  .bk__days :global(.day) {
-    position: relative;
-    flex: 1;
-    min-width: 72px;
-    padding: 14px 0;
-    border-radius: 16px;
-    border: 2px solid var(--line);
-    background: var(--white);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-  }
-  .bk__days :global(.day small) {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    opacity: 0.7;
-  }
-  .bk__days :global(.day strong) {
-    display: block;
-    font-size: 24px;
-    font-weight: 800;
-    margin-top: 4px;
-  }
-  .bk__days :global(.day:has(input:checked)) {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: var(--white);
-  }
-  .bk__slots {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: 26px;
-  }
-  .bk__slots :global(.slot) {
-    position: relative;
-    height: 50px;
-    border-radius: var(--r-sm);
-    border: 2px solid var(--line);
-    background: var(--white);
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-  .bk__slots :global(.slot:hover) {
-    border-color: var(--blue);
-  }
-  .bk__slots :global(.slot:has(input:checked)) {
-    background: var(--red);
-    border-color: var(--red);
-    color: var(--white);
-  }
-  .bk__slots :global(.slot:has(input:disabled)) {
-    opacity: 0.4;
-    text-decoration: line-through;
-    cursor: not-allowed;
-  }
-  .bk__days :global(.day:has(input:focus-visible)),
-  .bk__slots :global(.slot:has(input:focus-visible)) {
-    outline: 3px solid var(--sky);
-    outline-offset: 2px;
-  }
-  .bk__days :global(input),
-  .bk__slots :global(input) {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .bk__status {
-    margin: 18px 0 0;
-    font-size: 14px;
-    color: var(--muted);
-  }
-
-  .bk__fields {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .bk__fields .field label {
-    font-size: 14px;
-  }
-  .bk__fields .field input {
-    height: 52px;
-    font-size: 16px;
-  }
-  .bk__check {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    margin-top: 22px;
-    font-size: 15px;
-    color: var(--muted);
-  }
-  .bk__check input {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--red);
-  }
-
-  .bk__done {
-    text-align: center;
-    padding: 40px 0;
-    outline: none;
-  }
-  .bk__tick {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    background: var(--red);
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    animation: pop 0.6s var(--ease-out) both;
-  }
-  .bk__done-title {
-    font-size: 48px;
-    margin: 28px 0 0;
-  }
-  .bk__done-text {
-    color: var(--muted);
-    font-size: 17px;
-    line-height: 1.6;
-    max-width: 460px;
-    margin: 16px auto 28px;
   }
   .bk__form-error {
     margin: 24px 0 0;
@@ -477,10 +163,6 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
     padding-top: 26px;
     border-top: 1px solid var(--line);
   }
-  .bk__done-contact {
-    font-size: 15px;
-    overflow-wrap: anywhere;
-  }
   .bk__noscript {
     padding: 16px;
     background: var(--paper);
@@ -495,13 +177,6 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
   @media (max-width: 600px) {
     .bk__card {
       padding: 24px;
-    }
-    .bk__two,
-    .bk__fields {
-      grid-template-columns: 1fr;
-    }
-    .bk__slots {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .bk__step-label {
       display: none;

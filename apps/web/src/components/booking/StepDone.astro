@@ -1,0 +1,65 @@
+---
+/** Booking step 4: confirmation shown after a successful booking. The wizard fills in the reference. */
+import Icon from '@/components/ui/Icon.astro';
+import { mailtoHref, site, telHref, whatsappHref } from '@/config/site';
+---
+
+<section class="bk__panel done" data-step-panel="4" hidden tabindex="-1">
+  <div class="done__tick"><Icon name="check" size={44} strokeWidth={3} /></div>
+  <h2 class="d done__title">Request received!</h2>
+  <p class="done__text">
+    Your reference is <b data-booking-ref>—</b>. We've emailed you a copy and we'll call or text shortly to confirm your lesson.
+  </p>
+  <div class="done__actions">
+    <a class="btn btn--outline" href="/">Back to home</a>
+    <a class="btn btn--red" href={whatsappHref} data-booking-whatsapp target="_blank" rel="noopener">
+      <Icon name="whatsapp" size={18} strokeWidth={2} /> WhatsApp us
+    </a>
+  </div>
+  <p class="done__text done__contact">
+    Need to change something? Call <a href={telHref}>{site.phone.display}</a> or email <a href={mailtoHref}>{site.email}</a>.
+  </p>
+</section>
+
+<style>
+  .done {
+    text-align: center;
+    padding: 40px 0;
+    outline: none;
+  }
+  .done__tick {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    animation: pop 0.6s var(--ease-out) both;
+  }
+  .done__title {
+    font-size: 48px;
+    margin: 28px 0 0;
+  }
+  .done__text {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 16px auto 0;
+  }
+  .done__actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+  .done__contact {
+    font-size: 15px;
+    margin-top: 22px;
+    overflow-wrap: anywhere;
+  }
+</style>

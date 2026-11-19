@@ -3,13 +3,17 @@ import CompareTable from '@/components/prices/CompareTable.astro';
 import HelpCards from '@/components/prices/HelpCards.astro';
 import PriceTabs from '@/components/prices/PriceTabs.astro';
 import PricesHero from '@/components/prices/PricesHero.astro';
+import { fromPrice } from '@/data/pricing';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const description = `Driving lesson prices in Manchester: single lessons from ${fromPrice('single')}, 10-hour blocks from ${fromPrice('block-10')}, intensive courses and Pass Plus. Manual and automatic.`;
 ---
 
 <BaseLayout
   title="Driving Lesson Prices in Manchester"
-  description="Pay-as-you-go, block bookings, intensive courses and Pass Plus prices for manual and automatic driving lessons in Greater Manchester."
+  description={description}
   chrome="compact"
+  crumbs={[{ name: 'Courses & prices', path: '/prices/' }]}
 >
   <PricesHero />
   <PriceTabs />

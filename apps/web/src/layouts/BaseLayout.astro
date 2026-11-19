@@ -5,6 +5,7 @@ import Seo from '@/components/layout/Seo.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import TopBar from '@/components/layout/TopBar.astro';
+import type { Crumb } from '@/lib/structured-data';
 
 interface Props {
   title: string;
@@ -12,8 +13,12 @@ interface Props {
   /** 'marketing' = top bar + full header/footer + floating buttons. 'focused' = booking flow chrome. */
   chrome?: 'marketing' | 'compact' | 'focused';
   bodyClass?: string;
+  /** false = noindex (e.g. 404). */
+  index?: boolean;
+  /** Breadcrumb trail after "Home" for structured data. */
+  crumbs?: Crumb[];
 }
-const { title, description, chrome = 'marketing', bodyClass } = Astro.props;
+const { title, description, chrome = 'marketing', bodyClass, index = true, crumbs } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,6 +28,10 @@ const { title, description, chrome = 'marketing', bodyClass } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#06142e" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="format-detection" content="telephone=yes" />
     <script is:inline>document.documentElement.classList.remove('no-js');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,21 +39,23 @@ const { title, description, chrome = 'marketing', bodyClass } = Astro.props;
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap"
     />
-    <Seo title={title} description={description} />
+    <Seo title={title} description={description} index={index} crumbs={crumbs} />
   </head>
   <body class={bodyClass}>
     <a class="skip-link" href="#main">Skip to content</a>
     {chrome === 'marketing' && <TopBar />}
     <SiteHeader variant={chrome === 'focused' ? 'minimal' : 'full'} />
-    <main id="main">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     {chrome !== 'focused' && <SiteFooter variant={chrome === 'compact' ? 'compact' : 'full'} />}
     {chrome === 'marketing' && <FloatingContact />}
 
     <script>
+      import { initAnchorScroll } from '@/scripts/anchor-scroll';
       import { initReveal } from '@/scripts/reveal';
       initReveal();
+      initAnchorScroll();
     </script>
   </body>
 </html>

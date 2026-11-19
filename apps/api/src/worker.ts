@@ -13,6 +13,14 @@ export interface WorkerBindings {
   RESEND_API_KEY?: string;
   NOTIFY_EMAIL?: string;
   FROM_EMAIL?: string;
+  EMAIL_CUSTOMER?: string;
+  WHATSAPP_PROVIDER?: string;
+  WHATSAPP_TO?: string;
+  CALLMEBOT_API_KEY?: string;
+  WHATSAPP_CLOUD_TOKEN?: string;
+  WHATSAPP_CLOUD_PHONE_NUMBER_ID?: string;
+  WHATSAPP_CLOUD_TEMPLATE?: string;
+  WHATSAPP_CLOUD_TEMPLATE_LANG?: string;
 }
 
 const app = createApp((c) => {

@@ -11,10 +11,15 @@ import PricingPreview from '@/components/home/PricingPreview.astro';
 import Reviews from '@/components/home/Reviews.astro';
 import Stats from '@/components/home/Stats.astro';
 import WhyShark from '@/components/home/WhyShark.astro';
+import { site } from '@/config/site';
+import { fromPrice } from '@/data/pricing';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+// ~155 characters: what Google shows under the title.
+const description = `Driving lessons in Manchester from ${fromPrice('single')}/hr. Manual & automatic, DVSA-approved instructors, free pick-up and flexible slots. Call ${site.phone.display}.`;
 ---
 
-<BaseLayout title="Shark Driving School | Driving Lessons in Manchester">
+<BaseLayout title="Driving Lessons in Manchester | Shark Driving School" description={description}>
   <Hero />
   <AreasMarquee />
   <Stats />

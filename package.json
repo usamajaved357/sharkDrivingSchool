@@ -16,7 +16,8 @@
     "db:migrate:local": "npm run db:migrate:local -w @shark/api",
     "db:migrate:remote": "npm run db:migrate:remote -w @shark/api",
     "deploy:web": "npm run deploy -w @shark/web",
-    "deploy:api": "npm run deploy -w @shark/api"
+    "deploy:api": "npm run deploy -w @shark/api",
+    "test": "npm run test -w @shark/api"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

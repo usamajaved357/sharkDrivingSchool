@@ -10,7 +10,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "db:migrate:local": "wrangler d1 migrations apply shark-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply shark-db --remote",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test": "vitest run"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.8",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",
     "@types/node": "^22.10.1",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "vitest": "^3.2.7"
   }
 }

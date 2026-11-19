@@ -1,26 +1,32 @@
+import { BUSINESS } from '@shark/shared';
+
 /**
- * Business details used across the site. Edit here — never hard-code in components.
+ * Business details used across the site. Name, URL, phone, email and address come from
+ * BUSINESS in @shark/shared (also used by the API's emails and WhatsApp messages).
  * Values in [brackets] are placeholders the owner must confirm before launch.
  */
 export const site = {
-  name: 'Shark Driving School',
+  name: BUSINESS.name,
   shortName: 'Shark',
   city: 'Manchester',
   region: 'Greater Manchester',
-  url: 'https://www.sharkdrivingschool.co.uk',
+  url: BUSINESS.url,
   description:
     'Manual and automatic driving lessons across Greater Manchester with patient, DVSA-approved instructors. Flexible slots, door-to-door pick-up and a plan built around your test date.',
-  phone: {
-    display: '07440 260063',
-    tel: '07440260063',
-    whatsapp: '447440260063',
-  },
-  email: 'Sharkdrivingshools@gmail.com',
+  phone: BUSINESS.phone,
+  email: BUSINESS.email,
+  /** Business address (footer, structured data for Google, policy contact details). */
+  address: BUSINESS.address,
   googleRating: '[X.X]',
   googleReviewCount: '[XX]',
   /** Notice needed to cancel or move a lesson without charge (shown on the booking page and in the terms). */
   cancellationHours: '48',
 } as const;
+
+/** One-line address in standard UK style (no comma before the postcode): "9 Havers Road, Manchester M18 8UN". */
+export const addressLine = `${site.address.street}, ${site.address.city} ${site.address.postcode}`;
+/** Opens the address in Google Maps (a plain link; nothing is loaded from Google until clicked). */
+export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name}, ${addressLine}`)}`;
 
 /**
  * Details used by the privacy policy, terms and cookie policy (data/legal/*).
@@ -30,12 +36,21 @@ export const legal = {
   /** Legal owner of the business, e.g. "Jane Smith" (sole trader) or "Shark Driving Ltd". */
   ownerName: '',
   /** Postal address for legal and data-protection requests. */
-  address: '',
+  address: addressLine,
   /** ICO data-protection registration number (ico.org.uk). */
   icoNumber: '',
   lastUpdated: '19 November 2026',
   /** How long block and course hours stay valid after purchase. */
   blockValidityMonths: 12,
+} as const;
+
+/**
+ * Search engine verification (paste the codes from Google Search Console / Bing Webmaster
+ * Tools when you add the site; empty = not rendered). DNS verification works too.
+ */
+export const seo = {
+  googleSiteVerification: '',
+  bingSiteVerification: '',
 } as const;
 
 export const telHref = `tel:${site.phone.tel}`;

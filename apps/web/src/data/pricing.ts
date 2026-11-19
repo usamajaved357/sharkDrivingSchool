@@ -128,6 +128,16 @@ export const priceCategories: PriceCategory[] = [
   },
 ];
 
+/** Cheapest price for a bookable lesson across both gearboxes (e.g. "£40"), for copy and SEO. */
+export function fromPrice(id: LessonTypeId): string {
+  const lesson = bookableLessons.find((l) => l.id === id);
+  if (!lesson) return '';
+  const p = lesson.price;
+  if (typeof p === 'string') return p;
+  const n = (v: string) => Number(v.replace(/[^\d.]/g, ''));
+  return n(p.automatic) <= n(p.manual) ? p.automatic : p.manual;
+}
+
 /** Options in the booking wizard — ids must match LESSON_TYPE_IDS in @shark/shared. */
 export const bookableLessons: { id: LessonTypeId; name: string; desc: string; price: Price }[] = [
   { id: 'single', name: 'Single lesson', desc: '1 hour · pay as you go', price: byGearbox('£42', '£40') },

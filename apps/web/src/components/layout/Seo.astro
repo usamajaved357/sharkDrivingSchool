@@ -1,40 +1,48 @@
 ---
-import { site } from '@/config/site';
+/**
+ * Per-page SEO: title, description, canonical, robots, Open Graph + Twitter cards,
+ * search-console verification and schema.org JSON-LD (lib/structured-data.ts).
+ */
+import { seo, site } from '@/config/site';
+import { pageGraph, type Crumb } from '@/lib/structured-data';
 
 interface Props {
   title: string;
   description?: string;
-  /** Set false for pages that shouldn't be indexed (e.g. booking success states). */
+  /** Set false for pages that shouldn't be indexed (e.g. the 404 page). */
   index?: boolean;
+  /** Breadcrumb trail after "Home", for rich results (e.g. [{ name: 'Prices', path: '/prices/' }]). */
+  crumbs?: Crumb[];
 }
-const { title, description = site.description, index = true } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const { title, description = site.description, index = true, crumbs } = Astro.props;
+const base = Astro.site ?? site.url;
+const canonical = new URL(Astro.url.pathname, base).href;
 const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
-const ogImage = new URL('/images/logo.jpg', Astro.site ?? site.url).href;
-
-// Local SEO: tells Google this is a driving school in Manchester.
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'DrivingSchool',
-  name: site.name,
-  url: site.url,
-  telephone: `+44${site.phone.tel.slice(1)}`,
-  email: site.email,
-  image: ogImage,
-  areaServed: site.region,
-  address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'GB' },
-};
+const ogImage = new URL('/images/og-image.png', base).href;
+const imageAlt = `${site.name}: driving lessons in ${site.city}`;
 ---
 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
-{!index && <meta name="robots" content="noindex" />}
+{index ? <link rel="canonical" href={canonical} /> : <meta name="robots" content="noindex, follow" />}
+{index && <meta name="robots" content="index, follow, max-image-preview:large" />}
+{seo.googleSiteVerification && <meta name="google-site-verification" content={seo.googleSiteVerification} />}
+{seo.bingSiteVerification && <meta name="msvalidate.01" content={seo.bingSiteVerification} />}
+
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_GB" />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:locale" content="en_GB" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
 <meta name="twitter:card" content="summary_large_image" />
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+<script type="application/ld+json" set:html={JSON.stringify(pageGraph(crumbs))} />

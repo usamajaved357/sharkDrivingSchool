@@ -6,7 +6,16 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.sharkdrivingschool.co.uk', // TODO(owner): confirm final domain
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [
+    // sitemap-index.xml for Google Search Console. The 404 page is excluded automatically.
+    sitemap({
+      lastmod: new Date(),
+      changefreq: 'monthly',
+      priority: 0.7,
+      // The homepage is the most important URL.
+      serialize: (item) => (item.url === 'https://www.sharkdrivingschool.co.uk/' ? { ...item, priority: 1 } : item),
+    }),
+  ],
   build: { inlineStylesheets: 'auto' },
   vite: {
     server: {

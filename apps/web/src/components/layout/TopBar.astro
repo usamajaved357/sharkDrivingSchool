@@ -10,7 +10,19 @@ import { shownRating } from '@/data/shown-content';
       <span><Icon name="check" size={14} strokeWidth={2.4} class="tb-ic" />Manual &amp; automatic lessons</span>
       <span class="hide-sm"><Icon name="check" size={14} strokeWidth={2.4} class="tb-ic" />Covering all of {site.region}</span>
     </div>
-    <span class="topbar__rating hide-sm"><Icon name="star" size={14} class="tb-star" />{shownRating.rating} rated on Google</span>
+    {
+      shownRating ? (
+        <span class="topbar__rating hide-sm">
+          <Icon name="star" size={14} class="tb-star" />
+          {shownRating.rating} rated on Google
+        </span>
+      ) : (
+        <span class="topbar__rating hide-sm">
+          <Icon name="check" size={14} strokeWidth={2.4} class="tb-ic" />
+          DVSA-approved instructors
+        </span>
+      )
+    }
   </div>
 </div>
 

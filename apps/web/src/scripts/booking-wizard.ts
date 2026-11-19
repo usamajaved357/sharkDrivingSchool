@@ -5,7 +5,7 @@
  * moves between steps, renders days/slots, keeps the summary in sync,
  * validates with the shared Zod schema and submits to the API.
  */
-import { BOOKING_WINDOW_DAYS, BookingRequestSchema, LESSON_TYPE_IDS, TIME_SLOTS, TRANSMISSIONS } from '@shark/shared';
+import { BOOKING_WINDOW_DAYS, BUSINESS, BookingRequestSchema, LESSON_TYPE_IDS, TIME_SLOTS, TRANSMISSIONS } from '@shark/shared';
 import { ApiError, createBooking, getAvailability } from '@/lib/api-client';
 
 type Step = 1 | 2 | 3 | 4;
@@ -196,8 +196,14 @@ export function initBookingWizard(form: HTMLFormElement): void {
       fullName: fd.get('fullName'),
       phone: fd.get('phone'),
       email: fd.get('email'),
+      address: fd.get('address'),
       postcode: fd.get('postcode'),
+      experience: fd.get('experience') ?? '',
+      theoryTest: fd.get('theoryTest') ?? '',
+      instructorPref: fd.get('instructorPref') ?? 'any',
+      notes: fd.get('notes') ?? '',
       hasProvisionalLicence: fd.get('hasProvisionalLicence') === 'true',
+      agreeTerms: fd.get('agreeTerms') === 'true',
     };
   }
 
@@ -216,6 +222,12 @@ export function initBookingWizard(form: HTMLFormElement): void {
     try {
       const { reference } = await createBooking(parsed.data);
       q('[data-booking-ref]')!.textContent = reference;
+      // "WhatsApp us" on the confirmation opens a chat that already quotes the booking.
+      const wa = q<HTMLAnchorElement>('[data-booking-whatsapp]');
+      if (wa) {
+        const msg = `Hi ${BUSINESS.name}, I've just requested a booking (ref ${reference}) for ${parsed.data.date} at ${parsed.data.time}.`;
+        wa.href = `https://wa.me/${BUSINESS.phone.whatsapp}?text=${encodeURIComponent(msg)}`;
+      }
       goTo(4);
       q('[data-step-panel="4"]')?.focus();
     } catch (err) {

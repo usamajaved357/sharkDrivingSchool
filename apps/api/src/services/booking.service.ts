@@ -17,7 +17,7 @@ export class BookingService {
   async create(input: BookingRequest): Promise<CreateBookingResponse> {
     if (!(await this.availability.isAvailable(input.date, input.time))) throw conflict(SLOT_TAKEN);
 
-    const { hasProvisionalLicence: _licence, ...details } = input;
+    const { hasProvisionalLicence: _licence, agreeTerms: _terms, ...details } = input;
     const booking: Booking = {
       ...details,
       id: newId(),

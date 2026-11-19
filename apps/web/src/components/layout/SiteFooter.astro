@@ -1,6 +1,8 @@
 ---
 import Logo from '@/components/ui/Logo.astro';
-import { footerNav, mailtoHref, site, telHref, whatsappHref } from '@/config/site';
+import Icon from '@/components/ui/Icon.astro';
+import { addressLine, mailtoHref, mapsHref, site, telHref, whatsappHref } from '@/config/site';
+import { shownFooterNav as footerNav } from '@/data/shown-content';
 
 interface Props {
   variant?: 'full' | 'compact';
@@ -29,6 +31,9 @@ const year = new Date().getFullYear();
           </a>
           <a href={mailtoHref} class="footer__email">
             {site.email}
+          </a>
+          <a href={mapsHref} class="footer__email" target="_blank" rel="noopener">
+            {addressLine}
           </a>
         </span>
       </div>
@@ -59,7 +64,13 @@ const year = new Date().getFullYear();
               </a>
               <a href={whatsappHref}>WhatsApp us</a>
               <a href={mailtoHref} class="footer__email">{site.email}</a>
-              <span>{site.city}, UK</span>
+              <a href={mapsHref} class="footer__address" target="_blank" rel="noopener">
+                <Icon name="map-pin" size={16} class="footer__pin" />
+                <address aria-label={addressLine}>
+                  <span class="footer__nowrap">{site.address.street},</span>{' '}
+                  <span class="footer__nowrap">{site.address.city} {site.address.postcode}</span>
+                </address>
+              </a>
             </div>
           </div>
         </div>
@@ -107,6 +118,24 @@ const year = new Date().getFullYear();
   .footer__email {
     overflow-wrap: anywhere;
   }
+  .footer .footer__address {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .footer__address address {
+    font-style: normal;
+  }
+  /* If the address must wrap, it breaks only after the street ("9 Havers Road," / "Manchester M18 8UN"). */
+  .footer__nowrap {
+    white-space: nowrap;
+  }
+  .footer__address :global(.footer__pin) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--red);
+  }
   .footer__phone-sm {
     color: var(--white);
     font-weight: 700;
@@ -116,6 +145,13 @@ const year = new Date().getFullYear();
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 40px;
+  }
+  /* Desktop: a little more room for the Contact column so the address fits on one line. */
+  @media (min-width: 1001px) {
+    .footer__grid {
+      grid-template-columns: 1.1fr 0.9fr 0.9fr 1.3fr;
+      gap: 32px;
+    }
   }
   .footer__blurb {
     color: #b9c6e0;

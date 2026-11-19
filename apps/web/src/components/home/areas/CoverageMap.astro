@@ -53,6 +53,7 @@ const pins = mapPins.map((p) => ({ ...p, ...toPercent(mapView, p.lat, p.lon) }))
 
 <style>
   .cm {
+    width: 100%;
     padding: 20px;
     border-radius: 28px;
     background: var(--white);
@@ -135,6 +136,14 @@ const pins = mapPins.map((p) => ({ ...p, ...toPercent(mapView, p.lat, p.lon) }))
   }
   .cm__credit a {
     color: var(--blue);
+  }
+  /* Desktop: size the card from the screen height so the map (which keeps its true
+     4:3 shape) and the postcode check fit on one screen with the section. */
+  @media (min-width: 1001px) {
+    .cm {
+      max-width: max(440px, calc((100vh - 360px) * 4 / 3 + 40px));
+      justify-self: end;
+    }
   }
   @media (max-width: 640px) {
     .cm {

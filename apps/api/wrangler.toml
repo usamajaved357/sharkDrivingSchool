@@ -11,11 +11,19 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 ALLOWED_ORIGINS = "http://localhost:4321,https://sharkdrivingschool.co.uk,https://www.sharkdrivingschool.co.uk"
-NOTIFY_EMAIL = ""   # where new-booking alerts go (owner inbox)
-FROM_EMAIL = ""     # verified sender, e.g. bookings@sharkdrivingschool.co.uk
+NOTIFY_EMAIL = ""   # where booking alerts go; empty = the email on the site
+FROM_EMAIL = ""     # verified sender, e.g. "Shark Driving School <bookings@sharkdrivingschool.co.uk>"
+EMAIL_CUSTOMER = "true"          # also email the learner a confirmation
+WHATSAPP_PROVIDER = ""           # "callmebot" or "cloud" (empty = no WhatsApp alerts)
+WHATSAPP_TO = ""                 # empty = the number on the site (447440260063)
+WHATSAPP_CLOUD_PHONE_NUMBER_ID = ""
+WHATSAPP_CLOUD_TEMPLATE = ""     # approved template name (recommended for the Cloud API)
+WHATSAPP_CLOUD_TEMPLATE_LANG = "en_GB"
 
-# Secrets (set with `npx wrangler secret put RESEND_API_KEY`):
+# Secrets (set with `npx wrangler secret put <NAME>`):
 #   RESEND_API_KEY
+#   CALLMEBOT_API_KEY      (if WHATSAPP_PROVIDER = "callmebot")
+#   WHATSAPP_CLOUD_TOKEN   (if WHATSAPP_PROVIDER = "cloud")
 
 [[d1_databases]]
 binding = "DB"

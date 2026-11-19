@@ -18,7 +18,7 @@ interface Props {
 const { doc } = Astro.props;
 ---
 
-<BaseLayout title={doc.title} description={doc.description} chrome="compact">
+<BaseLayout title={doc.title} description={doc.description} chrome="compact" crumbs={[{ name: doc.title, path: `/${doc.slug}/` }]}>
   <LegalHero doc={doc} />
   <LegalBody doc={doc} />
 </BaseLayout>

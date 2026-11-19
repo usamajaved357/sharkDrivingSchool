@@ -29,7 +29,8 @@ const tone = tile.tone ?? 'blue';
 
 <style>
   .st {
-    padding: 26px;
+    /* Slightly tighter on short screens so the courses grid fits one screen. */
+    padding: clamp(20px, 3vh, 26px);
     color: var(--ink);
     --tone: var(--blue);
     --tone-glow: rgba(11, 77, 186, 0.1);

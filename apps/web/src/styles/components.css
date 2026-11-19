@@ -9,9 +9,10 @@
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
-/* Section rhythm scales with the viewport: ~64px on phones, ~96–104px on desktop. */
-.section { padding: clamp(64px, 8vw, 96px) 0; }
-.section-lg { padding: clamp(72px, 8.5vw, 104px) 0; }
+/* Section rhythm scales with the viewport width and height: ~48–64px on phones and short
+   laptop screens, ~96–104px on large desktops (so linked sections fit one screen). */
+.section { padding: clamp(48px, min(8vw, 9vh), 96px) 0; }
+.section-lg { padding: clamp(56px, min(8.5vw, 9vh), 104px) 0; }
 .bg-paper { background: var(--paper); }
 .bg-navy { background: var(--navy); color: var(--white); }
 
@@ -254,9 +255,26 @@
   background-size: 16px;
   cursor: pointer;
 }
+.field textarea {
+  min-height: 96px;
+  padding: 12px 16px;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--line);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--white);
+  outline: none;
+  resize: vertical;
+  transition: border 0.2s;
+}
 .field input:focus,
-.field select:focus { border-color: var(--blue); }
-.field input[aria-invalid='true'] { border-color: var(--red); }
+.field select:focus,
+.field textarea:focus { border-color: var(--blue); }
+.field input[aria-invalid='true'],
+.field select[aria-invalid='true'],
+.field textarea[aria-invalid='true'] { border-color: var(--red); }
 .field-error { font-size: 13px; color: var(--red-2); font-weight: 600; min-height: 0; }
 
 /* Area chip */

@@ -2,20 +2,29 @@
 import GoogleLogo from '@/components/ui/GoogleLogo.astro';
 import Icon from '@/components/ui/Icon.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
-import { shownRating, shownReviews } from '@/data/shown-content';
+import { hasReviews, shownRating, shownReviews } from '@/data/shown-content';
+// Hidden in production until real reviews are added (data/home.ts); see data/shown-content.ts.
 ---
 
+{
+  hasReviews && (
 <section id="reviews" class="section-lg">
   <div class="wrap">
     <div class="rv__head">
       <SectionHeader eyebrow="Reviews" title="Learners who passed" />
-      <div class="card rv__badge reveal">
-        <GoogleLogo />
-        <div>
-          <div class="rv__score">{shownRating.rating} <span class="rv__stars">★★★★★</span></div>
-          <div class="rv__count">{shownRating.count} Google reviews</div>
-        </div>
-      </div>
+      {
+        shownRating && (
+          <div class="card rv__badge reveal">
+            <GoogleLogo />
+            <div>
+              <div class="rv__score">
+                {shownRating.rating} <span class="rv__stars">★★★★★</span>
+              </div>
+              <div class="rv__count">{shownRating.count} Google reviews</div>
+            </div>
+          </div>
+        )
+      }
     </div>
 
     <div class="g3 rv__grid">
@@ -44,6 +53,8 @@ import { shownRating, shownReviews } from '@/data/shown-content';
     </div>
   </div>
 </section>
+  )
+}
 
 <style>
   .rv__head {

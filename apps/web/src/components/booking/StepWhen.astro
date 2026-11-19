@@ -1,0 +1,111 @@
+---
+/** Booking step 2: day and time. Days and slots are rendered client-side by scripts/booking-wizard.ts. */
+---
+
+<section class="bk__panel" data-step-panel="2" aria-labelledby="bk-s2" hidden>
+  <h2 id="bk-s2" class="bk__h">Pick a day &amp; time</h2>
+  <p class="bk__sub">Live availability for instructors near you.</p>
+  <fieldset class="bk__fs">
+    <legend class="sr-only">Day</legend>
+    <div class="bk__days" data-days></div>
+  </fieldset>
+  <fieldset class="bk__fs">
+    <legend class="sr-only">Start time</legend>
+    <div class="bk__slots" data-slots aria-live="polite"></div>
+  </fieldset>
+  <p class="bk__status" data-slots-status role="status" hidden></p>
+</section>
+
+
+<style>
+  .bk__days {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .bk__days :global(.day) {
+    position: relative;
+    flex: 1;
+    min-width: 72px;
+    padding: 14px 0;
+    border-radius: 16px;
+    border: 2px solid var(--line);
+    background: var(--white);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .bk__days :global(.day small) {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+  .bk__days :global(.day strong) {
+    display: block;
+    font-size: 24px;
+    font-weight: 800;
+    margin-top: 4px;
+  }
+  .bk__days :global(.day:has(input:checked)) {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+  }
+  .bk__slots {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 26px;
+  }
+  .bk__slots :global(.slot) {
+    position: relative;
+    height: 50px;
+    border-radius: var(--r-sm);
+    border: 2px solid var(--line);
+    background: var(--white);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .bk__slots :global(.slot:hover) {
+    border-color: var(--blue);
+  }
+  .bk__slots :global(.slot:has(input:checked)) {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+  }
+  .bk__slots :global(.slot:has(input:disabled)) {
+    opacity: 0.4;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+  .bk__days :global(.day:has(input:focus-visible)),
+  .bk__slots :global(.slot:has(input:focus-visible)) {
+    outline: 3px solid var(--sky);
+    outline-offset: 2px;
+  }
+  .bk__days :global(input),
+  .bk__slots :global(input) {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .bk__status {
+    margin: 18px 0 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 600px) {
+    .bk__slots {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

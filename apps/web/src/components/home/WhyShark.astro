@@ -1,7 +1,7 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
-import { features, whyPhoto } from '@/data/home';
-import { shownLatestPass } from '@/data/shown-content';
+import { whyPhoto } from '@/data/home';
+import { shownFeatures, shownLatestPass } from '@/data/shown-content';
 
 // Full, uncropped photo at the requested width (the frame matches its 3:2 shape).
 const photoUrl = (w: number) => `${whyPhoto.src}?w=${w}&q=75&auto=format`;
@@ -22,13 +22,21 @@ const photoUrl = (w: number) => `${whyPhoto.src}?w=${w}&q=75&auto=format`;
         loading="lazy"
         decoding="async"
       />
-      <div class="why__toast">
-        <span class="why__toast-ic"><Icon name="trophy" size={24} /></span>
-        <div>
-          <div class="why__toast-title">Another pass this week</div>
-          <div class="why__toast-meta">{shownLatestPass.name} · {shownLatestPass.centre}</div>
-        </div>
-      </div>
+      {
+        shownLatestPass && (
+          <div class="why__toast">
+            <span class="why__toast-ic">
+              <Icon name="trophy" size={24} />
+            </span>
+            <div>
+              <div class="why__toast-title">Another pass this week</div>
+              <div class="why__toast-meta">
+                {shownLatestPass.name} · {shownLatestPass.centre}
+              </div>
+            </div>
+          </div>
+        )
+      }
     </div>
 
     <div>
@@ -42,7 +50,7 @@ const photoUrl = (w: number) => `${whyPhoto.src}?w=${w}&q=75&auto=format`;
       </div>
       <ul class="g2 why__features">
         {
-          features.map((f, i) => (
+          shownFeatures.map((f, i) => (
             <li class="reveal" style={`--reveal-delay:${i * 0.06}s`}>
               <span class="ic why__ic">
                 <Icon name={f.icon} size={22} />

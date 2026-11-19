@@ -1,7 +1,8 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
 import Logo from '@/components/ui/Logo.astro';
-import { mailtoHref, mainNav, site, telHref } from '@/config/site';
+import { mailtoHref, site, telHref } from '@/config/site';
+import { shownMainNav as mainNav } from '@/data/shown-content';
 
 interface Props {
   /** Booking page uses a minimal header (logo + help line). */

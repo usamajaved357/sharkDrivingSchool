@@ -1,0 +1,170 @@
+---
+/**
+ * Booking step 3: the learner's details. Field names match BookingRequestSchema in
+ * @shark/shared; scripts/booking-wizard.ts reads and validates them.
+ */
+import { EXPERIENCE_LABELS, INSTRUCTOR_PREF_LABELS, THEORY_LABELS } from '@shark/shared';
+
+const options = (labels: Record<string, string>) => Object.entries(labels).map(([value, label]) => ({ value, label }));
+---
+
+<section class="bk__panel sd" data-step-panel="3" aria-labelledby="bk-s3" hidden>
+  <h2 id="bk-s3" class="sd__h">Your details</h2>
+  <p class="sd__sub">We'll call or text to confirm your lesson. Fields marked * are required.</p>
+
+  <fieldset class="sd__group">
+    <legend class="sd__legend">Contact details</legend>
+    <div class="sd__fields">
+      <div class="field">
+        <label for="bk-name">Full name *</label>
+        <input id="bk-name" name="fullName" type="text" autocomplete="name" aria-describedby="err-fullName" />
+        <span class="field-error" id="err-fullName" data-error-for="fullName"></span>
+      </div>
+      <div class="field">
+        <label for="bk-phone">Mobile number *</label>
+        <input id="bk-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="err-phone" />
+        <span class="field-error" id="err-phone" data-error-for="phone"></span>
+      </div>
+      <div class="field sd__wide">
+        <label for="bk-email">Email *</label>
+        <input id="bk-email" name="email" type="email" autocomplete="email" aria-describedby="err-email" />
+        <span class="field-error" id="err-email" data-error-for="email"></span>
+      </div>
+      <div class="field">
+        <label for="bk-address">Pick-up address *</label>
+        <input id="bk-address" name="address" type="text" autocomplete="address-line1" placeholder="House number and street" aria-describedby="err-address" />
+        <span class="field-error" id="err-address" data-error-for="address"></span>
+      </div>
+      <div class="field">
+        <label for="bk-postcode">Pick-up postcode *</label>
+        <input id="bk-postcode" name="postcode" type="text" autocomplete="postal-code" aria-describedby="err-postcode" />
+        <span class="field-error" id="err-postcode" data-error-for="postcode"></span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="sd__group">
+    <legend class="sd__legend">About your driving</legend>
+    <div class="sd__fields">
+      <div class="field">
+        <label for="bk-experience">Driving experience *</label>
+        <select id="bk-experience" name="experience" aria-describedby="err-experience">
+          <option value="" selected disabled>Choose one</option>
+          {options(EXPERIENCE_LABELS).map((o) => <option value={o.value}>{o.label}</option>)}
+        </select>
+        <span class="field-error" id="err-experience" data-error-for="experience"></span>
+      </div>
+      <div class="field">
+        <label for="bk-theory">Theory test *</label>
+        <select id="bk-theory" name="theoryTest" aria-describedby="err-theoryTest">
+          <option value="" selected disabled>Choose one</option>
+          {options(THEORY_LABELS).map((o) => <option value={o.value}>{o.label}</option>)}
+        </select>
+        <span class="field-error" id="err-theoryTest" data-error-for="theoryTest"></span>
+      </div>
+      <div class="field sd__wide">
+        <label for="bk-instructor">Instructor preference</label>
+        <select id="bk-instructor" name="instructorPref">
+          {options(INSTRUCTOR_PREF_LABELS).map((o) => <option value={o.value}>{o.label}</option>)}
+        </select>
+      </div>
+      <div class="field sd__wide">
+        <label for="bk-notes">Anything we should know? <span class="sd__opt">(optional)</span></label>
+        <textarea id="bk-notes" name="notes" rows="3" maxlength="500" placeholder="E.g. test date, nervous driver, best times to call" aria-describedby="err-notes"></textarea>
+        <span class="field-error" id="err-notes" data-error-for="notes"></span>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="sd__checks">
+    <label class="sd__check">
+      <input type="checkbox" name="hasProvisionalLicence" value="true" aria-describedby="err-hasProvisionalLicence" />
+      <span>I hold a valid UK provisional (or full) driving licence *</span>
+    </label>
+    <span class="field-error" id="err-hasProvisionalLicence" data-error-for="hasProvisionalLicence"></span>
+    <label class="sd__check">
+      <input type="checkbox" name="agreeTerms" value="true" aria-describedby="err-agreeTerms" />
+      <span>
+        I agree to the <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">privacy policy</a>, and to being contacted about
+        this booking *
+      </span>
+    </label>
+    <span class="field-error" id="err-agreeTerms" data-error-for="agreeTerms"></span>
+  </div>
+</section>
+
+<style>
+  .sd__h {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 6px;
+  }
+  .sd__sub {
+    margin: 0 0 22px;
+    color: var(--muted);
+  }
+  .sd__group {
+    border: 0;
+    padding: 0;
+    margin: 0 0 22px;
+  }
+  .sd__legend {
+    padding: 0;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .sd__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+  .sd__wide {
+    grid-column: 1 / -1;
+  }
+  .sd__fields :global(label) {
+    font-size: 14px;
+  }
+  .sd__fields :global(input),
+  .sd__fields :global(select) {
+    height: 50px;
+    font-size: 16px;
+  }
+  .sd__opt {
+    font-weight: 500;
+  }
+  .sd__checks {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sd__check {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .sd__check input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--red);
+  }
+  .sd__check a {
+    color: var(--blue);
+    font-weight: 600;
+  }
+  @media (max-width: 600px) {
+    .sd__fields {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
