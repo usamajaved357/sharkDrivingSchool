@@ -70,6 +70,11 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
 </header>
 
 <script>
+  import { initHeaderAutohide } from '@/scripts/header-autohide';
+
+  const header = document.querySelector<HTMLElement>('.header:not(.header--minimal)');
+  if (header) initHeaderAutohide(header);
+
   const btn = document.querySelector<HTMLButtonElement>('.header__menu');
   const panel = document.getElementById('mobile-nav');
   if (btn && panel) {
@@ -90,10 +95,15 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    /* Solid, not translucent: the logo's white background is knocked out with
+       mix-blend-mode, which only works cleanly on an opaque white header. */
+    background: var(--white);
     border-bottom: 1px solid var(--line);
+    transition: transform 0.3s var(--ease-out);
+  }
+  /* Set by scripts/header-autohide.ts while scrolling down. */
+  .header.is-hidden {
+    transform: translateY(-100%);
   }
   .header--minimal {
     position: static;
