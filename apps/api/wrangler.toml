@@ -6,8 +6,10 @@ compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 
 # Serve the API on the same domain as the site so the browser calls /api/* (no CORS needed).
-# Uncomment once the domain is on Cloudflare:
-# routes = [{ pattern = "sharkdrivingschools.com/api/*", zone_name = "sharkdrivingschools.com" }]
+routes = [
+  { pattern = "www.sharkdrivingschools.com/api/*", zone_name = "sharkdrivingschools.com" },
+  { pattern = "sharkdrivingschools.com/api/*", zone_name = "sharkdrivingschools.com" },
+]
 
 [vars]
 ALLOWED_ORIGINS = "http://localhost:4321,https://sharkdrivingschools.com,https://www.sharkdrivingschools.com"
@@ -28,5 +30,5 @@ WHATSAPP_CLOUD_TEMPLATE_LANG = "en_GB"
 [[d1_databases]]
 binding = "DB"
 database_name = "shark-db"
-database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+database_id = "86ea9a37-a232-4de9-aad4-5cf3c67fde68"
 migrations_dir = "migrations"
