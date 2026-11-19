@@ -30,6 +30,28 @@ export const steps = [
   { n: '04', title: 'Pass your test', text: 'Mock tests on local routes, then use our car on the big day.', tone: 'blue' },
 ] as const;
 
+/**
+ * "Why Shark" photo. Stock photo for now (free under the Unsplash License, no attribution required):
+ * "Driving test instructor and student" by Bas Peperzak, https://unsplash.com/photos/tyhpK_QelPo
+ * TODO(owner): swap for a real photo of a Shark instructor and branded car (put it in public/images/).
+ */
+export const whyPhoto = {
+  /** Base image URL; widths are added for srcset in WhyShark.astro. */
+  src: 'https://images.unsplash.com/photo-1630406144797-821be1f35d75',
+  alt: 'Driving instructor with a clipboard talking a learner through a manoeuvre next to the car',
+};
+
+export interface LatestPass {
+  name: string;
+  centre: string;
+}
+
+/**
+ * "Another pass this week" card on the photo. Replace with a real recent pass
+ * (first name + initial, with the learner's permission). Local dev shows a sample (data/preview-data.ts).
+ */
+export const latestPass: LatestPass = { name: '[Learner name]', centre: '[Test centre]' };
+
 export const features: { icon: IconName; title: string; text: string }[] = [
   { icon: 'shield', title: 'Dual-control cars', text: 'Modern, insured and spotless.' },
   { icon: 'user', title: 'Male & female instructors', text: 'Choose who you feel comfortable with.' },

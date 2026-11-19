@@ -1,22 +1,32 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
-import { features } from '@/data/home';
+import { features, whyPhoto } from '@/data/home';
+import { shownLatestPass } from '@/data/shown-content';
+
+// Full, uncropped photo at the requested width (the frame matches its 3:2 shape).
+const photoUrl = (w: number) => `${whyPhoto.src}?w=${w}&q=75&auto=format`;
 ---
 
 <section class="why bg-navy section-lg">
   <div class="why__dots" aria-hidden="true"></div>
   <div class="wrap split why__grid">
     <div class="why__media reveal">
-      <!-- TODO(owner): replace with a real photo of an instructor + branded car (public/images/). -->
-      <div class="why__placeholder">
-        <Icon name="image" size={56} strokeWidth={1.6} />
-        <p>[Photo: instructor with branded Shark car]</p>
-      </div>
+      <img
+        class="why__photo"
+        src={photoUrl(900)}
+        srcset={`${photoUrl(600)} 600w, ${photoUrl(900)} 900w, ${photoUrl(1300)} 1300w`}
+        sizes="(max-width: 1000px) 100vw, 55vw"
+        alt={whyPhoto.alt}
+        width="900"
+        height="600"
+        loading="lazy"
+        decoding="async"
+      />
       <div class="why__toast">
         <span class="why__toast-ic"><Icon name="trophy" size={24} /></span>
         <div>
           <div class="why__toast-title">Another pass this week</div>
-          <div class="why__toast-meta">[Learner name] · [Test centre]</div>
+          <div class="why__toast-meta">{shownLatestPass.name} · {shownLatestPass.centre}</div>
         </div>
       </div>
     </div>
@@ -67,25 +77,32 @@ import { features } from '@/data/home';
     position: relative;
     border-radius: 32px;
     overflow: hidden;
-    /* Roughly as tall as the text column beside it, never taller than a screen. */
-    aspect-ratio: 1 / 1;
-    max-height: 640px;
+    /* Same 3:2 shape as the photo, so both people stay fully in frame. */
+    aspect-ratio: 3 / 2;
     background: repeating-linear-gradient(135deg, #0d2a60 0 18px, #0b2454 18px 36px);
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
-  .why__placeholder {
-    text-align: center;
-    color: var(--on-dark-subtle);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .why__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
-  .why__placeholder p {
-    margin: 12px 0 0;
-    font-weight: 600;
+  /* Darkens the bottom of the photo so the "Another pass" card stands out. */
+  .why__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6, 20, 46, 0.7) 0%, rgba(6, 20, 46, 0) 45%);
+    pointer-events: none;
+  }
+  .why__toast {
+    z-index: 1;
   }
   .why__toast {
     position: absolute;

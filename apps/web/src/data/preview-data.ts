@@ -7,9 +7,11 @@
  * Before launch, put the real figures in `data/home.ts` (`stats`, `reviews`) and
  * `config/site.ts` (`googleRating`, `googleReviewCount`).
  */
-import type { Review, Stat } from './home';
+import type { LatestPass, Review, Stat } from './home';
 
 export const previewRating = { rating: '4.9', count: '120+' };
+
+export const previewLatestPass: LatestPass = { name: 'Daniel H.', centre: 'Manchester (Cheetham Hill) test centre' };
 
 export const previewStats: Stat[] = [
   { value: '78%', label: 'First-time pass rate', tone: 'blue' },
