@@ -8,3 +8,10 @@ dist/
 !.env.example
 *.log
 .DS_Store
+
+# Local-only docs and AI tooling (kept on disk, never committed)
+docs/
+CLAUDE.md
+.claude/
+ARCHITECTURE.md
+README.md
