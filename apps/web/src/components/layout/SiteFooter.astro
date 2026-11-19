@@ -1,6 +1,6 @@
 ---
 import Logo from '@/components/ui/Logo.astro';
-import { footerNav, site, telHref, whatsappHref } from '@/config/site';
+import { footerNav, mailtoHref, site, telHref, whatsappHref } from '@/config/site';
 
 interface Props {
   variant?: 'full' | 'compact';
@@ -16,9 +16,14 @@ const year = new Date().getFullYear();
         <span>
           © {year} {site.name}
         </span>
-        <a href={telHref} class="footer__phone-sm">
-          {site.phone.display}
-        </a>
+        <span class="footer__compact-contact">
+          <a href={telHref} class="footer__phone-sm">
+            {site.phone.display}
+          </a>
+          <a href={mailtoHref} class="footer__email">
+            {site.email}
+          </a>
+        </span>
       </div>
     </footer>
   ) : (
@@ -46,7 +51,7 @@ const year = new Date().getFullYear();
                 {site.phone.display}
               </a>
               <a href={whatsappHref}>WhatsApp us</a>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <a href={mailtoHref} class="footer__email">{site.email}</a>
               <span>{site.city}, UK</span>
             </div>
           </div>
@@ -82,6 +87,18 @@ const year = new Date().getFullYear();
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
+  }
+  .footer__compact-contact {
+    display: flex;
+    gap: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .footer--compact .footer__email {
+    color: #b9c6e0;
+    text-decoration: none;
+  }
+  .footer__email {
+    overflow-wrap: anywhere;
   }
   .footer__phone-sm {
     color: var(--white);

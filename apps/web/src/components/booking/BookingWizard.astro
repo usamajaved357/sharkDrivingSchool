@@ -5,8 +5,8 @@
  * Days and time slots are rendered client-side (they depend on "today" and live availability).
  */
 import Icon from '@/components/ui/Icon.astro';
-import { site, telHref } from '@/config/site';
-import { bookableLessons } from '@/data/pricing';
+import { mailtoHref, site, telHref } from '@/config/site';
+import { bookableLessons, defaultPrice } from '@/data/pricing';
 import BookingSummary from './BookingSummary.astro';
 
 const steps = ['Choose lesson', 'Date & time', 'Your details'];
@@ -30,7 +30,8 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
   <div class="bk__layout">
     <form class="bk__card" data-booking-form novalidate>
       <noscript>
-        <p class="bk__noscript">Online booking needs JavaScript. Please call <a href={telHref}>{site.phone.display}</a> to book.</p>
+        <p class="bk__noscript">Online booking needs JavaScript. Please call <a href={telHref}>{site.phone.display}</a> or email
+          <a href={mailtoHref}>{site.email}</a> to book.</p>
       </noscript>
 
       <!-- Step 1 -->
@@ -55,18 +56,32 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
         <fieldset class="bk__fs bk__stack">
           <legend class="sr-only">Lesson type</legend>
           {
-            bookableLessons.map((l, i) => (
-              <label class="opt">
-                <input class="opt__input" type="radio" name="lessonType" value={l.id} checked={i === 1} data-label={l.name} data-price={l.price} />
-                <span class="opt__dot" aria-hidden="true" />
-                <span class="opt__grow">
-                  <b>{l.name}</b>
-                  <br />
-                  <small>{l.desc}</small>
-                </span>
-                <span class="d opt__price">{l.price}</span>
-              </label>
-            ))
+            bookableLessons.map((l, i) => {
+              const price = typeof l.price === 'string' ? { manual: l.price, automatic: l.price } : l.price;
+              return (
+                <label class="opt">
+                  <input
+                    class="opt__input"
+                    type="radio"
+                    name="lessonType"
+                    value={l.id}
+                    checked={i === 1}
+                    data-label={l.name}
+                    data-price-manual={price.manual}
+                    data-price-automatic={price.automatic}
+                  />
+                  <span class="opt__dot" aria-hidden="true" />
+                  <span class="opt__grow">
+                    <b>{l.name}</b>
+                    <br />
+                    <small>{l.desc}</small>
+                  </span>
+                  <span class="d opt__price" data-lesson-price>
+                    {defaultPrice(l.price)}
+                  </span>
+                </label>
+              );
+            })
           }
         </fieldset>
       </section>
@@ -125,6 +140,10 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
         <h2 class="d bk__done-title">You're booked in!</h2>
         <p class="bk__done-text">
           Your reference is <b data-booking-ref>—</b>. We've sent a confirmation and your instructor will meet you at your pick-up address.
+        </p>
+        <p class="bk__done-text bk__done-contact">
+          Need to change something? Call <a href={telHref}>{site.phone.display}</a> or email
+          <a href={mailtoHref}>{site.email}</a>.
         </p>
         <a class="btn btn--outline" href="/">Back to home</a>
       </section>
@@ -457,6 +476,10 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
     margin-top: 34px;
     padding-top: 26px;
     border-top: 1px solid var(--line);
+  }
+  .bk__done-contact {
+    font-size: 15px;
+    overflow-wrap: anywhere;
   }
   .bk__noscript {
     padding: 16px;

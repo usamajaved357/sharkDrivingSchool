@@ -1,4 +1,6 @@
 ---
+import GearboxText from '@/components/ui/GearboxText.astro';
+import { site, telHref } from '@/config/site';
 import { priceCategories } from '@/data/pricing';
 
 const initial = 'blocks';
@@ -50,8 +52,10 @@ const lessonFor: Record<string, string> = { payg: 'single', blocks: 'block-10', 
                     </span>
                   </div>
                   <div>
-                    <span class="d pt__price">{r.price}</span>
-                    <div class="pt__per">{r.per}</div>
+                    <GearboxText class="d pt__price" group="prices-trans" value={r.price} />
+                    <div class="pt__per">
+                      <GearboxText group="prices-trans" value={r.per} />
+                    </div>
                   </div>
                   <a class="btn btn--red btn--sm" href={`/book?lesson=${lessonFor[c.id]}`}>
                     Book
@@ -63,7 +67,9 @@ const lessonFor: Record<string, string> = { payg: 'single', blocks: 'block-10', 
         ))
       }
 
-      <p class="pt__note">Prices shown are placeholders: [confirm Manchester rates and any outside-area surcharge].</p>
+      <p class="pt__note">
+        Prices still marked [XX] are being confirmed. Call <a href={telHref}>{site.phone.display}</a> for a quote.
+      </p>
     </div>
   </div>
 </section>
@@ -164,7 +170,7 @@ const lessonFor: Record<string, string> = { payg: 'single', blocks: 'block-10', 
   .pt__hours b {
     color: var(--ink);
   }
-  .pt__price {
+  .pt__row :global(.pt__price) {
     font-size: 40px;
   }
   .pt__per {

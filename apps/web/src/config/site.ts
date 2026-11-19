@@ -15,7 +15,7 @@ export const site = {
     tel: '07440260063',
     whatsapp: '447440260063',
   },
-  email: '[email@sharkdrivingschool.co.uk]',
+  email: 'Sharkdrivingshools@gmail.com',
   googleRating: '[X.X]',
   googleReviewCount: '[XX]',
   cancellationHours: '[48]',
@@ -23,6 +23,7 @@ export const site = {
 
 export const telHref = `tel:${site.phone.tel}`;
 export const whatsappHref = `https://wa.me/${site.phone.whatsapp}`;
+export const mailtoHref = `mailto:${site.email}`;
 
 export interface NavLink {
   label: string;

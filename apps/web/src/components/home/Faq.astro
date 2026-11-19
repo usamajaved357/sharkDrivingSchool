@@ -1,6 +1,6 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
-import { site, telHref } from '@/config/site';
+import { mailtoHref, site, telHref } from '@/config/site';
 import { faqs } from '@/data/faqs';
 
 // FAQPage structured data for Google rich results.
@@ -16,8 +16,9 @@ const faqLd = {
     <div class="reveal">
       <span class="eyebrow eyebrow--dash">FAQ</span>
       <h2 class="d h-md faq__title">Got questions?</h2>
-      <p class="lead faq__lead">Can't find what you need? Call or WhatsApp — we reply fast.</p>
+      <p class="lead faq__lead">Can't find what you need? Call, WhatsApp or email us. We reply fast.</p>
       <a class="btn btn--blue" href={telHref}>Call {site.phone.display}</a>
+      <p class="faq__email">Or email <a href={mailtoHref}>{site.email}</a></p>
     </div>
 
     <div class="faq__list reveal" data-accordion>
@@ -65,6 +66,16 @@ const faqLd = {
   }
   .faq__lead {
     margin-bottom: 28px;
+  }
+  .faq__email {
+    margin: 18px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+  .faq__email a {
+    color: var(--blue);
+    font-weight: 700;
   }
   .faq__list {
     border-top: 1px solid var(--line);

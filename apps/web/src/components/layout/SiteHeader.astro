@@ -1,7 +1,7 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
 import Logo from '@/components/ui/Logo.astro';
-import { mainNav, site, telHref } from '@/config/site';
+import { mailtoHref, mainNav, site, telHref } from '@/config/site';
 
 interface Props {
   /** Booking page uses a minimal header (logo + help line). */
@@ -60,6 +60,9 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
         ))}
         <a class="btn btn--blue btn--block" href={telHref}>
           Call {site.phone.display}
+        </a>
+        <a class="btn btn--outline btn--block mobile-nav__email" href={mailtoHref}>
+          Email us
         </a>
       </nav>
     )
@@ -213,6 +216,9 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
   }
   .mobile-nav .btn {
     margin-top: 14px;
+  }
+  .mobile-nav .mobile-nav__email {
+    margin-top: 8px;
   }
 
   @media (max-width: 1000px) {

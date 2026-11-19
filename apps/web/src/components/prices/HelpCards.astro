@@ -1,5 +1,5 @@
 ---
-import { site, telHref } from '@/config/site';
+import { mailtoHref, site, telHref } from '@/config/site';
 ---
 
 <section class="section">
@@ -13,6 +13,7 @@ import { site, telHref } from '@/config/site';
       <h2 class="d help__title">Buying as a gift?</h2>
       <p>Gift vouchers for any lesson or block — perfect for a 17th birthday.</p>
       <a class="btn btn--white-red" href={telHref}>Call {site.phone.display}</a>
+      <p class="help__alt">Or email <a href={mailtoHref}>{site.email}</a></p>
     </div>
   </div>
 </section>
@@ -41,6 +42,15 @@ import { site, telHref } from '@/config/site';
     line-height: 1.6;
     font-size: 17px;
     margin: 16px 0 28px;
+  }
+  .help__card .help__alt {
+    margin: 18px 0 0;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+  .help__alt a {
+    color: var(--white);
+    font-weight: 700;
   }
   .help__card--navy p {
     color: var(--on-dark-muted);

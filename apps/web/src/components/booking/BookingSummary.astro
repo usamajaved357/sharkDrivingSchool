@@ -85,7 +85,9 @@ import { site } from '@/config/site';
   }
   @media (max-width: 960px) {
     .sum {
-      position: static;
+      /* Not sticky on small screens, but still the containing block so the fin stays clipped inside the card. */
+      position: relative;
+      top: 0;
     }
   }
 </style>

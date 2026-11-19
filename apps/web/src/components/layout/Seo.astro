@@ -19,6 +19,7 @@ const jsonLd = {
   name: site.name,
   url: site.url,
   telephone: `+44${site.phone.tel.slice(1)}`,
+  email: site.email,
   image: ogImage,
   areaServed: site.region,
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'GB' },

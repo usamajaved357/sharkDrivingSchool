@@ -124,14 +124,24 @@ export function initBookingWizard(form: HTMLFormElement): void {
   }
 
   // ---------- summary ----------
+  /** Price of a lesson option for the chosen gearbox (data-price-manual / data-price-automatic). */
+  const priceFor = (lesson: HTMLInputElement, transmission: string) =>
+    lesson.getAttribute(`data-price-${transmission}`) ?? lesson.dataset.priceManual ?? '—';
+
   function updateSummary(): void {
     const trans = checked('transmission');
     const lesson = checked('lessonType');
     const date = checked('date');
     const time = checked('time');
+    const gearbox = trans?.value ?? 'manual';
+    // Lesson option prices follow the gearbox choice.
+    form.querySelectorAll<HTMLInputElement>('input[name="lessonType"]').forEach((input) => {
+      const label = input.closest('label')?.querySelector('[data-lesson-price]');
+      if (label) label.textContent = priceFor(input, gearbox);
+    });
     setText('transmission', trans?.dataset.label ?? '—');
     setText('lesson', lesson?.dataset.label ?? '—');
-    setText('price', lesson?.dataset.price ?? '—');
+    setText('price', lesson ? priceFor(lesson, gearbox) : '—');
     setText('date', date?.dataset.label ?? '—');
     setText('time', time?.value ?? '—');
   }

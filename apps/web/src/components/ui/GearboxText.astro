@@ -1,0 +1,28 @@
+---
+/**
+ * Renders a value that may differ between manual and automatic.
+ * A pair is bound to a SegmentedToggle group (scripts/segmented.ts swaps the text);
+ * a plain string renders as-is.
+ */
+import { defaultPrice, type Price } from '@/data/pricing';
+
+interface Props {
+  value: Price;
+  /** The SegmentedToggle group this text follows, e.g. "prices-trans". */
+  group: string;
+  class?: string;
+}
+
+const { value, group, class: className } = Astro.props;
+const pair = typeof value === 'string' ? null : value;
+---
+
+{
+  pair ? (
+    <span class={className} data-bind-group={group} data-text-manual={pair.manual} data-text-automatic={pair.automatic}>
+      {defaultPrice(value)}
+    </span>
+  ) : (
+    <span class={className}>{value}</span>
+  )
+}

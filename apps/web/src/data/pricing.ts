@@ -1,15 +1,34 @@
 import type { LessonTypeId } from '@shark/shared';
 
 /**
- * ALL prices are placeholders ([XX]) until the owner confirms rates.
- * Manual and automatic currently share prices; if they differ, add
- * `priceAuto` fields and render them via data-auto-text (see PricingPreview.astro).
+ * Prices still showing [XX] are placeholders until the owner confirms rates.
+ *
+ * A price is either one string (same for both gearboxes) or a `byGearbox()` pair.
+ * Pairs are rendered by `components/ui/GearboxText.astro` and switch with the
+ * Manual/Automatic toggle.
+ *
+ * Confirmed by the owner (Nov 2026): automatic £40/hr single, £350 for a 10-hour block.
+ * Manual is set £2/hr higher (£42 single, £370 block) at the owner's request, keeping
+ * the same £50 block saving for both gearboxes.
  */
+
+export interface GearboxPrice {
+  manual: string;
+  automatic: string;
+}
+
+/** A price that is the same for both gearboxes, or differs per gearbox. */
+export type Price = string | GearboxPrice;
+
+const byGearbox = (manual: string, automatic: string): GearboxPrice => ({ manual, automatic });
+
+/** The price a learner sees first (the toggles default to manual). */
+export const defaultPrice = (p: Price): string => (typeof p === 'string' ? p : p.manual);
 
 export interface PackageCard {
   name: string;
   sub: string;
-  price: string;
+  price: Price;
   unit: string;
   features: string[];
   popular?: boolean;
@@ -18,15 +37,15 @@ export interface PackageCard {
 
 /** Home page "Simple pricing" cards. */
 export const homePackages: PackageCard[] = [
-  { name: 'Single lesson', sub: '1 hour · pay as you go', price: '£[XX]', unit: '/hr', features: ['Try us out first', 'Free pick-up & drop-off', 'Top up anytime'] },
+  { name: 'Single lesson', sub: '1 hour · pay as you go', price: byGearbox('£42', '£40'), unit: '/hr', features: ['Try us out first', 'Free pick-up & drop-off', 'Top up anytime'] },
   {
     name: '10-hour block',
     sub: 'Our best value',
-    price: '£[XXX]',
+    price: byGearbox('£370', '£350'),
     unit: 'total',
     popular: true,
     badge: 'MOST POPULAR',
-    features: ['Save £[XX] vs single lessons', 'Same instructor every time', 'Progress report each lesson', 'Spread payments'],
+    features: ['Save £50 vs single lessons', 'Same instructor every time', 'Progress report each lesson', 'Spread payments'],
   },
   { name: 'Intensive course', sub: '[XX] hours · test in weeks', price: '£[XXX]', unit: 'total', features: ['Daily lessons', 'Mock tests included', 'Test booking support'] },
   { name: 'Pass Plus', sub: '6 hours · after your test', price: '£[XXX]', unit: 'total', features: ['Motorway & night driving', 'Rural roads', 'May lower insurance'] },
@@ -36,8 +55,8 @@ export interface PriceRow {
   name: string;
   desc: string;
   hours: string;
-  price: string;
-  per: string;
+  price: Price;
+  per: Price;
   best?: boolean;
 }
 
@@ -55,7 +74,7 @@ export const priceCategories: PriceCategory[] = [
     label: 'Pay as you go',
     intro: 'No commitment. Pay per lesson and book as you need.',
     rows: [
-      { name: 'Single lesson', desc: 'One hour, door-to-door pick-up', hours: '1 hour', price: '£[XX]', per: 'per lesson' },
+      { name: 'Single lesson', desc: 'One hour, door-to-door pick-up', hours: '1 hour', price: byGearbox('£42', '£40'), per: 'per lesson' },
       { name: 'Double lesson', desc: 'Two hours, ideal for test routes', hours: '2 hours', price: '£[XX]', per: 'per lesson' },
       { name: 'Assessment lesson', desc: 'Find your level and get a plan', hours: '1 hour', price: '£[XX]', per: 'one-off' },
     ],
@@ -66,7 +85,14 @@ export const priceCategories: PriceCategory[] = [
     intro: 'Book hours together and save. Same instructor throughout.',
     rows: [
       { name: '5-hour block', desc: 'A solid start or top-up', hours: '5 hours', price: '£[XXX]', per: '£[XX]/hr' },
-      { name: '10-hour block', desc: 'Our most popular option', hours: '10 hours', price: '£[XXX]', per: '£[XX]/hr', best: true },
+      {
+        name: '10-hour block',
+        desc: 'Our most popular option',
+        hours: '10 hours',
+        price: byGearbox('£370', '£350'),
+        per: byGearbox('£37/hr', '£35/hr'),
+        best: true,
+      },
       { name: '20-hour block', desc: 'Most beginners start here', hours: '20 hours', price: '£[XXX]', per: '£[XX]/hr' },
     ],
   },
@@ -95,9 +121,9 @@ export const priceCategories: PriceCategory[] = [
 ];
 
 /** Options in the booking wizard — ids must match LESSON_TYPE_IDS in @shark/shared. */
-export const bookableLessons: { id: LessonTypeId; name: string; desc: string; price: string }[] = [
-  { id: 'single', name: 'Single lesson', desc: '1 hour · pay as you go', price: '£[XX]' },
-  { id: 'block-10', name: '10-hour block', desc: 'Best value · same instructor', price: '£[XXX]' },
+export const bookableLessons: { id: LessonTypeId; name: string; desc: string; price: Price }[] = [
+  { id: 'single', name: 'Single lesson', desc: '1 hour · pay as you go', price: byGearbox('£42', '£40') },
+  { id: 'block-10', name: '10-hour block', desc: 'Best value · same instructor', price: byGearbox('£370', '£350') },
   { id: 'intensive', name: 'Intensive course', desc: 'Test-ready in weeks', price: '£[XXX]' },
   { id: 'pass-plus', name: 'Pass Plus', desc: '6 hours after your test', price: '£[XXX]' },
 ];

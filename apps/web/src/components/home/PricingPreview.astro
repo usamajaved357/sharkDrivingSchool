@@ -1,4 +1,5 @@
 ---
+import GearboxText from '@/components/ui/GearboxText.astro';
 import Icon from '@/components/ui/Icon.astro';
 import SegmentedToggle from '@/components/ui/SegmentedToggle.astro';
 import { homePackages } from '@/data/pricing';
@@ -30,7 +31,7 @@ const transText = { manual: 'Manual · ', automatic: 'Automatic · ' };
               </p>
             </div>
             <div class="pkg__price">
-              <span class="d">{p.price}</span>
+              <GearboxText class="d" group="price-trans" value={p.price} />
               <span class="pkg__unit">{p.unit}</span>
             </div>
             <ul class="pkg__features">
@@ -50,8 +51,8 @@ const transText = { manual: 'Manual · ', automatic: 'Automatic · ' };
     </div>
 
     <p class="pricing__note">
-      Showing <b data-bind-group="price-trans" data-text-manual="manual" data-text-automatic="automatic">manual</b> prices. Final prices
-      to be confirmed by Shark Driving School.
+      Showing <b data-bind-group="price-trans" data-text-manual="manual" data-text-automatic="automatic">manual</b> prices. Intensive and Pass Plus
+      prices are being confirmed, so call us for a quote.
     </p>
   </div>
 </section>
@@ -109,7 +110,7 @@ const transText = { manual: 'Manual · ', automatic: 'Automatic · ' };
     align-items: baseline;
     gap: 6px;
   }
-  .pkg__price .d {
+  .pkg__price :global(.d) {
     font-size: 54px;
   }
   .pkg__unit {
