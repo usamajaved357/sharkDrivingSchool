@@ -17,6 +17,16 @@ export const stats: Stat[] = [
   { value: '2 in 1', label: 'Manual & automatic cars', tone: 'red' },
 ];
 
+/** Phrases on the navy tape that crosses the areas strip under the hero. */
+export const tapePhrases = [
+  'Manual & automatic',
+  'DVSA-approved instructors',
+  'Free pick-up & drop-off',
+  'Early, late & weekend slots',
+  'Mock tests on local routes',
+  'Pass with bite',
+] as const;
+
 export const heroTrust: { icon: IconName; label: string }[] = [
   { icon: 'shield-check', label: 'DVSA-approved' },
   { icon: 'clock', label: 'Early, late & weekend slots' },

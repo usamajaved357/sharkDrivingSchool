@@ -1,0 +1,192 @@
+---
+/**
+ * Decorative perspective road behind the hero. Sits to the right (heading towards the
+ * booking card) so its markings never run under the hero text. Glowing edges, a moving
+ * centre line, light streaks, and two cars passing each other (one driving away, one coming
+ * towards you). All motion is CSS and is switched off by the global prefers-reduced-motion rule.
+ */
+import HeroCar from './HeroCar.astro';
+---
+
+<div class="hr" aria-hidden="true">
+  <div class="hr__plane">
+    <span class="hr__edge hr__edge--left"></span>
+    <span class="hr__lane"></span>
+    <span class="hr__edge hr__edge--right"></span>
+    <span class="hr__streak hr__streak--a"></span>
+    <span class="hr__streak hr__streak--b"></span>
+    <span class="hr__streak hr__streak--c"></span>
+  </div>
+  <!-- Cars live outside the tilted plane (so they aren't flattened) and fake perspective with scale. -->
+  <HeroCar view="rear" class="hr__car hr__car--away" />
+  <HeroCar view="front" class="hr__car hr__car--toward" />
+</div>
+
+<style>
+  .hr {
+    position: absolute;
+    left: 64%;
+    bottom: -10px;
+    width: 1000px;
+    height: 620px;
+    transform: translateX(-50%);
+    perspective: 700px;
+    pointer-events: none;
+    /* Fade out towards the horizon (higher up than before, for a longer, more natural road). */
+    -webkit-mask-image: linear-gradient(to top, #000 32%, transparent 86%);
+    mask-image: linear-gradient(to top, #000 32%, transparent 86%);
+  }
+  .hr__plane {
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    top: 0;
+    bottom: 0;
+    transform: rotateX(66deg);
+    transform-origin: 50% 100%;
+    background: linear-gradient(to top, rgba(18, 58, 133, 0.75), rgba(10, 31, 74, 0.2));
+    overflow: hidden;
+  }
+  /* Glowing road edges */
+  .hr__edge {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+  }
+  .hr__edge--left {
+    left: 4%;
+    background: var(--sky);
+    box-shadow: 0 0 24px 4px rgba(76, 141, 255, 0.55);
+  }
+  /* Softer red edge that fades towards the horizon, so it doesn't glare through the glass card. */
+  .hr__edge--right {
+    right: 4%;
+    width: 4px;
+    background: linear-gradient(to top, rgba(225, 6, 0, 0.85), rgba(225, 6, 0, 0.2));
+    box-shadow: 0 0 14px 2px rgba(225, 6, 0, 0.3);
+  }
+  /* Centre line rushing towards the viewer */
+  .hr__lane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 12px;
+    margin-left: -6px;
+    background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0 70px, transparent 70px 170px);
+    animation: hr-lane 0.6s linear infinite;
+  }
+  /* Light streaks (like passing headlights) */
+  .hr__streak {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 40%;
+    border-radius: 3px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9), transparent);
+    filter: drop-shadow(0 0 6px rgba(127, 174, 255, 0.9));
+    animation: hr-streak 2.4s linear infinite;
+    opacity: 0;
+  }
+  .hr__streak--a {
+    left: 26%;
+  }
+  .hr__streak--b {
+    left: 74%;
+    animation-delay: 0.9s;
+  }
+  .hr__streak--c {
+    left: 38%;
+    animation-delay: 1.7s;
+    animation-duration: 3s;
+  }
+
+  /* Cars: anchored at their bottom centre, moved along the lanes with left/bottom and scaled. */
+  .hr :global(.hr__car) {
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    translate: -50% 0;
+    transform-origin: 50% 100%;
+    opacity: 0;
+  }
+  :global(.hr__car--away) {
+    animation: hr-away 7s cubic-bezier(0.25, 0.6, 0.35, 1) infinite;
+  }
+  :global(.hr__car--toward) {
+    animation: hr-toward 6s cubic-bezier(0.55, 0, 0.75, 0.4) 3s infinite;
+  }
+  @keyframes hr-away {
+    0% {
+      left: 40%;
+      bottom: -4%;
+      scale: 1;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      left: 48.6%;
+      bottom: 48%;
+      scale: 0.12;
+      opacity: 0;
+    }
+  }
+  @keyframes hr-toward {
+    0% {
+      left: 51.4%;
+      bottom: 48%;
+      scale: 0.12;
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      left: 60%;
+      bottom: -14%;
+      scale: 1.15;
+      opacity: 0;
+    }
+  }
+
+  @keyframes hr-lane {
+    to {
+      background-position: 0 170px;
+    }
+  }
+  @keyframes hr-streak {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(260%);
+      opacity: 0;
+    }
+  }
+
+  /* Phones/tablets: content is stacked, so centre the road under it. */
+  @media (max-width: 1000px) {
+    .hr {
+      left: 50%;
+      width: 800px;
+      height: 420px;
+    }
+    .hr :global(.hr__car) {
+      width: 90px;
+      height: 60px;
+    }
+  }
+</style>

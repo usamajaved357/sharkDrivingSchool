@@ -1,48 +1,164 @@
 ---
+/**
+ * Two crossed "tapes" under the hero: the red tape lists the areas we cover and scrolls
+ * left; a navy tape behind it, tilted the other way, scrolls right with key benefits.
+ * A soft shine sweeps across the red tape. Hover pauses both.
+ */
 import Fin from '@/components/ui/Fin.astro';
 import { areas } from '@/data/areas';
-// Duplicated so the -50% translate loops seamlessly.
-const loop = [...areas, ...areas];
+import { tapePhrases } from '@/data/home';
+
+// Each list is repeated so the -50% translate loops seamlessly.
+const areaLoop = [...areas, ...areas];
+const phraseLoop = [...tapePhrases, ...tapePhrases, ...tapePhrases, ...tapePhrases];
 ---
 
-<div class="marquee" aria-label={`Areas we cover: ${areas.join(', ')}`} role="region">
-  <div class="marquee__track d" aria-hidden="true">
-    {
-      loop.map((a) => (
-        <span class="marquee__item">
-          {a}
-          <Fin width={22} color="#fff" />
-        </span>
-      ))
-    }
+<div class="tapes" role="region" aria-label={`Areas we cover: ${areas.join(', ')}`}>
+  <div class="tape tape--back" aria-hidden="true">
+    <div class="tape__track tape__track--rev">
+      {
+        phraseLoop.map((p) => (
+          <span class="tape__item tape__item--back">
+            {p}
+            <i class="tape__dot" />
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="tape tape--front" aria-hidden="true">
+    <div class="tape__track d">
+      {
+        areaLoop.map((a) => (
+          <span class="tape__item">
+            {a}
+            <Fin width={20} color="var(--white)" />
+          </span>
+        ))
+      }
+    </div>
   </div>
 </div>
 
 <style>
-  .marquee {
-    background: var(--red);
-    color: var(--white);
-    overflow: hidden;
-    padding: 14px 0;
-    transform: rotate(-1.2deg);
-    margin-top: -22px;
+  .tapes {
     position: relative;
     z-index: 3;
-    box-shadow: 0 16px 30px -18px rgba(225, 6, 0, 0.7);
+    height: 112px;
+    margin-top: -40px;
+    overflow: hidden;
   }
-  .marquee__track {
+  /* Slightly wider than the page so the tilted ends never show gaps. */
+  .tape {
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    overflow: hidden;
+  }
+  .tape--back {
+    top: 30px;
+    padding: 9px 0;
+    background: var(--navy-2);
+    transform: rotate(1.4deg);
+    box-shadow: 0 12px 24px -16px rgba(6, 20, 46, 0.6);
+  }
+  .tape--front {
+    top: 34px;
+    padding: 13px 0;
+    /* Deep, even red with a fine top highlight and darker bottom edge (no glossy band). */
+    background: linear-gradient(180deg, var(--red) 0%, var(--red-2) 100%);
+    transform: rotate(-1.4deg);
+    box-shadow:
+      0 14px 26px -16px rgba(184, 5, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+  }
+  /* Shine sweeping across the red tape */
+  .tape--front::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -30%;
+    width: 30%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+    animation: tape-shine 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .tape__track {
     display: flex;
-    gap: 48px;
     width: max-content;
-    font-size: 22px;
-    animation: marquee 38s linear infinite;
+    animation: marquee 48s linear infinite;
   }
-  .marquee:hover .marquee__track {
+  .tape__track--rev {
+    animation-name: tape-rev;
+    animation-duration: 60s;
+  }
+  .tapes:hover .tape__track {
     animation-play-state: paused;
   }
-  .marquee__item {
+
+  .tape__item {
     display: inline-flex;
     align-items: center;
-    gap: 48px;
+    gap: 40px;
+    padding-right: 40px;
+    color: var(--white);
+    font-size: 21px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+  }
+  .tape__item--back {
+    gap: 22px;
+    padding-right: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+  .tape__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sky);
+  }
+
+  @keyframes tape-rev {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes tape-shine {
+    0%,
+    55% {
+      left: -30%;
+    }
+    100% {
+      left: 110%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tapes {
+      height: 92px;
+      margin-top: -32px;
+    }
+    .tape--back {
+      top: 24px;
+    }
+    .tape--front {
+      top: 28px;
+      padding: 10px 0;
+    }
+    .tape__item {
+      font-size: 17px;
+      gap: 28px;
+      padding-right: 28px;
+    }
   }
 </style>
