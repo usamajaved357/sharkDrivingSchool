@@ -3,7 +3,7 @@ import { BUSINESS, LESSON_TYPE_LABELS, TRANSMISSION_LABELS, type Booking } from 
 import type { ContactMessage } from '../../repositories/contact.repository';
 import { bookingFacts, bookingPlainText, dateParts, firstName, formatReceived, formatWhen, toInternational } from './booking-format';
 import { BRAND, emailLayout, esc } from './email-layout';
-import { buttonRow, detailCard, noteBox, progressTracker, smallPrint, stepList, summaryCard } from './email-parts';
+import { helpCard, infoCard, noteBox, pillButtons, progressTracker, smallPrint, stepList, summaryCard } from './email-parts';
 
 export interface EmailContent {
   subject: string;
@@ -35,15 +35,19 @@ export function ownerBookingEmail(b: Booking): EmailContent {
   const aboutRows = about!.rows.filter(([k]) => k !== 'Notes');
 
   const body =
+    progressTracker(['Request received', `Confirm with ${name}`, 'First lesson'], 1) +
     lessonSummary(b) +
-    buttonRow([
-      { label: 'Call learner', href: `tel:${b.phone}`, bg: BRAND.red },
-      { label: 'WhatsApp', href: `https://wa.me/${toInternational(b.phone)}`, bg: BRAND.green },
-      { label: 'Email', href: `mailto:${b.email}?subject=${encodeURIComponent(`Your Shark Driving School booking ${b.reference}`)}`, bg: BRAND.navy },
-    ]) +
-    detailCard('Learner details', learner!.rows.filter(([k]) => k !== 'Pick-up')) + // pick-up is in the summary
-    detailCard('About the learner', aboutRows) +
-    (b.notes ? noteBox(`<b>Note from ${esc(name)}:</b><br>${esc(b.notes)}`, 'red') : '') +
+    infoCard(
+      'Learner',
+      learner!.rows.filter(([k]) => k !== 'Pick-up'), // pick-up is in the summary
+      pillButtons([
+        { label: 'Call', href: `tel:${b.phone}`, bg: BRAND.red },
+        { label: 'WhatsApp', href: `https://wa.me/${toInternational(b.phone)}`, bg: BRAND.green },
+        { label: 'Email', href: `mailto:${b.email}?subject=${encodeURIComponent(`Your Shark Driving School booking ${b.reference}`)}`, bg: BRAND.navy },
+      ]),
+    ) +
+    infoCard('About the learner', aboutRows) +
+    (b.notes ? noteBox(`Note from ${name}`, esc(b.notes)) : '') +
     stepList('Next steps', [
       `Call or text ${esc(name)} on ${b_(b.phone)} to confirm the time and pick-up.`,
       `Or just hit <b>Reply</b>: your email goes straight to ${esc(name)}.`,
@@ -78,8 +82,7 @@ export function customerBookingEmail(b: Booking): EmailContent {
       `We call or text you on ${b_(b.phone)} to confirm everything.`,
       `Your instructor picks you up. Remember your ${b_('provisional licence')}.`,
     ]) +
-    noteBox(`<b>Need to change something?</b> Reply to this email, or call or WhatsApp us on <a href="tel:${BUSINESS.phone.tel}" style="color:${BRAND.blue};font-weight:700">${esc(BUSINESS.phone.display)}</a>. Please quote ${b_(b.reference)}.`) +
-    buttonRow([
+    helpCard('Need to change something?', `Reply to this email, call or WhatsApp us on ${onDark(BUSINESS.phone.display)}. Please quote ${onDark(b.reference)}.`, [
       { label: 'Call us', href: `tel:${BUSINESS.phone.tel}`, bg: BRAND.red },
       { label: 'WhatsApp us', href: `https://wa.me/${BUSINESS.phone.whatsapp}?text=${encodeURIComponent(`Hi, it's ${b.fullName} about booking ${b.reference}`)}`, bg: BRAND.green },
     ]) +
@@ -119,10 +122,10 @@ export function contactEmail(m: ContactMessage): EmailContent {
     ['Email', m.email],
     ...(m.phone ? ([['Phone', m.phone]] as [string, string][]) : []),
   ];
-  const buttons = [
+  const buttons = pillButtons([
     { label: 'Reply by email', href: `mailto:${m.email}`, bg: BRAND.navy },
     ...(m.phone ? [{ label: 'Call', href: `tel:${m.phone}`, bg: BRAND.red }] : []),
-  ];
+  ]);
   return {
     subject: `New website message from ${m.name}`,
     html: emailLayout({
@@ -130,7 +133,7 @@ export function contactEmail(m: ContactMessage): EmailContent {
       eyebrow: 'Website message',
       heading: m.name,
       intro: 'Sent a message through the website contact form.',
-      body: detailCard('From', rows) + noteBox(`<b>Message:</b><br>${esc(m.message)}`, 'red') + buttonRow(buttons),
+      body: infoCard('From', rows, buttons) + noteBox('Message', esc(m.message)),
     }),
     text: [...rows, ['Message', m.message] as [string, string]].map(([k, v]) => `${k}: ${v}`).join('\n'),
   };

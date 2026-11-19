@@ -51,6 +51,7 @@ export interface LayoutOptions {
 export function emailLayout(o: LayoutOptions): string {
   const { street, city, postcode } = BUSINESS.address;
   const site = BUSINESS.url.replace(/^https?:\/\/(www\.)?/, '');
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${BUSINESS.name}, ${street}, ${city} ${postcode}`)}`;
   const link = (href: string, label: string) => `<a href="${esc(href)}" style="color:${BRAND.white};text-decoration:none">${esc(label)}</a>`;
   return `<!doctype html>
 <html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -70,30 +71,30 @@ export function emailLayout(o: LayoutOptions): string {
 <tr><td align="center" style="padding:28px 12px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;background:${BRAND.white};border-radius:22px;overflow:hidden;border:1px solid ${BRAND.line};box-shadow:0 12px 40px rgba(6,20,46,.08)">
 
-  <tr><td class="px" style="padding:20px 32px;background:${BRAND.white}">
+  <tr><td class="px" style="padding:18px 32px;background:${BRAND.white}">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td valign="middle"><a href="${esc(BUSINESS.url)}" style="text-decoration:none">${logoImg(168)}</a></td>
+      <td valign="middle"><a href="${esc(BUSINESS.url)}" style="text-decoration:none">${logoImg(150)}</a></td>
       ${
         o.badge
-          ? `<td valign="middle" align="right" style="font:600 11px ${F};color:${BRAND.muted};letter-spacing:.08em;text-transform:uppercase">Reference<br>
-        <span style="display:inline-block;margin-top:5px;padding:7px 12px;border-radius:999px;border:1.5px solid ${BRAND.navy};color:${BRAND.navy};font:800 14px ${F};letter-spacing:.06em">${esc(o.badge)}</span></td>`
+          ? `<td valign="middle" align="right" style="font:700 10px ${F};color:${BRAND.muted};letter-spacing:.12em;text-transform:uppercase">Reference<br>
+        <span style="display:inline-block;margin-top:5px;padding:6px 12px;border-radius:999px;border:1.5px solid ${BRAND.navy};color:${BRAND.navy};font:800 13px ${F};letter-spacing:.06em">${esc(o.badge)}</span></td>`
           : ''
       }
     </tr></table>
   </td></tr>
-  <tr><td style="height:5px;line-height:5px;font-size:0;background:${BRAND.red}">&nbsp;</td></tr>
+  <tr><td style="height:4px;line-height:4px;font-size:0;background:${BRAND.red}">&nbsp;</td></tr>
 
-  <tr><td class="px" style="padding:30px 32px 32px;background:${BRAND.navy};background-image:linear-gradient(135deg,${BRAND.navy} 0%,${BRAND.navy2} 100%)">
-    <p style="margin:0 0 10px;font:800 12px ${F};letter-spacing:.14em;text-transform:uppercase;color:#ff6a63">${esc(o.eyebrow)}</p>
-    <h1 class="h1" style="margin:0;font:800 28px/1.2 ${F};color:${BRAND.white}">${esc(o.heading)}</h1>
-    <p style="margin:12px 0 0;font:500 15px/1.6 ${F};color:${BRAND.soft}">${o.intro}</p>
+  <tr><td class="px" style="padding:26px 32px 28px;background:${BRAND.navy};background-image:linear-gradient(135deg,${BRAND.navy} 0%,${BRAND.navy2} 100%)">
+    <p style="margin:0 0 8px;font:800 11px ${F};letter-spacing:.16em;text-transform:uppercase;color:#ff6a63">${esc(o.eyebrow)}</p>
+    <h1 class="h1" style="margin:0;font:800 26px/1.25 ${F};color:${BRAND.white}">${esc(o.heading)}</h1>
+    <p style="margin:10px 0 0;font:500 15px/1.6 ${F};color:${BRAND.soft}">${o.intro}</p>
   </td></tr>
 
-  <tr><td class="px" style="padding:28px 32px 32px">${o.body}</td></tr>
+  <tr><td class="px" style="padding:24px 32px 30px">${o.body}</td></tr>
 
   <tr><td class="px" style="padding:26px 32px;background:${BRAND.navy};font:500 13px/1.7 ${F};color:${BRAND.soft}">
     <p style="margin:0 0 6px;font:800 15px ${F};color:${BRAND.white}">${esc(BUSINESS.name)}</p>
-    ${esc(`${street}, ${city} ${postcode}`)}<br>
+    ${link(mapsUrl, `${street}, ${city} ${postcode}`)}<br>
     ${link(`tel:${BUSINESS.phone.tel}`, BUSINESS.phone.display)} &nbsp;·&nbsp; ${link(`mailto:${BUSINESS.email}`, BUSINESS.email)} &nbsp;·&nbsp; ${link(BUSINESS.url, site)}
     <p style="margin:12px 0 0;font:500 11px ${F};color:#7f8fb0">DVSA-approved driving lessons across ${esc(BUSINESS.region)}.</p>
   </td></tr>
