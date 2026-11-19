@@ -182,4 +182,36 @@ const photoUrl = (w: number) => `${whyPhoto.src}?w=${w}&q=75&auto=format`;
     font-size: 15px;
     line-height: 1.5;
   }
+  /* Phones: a slimmer "Another pass" card so it doesn't hide the photo. */
+  @media (max-width: 640px) {
+    .why__media {
+      border-radius: 24px;
+    }
+    .why__toast {
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      padding: 10px 12px;
+      gap: 10px;
+      border-radius: 14px;
+    }
+    .why__toast-ic {
+      width: 34px;
+      height: 34px;
+    }
+    .why__toast-ic :global(svg) {
+      width: 18px;
+      height: 18px;
+    }
+    .why__toast-title {
+      font-size: 14px;
+    }
+    .why__toast-meta {
+      font-size: 12px;
+    }
+    .why__features {
+      margin-top: 28px;
+      gap: 20px;
+    }
+  }
 </style>

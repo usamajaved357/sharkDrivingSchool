@@ -3,7 +3,7 @@ import { shownStats } from '@/data/shown-content';
 ---
 
 <section class="stats" aria-label="Shark Driving School in numbers">
-  <div class="wrap g4">
+  <div class="wrap g4 stats__grid">
     {
       shownStats.map((s, i) => (
         <div class="reveal" style={`--reveal-delay:${i * 0.1}s`}>
@@ -33,9 +33,22 @@ import { shownStats } from '@/data/shown-content';
     font-weight: 600;
     color: var(--muted);
   }
+  /* Phones: keep a compact 2×2 grid instead of four tall rows. */
   @media (max-width: 640px) {
+    .stats {
+      padding-top: 56px;
+    }
+    .stats__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px 16px;
+    }
     .stats__value {
-      font-size: 44px;
+      font-size: clamp(32px, 10vw, 42px);
+    }
+    .stats__label {
+      margin-top: 6px;
+      font-size: 14px;
+      line-height: 1.4;
     }
   }
 </style>

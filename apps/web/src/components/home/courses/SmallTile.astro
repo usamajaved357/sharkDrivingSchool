@@ -91,9 +91,30 @@ const tone = tile.tone ?? 'blue';
     margin-top: 12px;
     color: var(--tone);
   }
+  /* Phones: two per row, so tighten everything a little. */
   @media (max-width: 640px) {
     .st {
-      min-height: 200px;
+      padding: 16px;
+    }
+    .st__ic {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+    }
+    .st__go {
+      width: 28px;
+      height: 28px;
+    }
+    .st__title {
+      font-size: 17px;
+    }
+    .st__text {
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+    .st__more {
+      margin-top: 10px;
+      font-size: 14px;
     }
   }
 </style>

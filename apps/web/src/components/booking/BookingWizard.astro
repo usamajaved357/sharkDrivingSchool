@@ -120,7 +120,7 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
   }
   .bk__layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: minmax(0, 1fr) 380px;
     gap: 32px;
     align-items: start;
   }
@@ -146,6 +146,9 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
     border: 0;
     padding: 0;
     margin: 0;
+    /* Fieldsets default to min-width: min-content, which let the scrolling date strip
+       stretch the whole card off-screen on phones. */
+    min-width: 0;
   }
   .bk__form-error {
     margin: 24px 0 0;
@@ -171,7 +174,7 @@ const steps = ['Choose lesson', 'Date & time', 'Your details'];
 
   @media (max-width: 960px) {
     .bk__layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
   @media (max-width: 600px) {

@@ -86,6 +86,10 @@ import QuickBookingCard from './QuickBookingCard.astro';
     align-items: center;
   }
   @media (max-width: 1000px) {
+    .hero {
+      /* Room for the road (HeroRoad.astro) below the booking card. */
+      padding-bottom: 200px;
+    }
     .hero__grid {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -192,7 +196,7 @@ import QuickBookingCard from './QuickBookingCard.astro';
   }
   @media (max-width: 640px) {
     .hero {
-      padding: 36px 0 80px;
+      padding: 36px 0 180px;
     }
     .hero__watermark {
       font-size: 160px;

@@ -177,12 +177,13 @@ import HeroCar from './HeroCar.astro';
     }
   }
 
-  /* Phones/tablets: content is stacked, so centre the road under it. */
+  /* Phones/tablets: content is stacked, so centre the road in its own space below the
+     booking card (Hero.astro adds matching bottom padding) instead of behind the form. */
   @media (max-width: 1000px) {
     .hr {
       left: 50%;
-      width: 800px;
-      height: 420px;
+      width: 760px;
+      height: 280px;
     }
     .hr :global(.hr__car) {
       width: 90px;

@@ -22,8 +22,8 @@ import { weeklyVsIntensive } from '@/data/pricing';
             weeklyVsIntensive.map((r) => (
               <tr>
                 <th scope="row">{r.label}</th>
-                <td>{r.weekly}</td>
-                <td>
+                <td data-label="Weekly lessons">{r.weekly}</td>
+                <td data-label="Intensive course" class="cmp__int">
                   <b>{r.intensive}</b>
                 </td>
               </tr>
@@ -72,5 +72,57 @@ import { weeklyVsIntensive } from '@/data/pricing';
   }
   tbody th {
     font-weight: 700;
+  }
+
+  /* Phones: each row becomes a small card (label, then weekly vs intensive), no sideways scroll. */
+  @media (max-width: 600px) {
+    .cmp__title {
+      margin-bottom: 24px;
+    }
+    .cmp {
+      overflow: visible;
+    }
+    table {
+      min-width: 0;
+      font-size: 15px;
+    }
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    tbody tr {
+      display: block;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+    tbody th,
+    tbody td {
+      display: grid;
+      grid-template-columns: 7.5em 1fr;
+      gap: 12px;
+      padding: 4px 0;
+      border: 0;
+    }
+    tbody th {
+      display: block;
+      padding-bottom: 8px;
+      font-size: 16px;
+    }
+    tbody td::before {
+      content: attr(data-label);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding-top: 2px;
+    }
+    tbody .cmp__int::before {
+      color: var(--red);
+    }
   }
 </style>

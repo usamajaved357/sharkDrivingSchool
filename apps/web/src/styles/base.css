@@ -27,6 +27,12 @@ svg {
   max-width: 100%;
 }
 
+/* Browsers give fieldsets min-width: min-content, so wide content (e.g. a scrolling
+   row of dates) would stretch the layout past the screen on phones. */
+fieldset {
+  min-width: 0;
+}
+
 a {
   color: var(--blue);
 }
