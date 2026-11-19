@@ -29,30 +29,33 @@ export const areaPerks: { icon: IconName; label: string }[] = [
 
 export interface MapPin {
   label: string;
-  /** Position on the map, in percent of its width/height. */
-  left: number;
-  top: number;
-  /** Which side of the dot the label sits on (keeps labels inside the map and apart). */
+  /** Real coordinates (town centre). */
+  lat: number;
+  lon: number;
+  /** Which side of the marker the label sits on (keeps labels apart). */
   side?: 'left' | 'right';
-  /** The central pin (Manchester) is drawn larger and red. */
+  /** The central pin (Manchester) is drawn as a larger red marker. */
   main?: boolean;
 }
 
 /**
- * Pins on the decorative coverage map. Positions roughly follow real geography
- * (north at the top), nudged so labels never overlap.
+ * Coverage map view: real OpenStreetMap tiles (zoom 11, drawn at 75%) in an 800×600 box,
+ * centred so Wigan → Tameside and Rochdale → Altrincham all fit.
  */
+export const mapView = { lat: 53.497, lon: -2.36, zoom: 11, width: 800, height: 600, scale: 0.75 } as const;
+
+/** Towns pinned on the coverage map, at their real positions. */
 export const mapPins: MapPin[] = [
-  { label: 'Manchester', left: 50, top: 50, main: true },
-  { label: 'Salford', left: 37, top: 40, side: 'left' },
-  { label: 'Bolton', left: 22, top: 14 },
-  { label: 'Bury', left: 46, top: 11 },
-  { label: 'Rochdale', left: 69, top: 9 },
-  { label: 'Wigan', left: 6, top: 25 },
-  { label: 'Oldham', left: 82, top: 28, side: 'left' },
-  { label: 'Tameside', left: 84, top: 62, side: 'left' },
-  { label: 'Stockport', left: 70, top: 78 },
-  { label: 'Didsbury', left: 47, top: 73, side: 'left' },
-  { label: 'Trafford', left: 24, top: 60, side: 'left' },
-  { label: 'Altrincham', left: 26, top: 87 },
+  { label: 'Manchester', lat: 53.4794, lon: -2.2453, main: true },
+  { label: 'Salford', lat: 53.4875, lon: -2.2901, side: 'left' },
+  { label: 'Bolton', lat: 53.5769, lon: -2.4282 },
+  { label: 'Bury', lat: 53.5933, lon: -2.2966 },
+  { label: 'Rochdale', lat: 53.6097, lon: -2.1561 },
+  { label: 'Wigan', lat: 53.5448, lon: -2.6318 },
+  { label: 'Oldham', lat: 53.5409, lon: -2.1114, side: 'left' },
+  { label: 'Tameside', lat: 53.4894, lon: -2.0952 },
+  { label: 'Stockport', lat: 53.4083, lon: -2.1494 },
+  { label: 'Didsbury', lat: 53.4166, lon: -2.2312, side: 'left' },
+  { label: 'Stretford', lat: 53.4466, lon: -2.3086, side: 'left' },
+  { label: 'Altrincham', lat: 53.3838, lon: -2.353 },
 ];

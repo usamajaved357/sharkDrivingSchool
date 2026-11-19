@@ -42,6 +42,19 @@ import { site, telHref } from '@/config/site';
     text-align: center;
     position: relative;
   }
+  /* Desktop: red section + footer fill exactly one screen at the bottom of the page,
+     so nothing from the section above peeks in at the top. */
+  @media (min-width: 1001px) and (min-height: 700px) {
+    .cta {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100svh - var(--footer-h));
+    }
+    .cta__body {
+      width: 100%;
+    }
+  }
   .cta__text {
     font-size: 20px;
     color: var(--red-tint);

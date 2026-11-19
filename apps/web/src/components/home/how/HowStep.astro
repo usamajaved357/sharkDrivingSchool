@@ -1,0 +1,169 @@
+---
+/**
+ * One stop on the "How it works" road: a numbered marker that lights up when the car
+ * reaches it, and a card underneath. Timing comes from --at (0–1, position along the road)
+ * and the --start / --drive variables set on the journey in HowItWorks.astro.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import type { Step } from '@/data/home';
+
+interface Props {
+  step: Step;
+  /** Position along the road, 0 (start) to 1 (finish). */
+  at: number;
+}
+const { step, at } = Astro.props;
+---
+
+<li class:list={['hs', `hs--${step.tone}`]} style={`--at:${at}`}>
+  <div class="hs__marker">
+    <span class="d hs__num">{step.n}</span>
+  </div>
+  <div class="card hs__card">
+    <span class="hs__ic"><Icon name={step.icon} size={20} strokeWidth={2.2} /></span>
+    <h3 class="hs__title">{step.title}</h3>
+    <p class="hs__text">{step.text}</p>
+    <span class="hs__tag"><Icon name="check" size={13} strokeWidth={3} />{step.tag}</span>
+  </div>
+</li>
+
+<style>
+  .hs {
+    --tone: var(--blue);
+    --light-at: calc(var(--start) + var(--drive) * var(--at));
+    position: relative;
+  }
+  .hs--red {
+    --tone: var(--red);
+  }
+  .hs--navy {
+    --tone: var(--navy);
+  }
+
+  /* Marker: dim until the car arrives, then pops and lights up. */
+  .hs__marker {
+    position: relative;
+    z-index: 1;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--white);
+    background: var(--glass-sheen), var(--tone);
+    box-shadow: 0 0 0 8px var(--white), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    opacity: 0.35;
+    transform: scale(0.85);
+    filter: saturate(0);
+  }
+  .hs__num {
+    font-size: 28px;
+  }
+  :global(.is-visible) .hs__marker {
+    animation: hs-light 0.6s var(--ease-out) var(--light-at) forwards;
+  }
+  @keyframes hs-light {
+    60% {
+      opacity: 1;
+      transform: scale(1.14);
+      filter: none;
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      box-shadow: 0 0 0 8px var(--white), 0 14px 28px -10px var(--tone), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  /* Card: slides up as its marker lights. */
+  .hs__card {
+    margin-top: 26px;
+    padding: 22px;
+    border-radius: var(--r-lg);
+    border-top: 3px solid var(--tone);
+    opacity: 0;
+    translate: 0 16px;
+    transition:
+      opacity 0.6s var(--ease-out) var(--light-at),
+      translate 0.6s var(--ease-out) var(--light-at),
+      transform 0.35s var(--ease-out),
+      box-shadow 0.35s;
+  }
+  :global(.is-visible) .hs__card {
+    opacity: 1;
+    translate: none;
+  }
+  .hs__ic {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: var(--tone);
+    background: var(--paper);
+  }
+  .hs__title {
+    font-size: 19px;
+    font-weight: 800;
+    margin: 16px 0 6px;
+  }
+  .hs__text {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .hs__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 5px 11px;
+    border-radius: var(--r-pill);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .hs__tag :global(svg) {
+    color: var(--tone);
+  }
+
+  /* Without JS the journey never "starts", so show everything. */
+  :global(.no-js) .hs__marker {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  :global(.no-js) .hs__card {
+    opacity: 1;
+    translate: none;
+  }
+
+  /* Tablet/phone: vertical timeline, marker on the left of each card. */
+  @media (max-width: 1000px) {
+    .hs {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+    .hs__card {
+      margin-top: 0;
+    }
+  }
+  @media (max-width: 640px) {
+    .hs {
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 14px;
+    }
+    .hs__marker {
+      width: 56px;
+      height: 56px;
+    }
+    .hs__num {
+      font-size: 22px;
+    }
+  }
+</style>

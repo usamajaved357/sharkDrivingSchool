@@ -1,64 +1,51 @@
 ---
 /**
- * Decorative Greater Manchester coverage map: M60 ring with a car driving round it,
- * motorways, coverage rings and glass town labels, with the postcode check below.
+ * Coverage map: real OpenStreetMap tiles (toned to the brand) with pins at each town's
+ * real coordinates, plus the postcode check below. No map library: tiles and pins are
+ * positioned with lib/geo.ts. OpenStreetMap attribution is required and shown.
  */
 import { site } from '@/config/site';
-import { areas, mapPins } from '@/data/areas';
+import { areas, mapPins, mapView } from '@/data/areas';
+import { tilesFor, toPercent } from '@/lib/geo';
 import MapPin from './MapPin.astro';
 import PostcodeCheck from './PostcodeCheck.astro';
 
-// M60 ring, used for the road and for the car's route.
-const ring = 'M85 150 a115 88 0 1 0 230 0 a115 88 0 1 0 -230 0';
+const tiles = tilesFor(mapView);
+const pins = mapPins.map((p) => ({ ...p, ...toPercent(mapView, p.lat, p.lon) }));
 ---
 
 <div class="cm reveal">
   <div class="cm__head">
     <div>
-      <p class="cm__live"><i aria-hidden="true"></i> Coverage map</p>
+      <p class="cm__kicker">Coverage map</p>
       <p class="cm__title">{site.region}</p>
     </div>
     <span class="cm__count">{areas.length}+ areas</span>
   </div>
 
-  <div class="cm__map" aria-hidden="true">
-    <svg viewBox="0 0 400 300" class="cm__svg">
-      <defs>
-        <radialGradient id="cm-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" style="stop-color: var(--sky)" stop-opacity="0.35"></stop>
-          <stop offset="100%" style="stop-color: var(--sky)" stop-opacity="0"></stop>
-        </radialGradient>
-      </defs>
-      <ellipse cx="200" cy="150" rx="190" ry="140" fill="url(#cm-glow)"></ellipse>
-
-      <g class="cm__rings">
-        <circle cx="200" cy="150" r="136" class="cm__ring"></circle>
-        <circle cx="200" cy="150" r="96" class="cm__ring cm__ring--inner"></circle>
-      </g>
-
-      <g class="cm__roads">
-        <path d="M0 108 C 90 100 150 72 220 62 S 340 38 400 16"></path>
-        <path d="M60 22 C 100 66 128 92 150 116"></path>
-        <path d="M172 232 C 140 262 112 284 84 300"></path>
-        <path d="M244 210 C 270 240 290 264 312 300"></path>
-        <path d="M312 152 C 345 156 372 152 400 150"></path>
-      </g>
-
-      <path d={ring} class="cm__m60-glow"></path>
-      <path d={ring} class="cm__m60"></path>
-      <g class="cm__m60-tag" transform="translate(119 88)">
-        <rect x="-17" y="-10" width="34" height="20" rx="5"></rect>
-        <text x="0" y="4.5" text-anchor="middle">M60</text>
-      </g>
-
-      <g class="cm__car">
-        <circle r="9" class="cm__car-halo"></circle>
-        <circle r="4.5" class="cm__car-dot"></circle>
-        <animateMotion dur="14s" repeatCount="indefinite" path={ring}></animateMotion>
-      </g>
-    </svg>
-
-    {mapPins.map((p) => <MapPin pin={p} />)}
+  <div class="cm__map">
+    <div class="cm__tiles" aria-hidden="true">
+      {
+        tiles.map((t) => (
+          <img
+            src={`https://tile.openstreetmap.org/${mapView.zoom}/${t.x}/${t.y}.png`}
+            alt=""
+            width="256"
+            height="256"
+            loading="lazy"
+            decoding="async"
+            style={`left:${t.left}%;top:${t.top}%;width:${t.w}%;height:${t.h}%`}
+          />
+        ))
+      }
+    </div>
+    <div class="cm__tint" aria-hidden="true"></div>
+    <ul class="cm__pins" aria-label={`Areas on the map: ${mapPins.map((p) => p.label).join(', ')}`}>
+      {pins.map((p) => <MapPin label={p.label} left={p.left} top={p.top} side={p.side} main={p.main} />)}
+    </ul>
+    <p class="cm__credit">
+      © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors
+    </p>
   </div>
 
   <PostcodeCheck />
@@ -66,15 +53,11 @@ const ring = 'M85 150 a115 88 0 1 0 230 0 a115 88 0 1 0 -230 0';
 
 <style>
   .cm {
-    position: relative;
-    border-radius: 32px;
-    padding: 22px;
-    color: var(--white);
-    background:
-      radial-gradient(500px 300px at 50% 40%, rgba(18, 58, 133, 0.9), transparent 70%),
-      var(--navy);
-    box-shadow: var(--glass-highlight), 0 40px 80px -40px rgba(6, 20, 46, 0.6);
-    overflow: hidden;
+    padding: 20px;
+    border-radius: 28px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 80px -40px rgba(6, 20, 46, 0.35);
   }
   .cm__head {
     display: flex;
@@ -83,126 +66,80 @@ const ring = 'M85 150 a115 88 0 1 0 230 0 a115 88 0 1 0 -230 0';
     gap: 12px;
     padding: 4px 6px 0;
   }
-  .cm__live {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .cm__kicker {
     margin: 0;
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--on-dark-subtle);
-  }
-  .cm__live i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--whatsapp);
-    box-shadow: 0 0 0 4px rgba(31, 168, 85, 0.25);
+    color: var(--red);
   }
   .cm__title {
     margin: 4px 0 0;
     font-size: 20px;
     font-weight: 800;
+    color: var(--ink);
   }
   .cm__count {
     padding: 6px 12px;
     border-radius: var(--r-pill);
     font-size: 13px;
     font-weight: 700;
-    background: var(--glass-dark-bg);
-    border: 1px solid var(--glass-dark-border);
-    box-shadow: var(--glass-highlight);
+    color: var(--blue);
+    background: var(--paper);
+    border: 1px solid var(--line);
   }
 
-  /* Map area: SVG and pins share the same 4:3 box so % positions line up. */
+  /* Map: tiles, tint and pins share one 4:3 box so percent positions line up. */
   .cm__map {
     position: relative;
     aspect-ratio: 4 / 3;
-    margin: 14px 0;
-    border-radius: 22px;
+    margin: 16px 0;
+    border-radius: 20px;
     overflow: hidden;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 32px 32px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    /* Pins adapt to the map's own width (see MapPin.astro). */
+    container: cmap / inline-size;
   }
-  .cm__svg {
+  .cm__tiles img {
+    position: absolute;
+    max-width: none;
+    /* Calm, brand-friendly map: muted colours, slightly cool. */
+    filter: grayscale(0.85) contrast(0.95) brightness(1.04);
+  }
+  .cm__tint {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    background:
+      radial-gradient(circle at 56% 47%, rgba(11, 77, 186, 0.1), transparent 55%),
+      linear-gradient(rgba(11, 77, 186, 0.06), rgba(11, 77, 186, 0.06));
+    box-shadow: inset 0 0 60px rgba(6, 20, 46, 0.12);
+    pointer-events: none;
   }
-  .cm__ring {
-    fill: none;
-    stroke: var(--red);
-    stroke-opacity: 0.4;
-    stroke-width: 1.5;
-    stroke-dasharray: 5 7;
-    transform-origin: 200px 150px;
-    animation: cm-spin 60s linear infinite;
+  .cm__pins {
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
-  .cm__ring--inner {
-    stroke: var(--sky);
-    animation-direction: reverse;
-  }
-  .cm__roads path {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.14);
-    stroke-width: 5;
-    stroke-linecap: round;
-  }
-  .cm__m60-glow {
-    fill: none;
-    stroke: var(--sky);
-    stroke-opacity: 0.25;
-    stroke-width: 14;
-  }
-  .cm__m60 {
-    fill: none;
-    stroke: var(--sky);
-    stroke-width: 4;
-  }
-  .cm__m60-tag rect {
-    fill: var(--blue);
-    stroke: rgba(255, 255, 255, 0.5);
-  }
-  .cm__m60-tag text {
-    fill: var(--white);
+  .cm__credit {
+    position: absolute;
+    right: 8px;
+    bottom: 6px;
+    margin: 0;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.85);
     font-size: 11px;
-    font-weight: 800;
-    font-family: var(--font-body);
+    color: var(--muted);
   }
-  .cm__car-halo {
-    fill: var(--red);
-    fill-opacity: 0.3;
-  }
-  .cm__car-dot {
-    fill: var(--white);
-    stroke: var(--red);
-    stroke-width: 2.5;
-  }
-
-  @keyframes cm-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cm__car {
-      display: none;
-    }
-  }
-  /* The M60 sign is decoration; drop it where labels get crowded. */
-  @media (max-width: 420px) {
-    .cm__m60-tag {
-      display: none;
-    }
+  .cm__credit a {
+    color: var(--blue);
   }
   @media (max-width: 640px) {
     .cm {
-      padding: 16px;
-      border-radius: 24px;
+      padding: 14px;
+      border-radius: 22px;
     }
   }
 </style>

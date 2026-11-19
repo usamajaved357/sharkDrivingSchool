@@ -1,73 +1,115 @@
 ---
-/** One town on the coverage map: a dot plus a glass label (left or right of the dot). */
-import type { MapPin } from '@/data/areas';
-
+/** One town on the coverage map: a map marker plus a small label (left or right of it). */
 interface Props {
-  pin: MapPin;
+  label: string;
+  /** Position in percent of the map box. */
+  left: number;
+  top: number;
+  side?: 'left' | 'right';
+  main?: boolean;
 }
-const { pin } = Astro.props;
+const { label, left, top, side = 'right', main = false } = Astro.props;
 ---
 
-<span class:list={['cm__pin', { 'cm__pin--main': pin.main, 'cm__pin--left': pin.side === 'left' }]} style={`left:${pin.left}%;top:${pin.top}%`}>
-  <i></i>
-  <span class="cm__label">{pin.label}</span>
-</span>
+<li class:list={['mp', { 'mp--main': main, 'mp--left': side === 'left' }]} style={`left:${left.toFixed(2)}%;top:${top.toFixed(2)}%`}>
+  <span class="mp__dot" aria-hidden="true"></span>
+  <span class="mp__label">{label}</span>
+</li>
 
 <style>
-  /* Town pins: dot + glass label */
-  .cm__pin {
+  .mp {
     position: absolute;
     display: flex;
     align-items: center;
     gap: 6px;
-    transform: translate(-5px, -50%);
+    transform: translate(-6px, -50%);
     white-space: nowrap;
   }
-  .cm__pin--left {
+  .mp--left {
     flex-direction: row-reverse;
-    transform: translate(calc(-100% + 5px), -50%);
+    transform: translate(calc(-100% + 6px), -50%);
   }
-  .cm__pin i {
+  .mp__dot {
     flex: none;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: var(--white);
-    box-shadow: 0 0 0 4px rgba(76, 141, 255, 0.3);
+    background: var(--blue);
+    border: 2.5px solid var(--white);
+    box-shadow: 0 2px 6px rgba(6, 20, 46, 0.35);
   }
-  .cm__label {
-    padding: 4px 10px;
+  .mp__label {
+    padding: 3px 9px;
     border-radius: var(--r-pill);
+    background: var(--white);
+    color: var(--ink);
     font-size: 12px;
     font-weight: 700;
-    background: rgba(6, 20, 46, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    -webkit-backdrop-filter: var(--glass-blur);
-    backdrop-filter: var(--glass-blur);
+    box-shadow: 0 2px 8px -2px rgba(6, 20, 46, 0.3);
   }
-  .cm__pin--main i {
+
+  /* Manchester: red teardrop marker with a soft pulse. */
+  .mp--main {
+    transform: translate(-13px, -100%);
+    align-items: flex-start;
+  }
+  .mp--main .mp__dot {
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--red);
+    box-shadow: 0 6px 14px -4px rgba(225, 6, 0, 0.7);
+    position: relative;
+  }
+  .mp--main .mp__dot::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: var(--white);
+  }
+  .mp--main .mp__label {
+    margin-top: 2px;
+    font-size: 13px;
+    background: var(--navy);
+    color: var(--white);
+  }
+  .mp--main::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    bottom: -8px;
     width: 16px;
     height: 16px;
-    background: var(--red);
-    box-shadow: none;
-    animation: pulse 1.8s infinite;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
   }
-  .cm__pin--main {
-    transform: translate(-8px, -50%);
-  }
-  .cm__pin--main .cm__label {
-    font-size: 14px;
-    padding: 6px 12px;
-    background: var(--glass-sheen), var(--red);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-  @media (max-width: 640px) {
-    .cm__label {
-      font-size: 10px;
-      padding: 3px 7px;
+
+  /* Small map: real towns sit close together, so keep only the Manchester label
+     (every area is also listed as a chip beside the map). */
+  @container cmap (max-width: 560px) {
+    .mp:not(.mp--main) .mp__label {
+      display: none;
     }
-    .cm__pin--main .cm__label {
-      font-size: 12px;
+    .mp__dot {
+      width: 10px;
+      height: 10px;
+      border-width: 2px;
+    }
+    .mp--main {
+      transform: translate(-10px, -100%);
+    }
+    .mp--main .mp__dot {
+      width: 20px;
+      height: 20px;
+    }
+    .mp--main .mp__dot::after {
+      inset: 6px;
+    }
+    .mp--main .mp__label {
+      font-size: 11px;
     }
   }
 </style>

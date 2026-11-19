@@ -36,6 +36,8 @@
   --container: 1440px;
   --gutter: clamp(24px, 3vw, 40px);
   --header-h: 68px;
+  /* Height of the full site footer on desktop. Keep in sync with SiteFooter if it changes (used by FinalCta). */
+  --footer-h: 405px;
 
   /* Radius */
   --r-sm: 14px;

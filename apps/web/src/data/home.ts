@@ -23,12 +23,23 @@ export const heroTrust: { icon: IconName; label: string }[] = [
   { icon: 'map-pin', label: 'Home, work or college pick-up' },
 ];
 
-export const steps = [
-  { n: '01', title: 'Book online or call', text: 'Pick manual or automatic, your area and a time that suits you.', tone: 'red' },
-  { n: '02', title: 'Meet your instructor', text: 'We pick you up and assess where you are, then map out your plan.', tone: 'navy' },
-  { n: '03', title: 'Learn & track progress', text: 'Structured lessons against the DVSA syllabus, with progress notes after each.', tone: 'navy' },
-  { n: '04', title: 'Pass your test', text: 'Mock tests on local routes, then use our car on the big day.', tone: 'blue' },
-] as const;
+export interface Step {
+  n: string;
+  title: string;
+  text: string;
+  tone: 'red' | 'navy' | 'blue';
+  icon: IconName;
+  /** Short label shown at the bottom of the step card. */
+  tag: string;
+}
+
+/** "How it works" journey (HowItWorks.astro animates a car along these steps). */
+export const steps: Step[] = [
+  { n: '01', title: 'Book online or call', text: 'Pick manual or automatic, your area and a time that suits you.', tone: 'red', icon: 'calendar', tag: 'Online, phone or WhatsApp' },
+  { n: '02', title: 'Meet your instructor', text: 'We pick you up and assess where you are, then map out your plan.', tone: 'navy', icon: 'user', tag: 'Free pick-up' },
+  { n: '03', title: 'Learn & track progress', text: 'Structured lessons against the DVSA syllabus, with progress notes after each.', tone: 'navy', icon: 'chart', tag: 'DVSA syllabus' },
+  { n: '04', title: 'Pass your test', text: 'Mock tests on local routes, then use our car on the big day.', tone: 'blue', icon: 'trophy', tag: 'Our car on test day' },
+];
 
 /**
  * "Why Shark" photo. Stock photo for now (free under the Unsplash License, no attribution required):
