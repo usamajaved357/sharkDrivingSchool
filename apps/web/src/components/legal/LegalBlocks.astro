@@ -1,0 +1,74 @@
+---
+/** Renders one section's paragraphs, lists and tables. */
+import type { LegalBlock } from '@/data/legal';
+import { inlineHtml } from '@/lib/inline-links';
+
+interface Props {
+  blocks: LegalBlock[];
+}
+const { blocks } = Astro.props;
+---
+
+{
+  blocks.map((b) =>
+    b.type === 'p' ? (
+      <p set:html={inlineHtml(b.text)} />
+    ) : b.type === 'ul' ? (
+      <ul>
+        {b.items.map((item) => (
+          <li set:html={inlineHtml(item)} />
+        ))}
+      </ul>
+    ) : (
+      <div class="lb__table-wrap">
+        <table class="lb__table">
+          <thead>
+            <tr>
+              {b.head.map((h) => (
+                <th scope="col">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {b.rows.map((row) => (
+              <tr>
+                {row.map((cell) => (
+                  <td set:html={inlineHtml(cell)} />
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ),
+  )
+}
+
+<style>
+  .lb__table-wrap {
+    overflow-x: auto;
+    margin: 18px 0 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+  }
+  .lb__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .lb__table th {
+    text-align: left;
+    background: var(--paper);
+    font-weight: 700;
+    color: var(--ink);
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+  .lb__table td {
+    padding: 12px 16px;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+</style>

@@ -31,9 +31,11 @@
   --display-weight: 800;
 
   /* Layout */
-  --container: 1240px;
-  --gutter: 32px;
-  --header-h: 84px;
+  /* Wider container so large screens don't leave big empty margins.
+     The gutter grows with the viewport: ~24px on tablets, 40px on wide desktops. */
+  --container: 1440px;
+  --gutter: clamp(24px, 3vw, 40px);
+  --header-h: 68px;
 
   /* Radius */
   --r-sm: 14px;

@@ -34,7 +34,6 @@ export const icons = {
   whatsapp: {
     body: '<path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-1.9-1-1 .8a4 4 0 0 1-2.2-2.2l.8-1-1-1.9z"/>',
   },
-  mail: { body: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>' },
   plus: { body: '<path d="M12 5v14M5 12h14"/>' },
   menu: { body: '<path d="M4 7h16M4 12h16M4 17h16"/>' },
   close: { body: '<path d="M6 6l12 12M18 6 6 18"/>' },

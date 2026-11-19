@@ -1,227 +1,94 @@
 ---
 /**
- * One floating "Contact us" button. It opens a small card with WhatsApp, call and email,
- * so the corner shows a single button instead of a stack of them.
- * Behaviour (open/close, Esc, outside click) is in scripts/contact-fab.ts.
+ * Floating WhatsApp button (marketing pages). Calling is already in the header,
+ * so this is the one quick way to message us from anywhere on the page.
+ * It hides while the footer is on screen so it never covers the footer links
+ * (scripts/whatsapp-fab.ts).
  */
 import Icon from '@/components/ui/Icon.astro';
-import { mailtoHref, site, telHref, whatsappHref } from '@/config/site';
+import { whatsappHref } from '@/config/site';
 ---
 
-<div class="fab" data-fab>
-  <div class="fab__panel" id="fab-panel" data-fab-panel role="group" aria-label="Contact options" inert>
-    <p class="fab__title">Talk to {site.shortName}</p>
-    <p class="fab__sub">Questions about lessons, prices or availability? Get in touch.</p>
-    <ul class="fab__list">
-      <li>
-        <a class="fab__opt" href={whatsappHref} target="_blank" rel="noopener">
-          <span class="fab__ic fab__ic--wa"><Icon name="whatsapp" size={20} strokeWidth={2} /></span>
-          <span><b>WhatsApp</b><small>Message us anytime</small></span>
-        </a>
-      </li>
-      <li>
-        <a class="fab__opt" href={telHref}>
-          <span class="fab__ic fab__ic--call"><Icon name="phone" size={18} /></span>
-          <span><b>Call or text</b><small>{site.phone.display}</small></span>
-        </a>
-      </li>
-      <li>
-        <a class="fab__opt" href={mailtoHref}>
-          <span class="fab__ic fab__ic--mail"><Icon name="mail" size={18} /></span>
-          <span><b>Email</b><small class="fab__email">{site.email}</small></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <button class="fab__toggle" type="button" data-fab-toggle aria-expanded="false" aria-controls="fab-panel">
-    <span class="fab__icons" aria-hidden="true">
-      <Icon name="chat" size={22} class="fab__i-open" />
-      <Icon name="close" size={22} strokeWidth={2.6} class="fab__i-close" />
-    </span>
-    <span class="fab__label">Contact us</span>
-  </button>
-</div>
+<a class="wa-fab" href={whatsappHref} target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" data-wa-fab>
+  <Icon name="whatsapp" size={26} strokeWidth={2} />
+  <span class="wa-fab__tip" aria-hidden="true">Chat on WhatsApp</span>
+</a>
 
 <script>
-  import { initContactFab } from '@/scripts/contact-fab';
-  initContactFab();
+  import { initWhatsappFab } from '@/scripts/whatsapp-fab';
+  initWhatsappFab();
 </script>
 
 <style>
-  .fab {
+  .wa-fab {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
+    right: 20px;
+    bottom: 20px;
     z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 14px;
-  }
-
-  /* Toggle button */
-  .fab__toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    height: 58px;
-    padding: 0 24px 0 20px;
-    border: 0;
-    border-radius: var(--r-pill);
-    background: var(--red);
-    color: var(--white);
-    font: inherit;
-    font-weight: 800;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: var(--shadow-red);
-    transition:
-      transform 0.25s var(--ease-out),
-      background 0.2s;
-    animation: pulse 2.4s 1.5s 3;
-  }
-  .fab__toggle:hover {
-    transform: translateY(-2px);
-    background: var(--red-2);
-  }
-  .fab__icons {
-    position: relative;
-    width: 22px;
-    height: 22px;
-  }
-  .fab__icons :global(svg) {
-    position: absolute;
-    inset: 0;
-    transition:
-      opacity 0.2s,
-      transform 0.25s var(--ease-out);
-  }
-  .fab__icons :global(.fab__i-close) {
-    opacity: 0;
-    transform: rotate(-90deg);
-  }
-  .fab.is-open .fab__toggle {
-    animation: none;
-  }
-  .fab.is-open .fab__icons :global(.fab__i-open) {
-    opacity: 0;
-    transform: rotate(90deg);
-  }
-  .fab.is-open .fab__icons :global(.fab__i-close) {
-    opacity: 1;
-    transform: none;
-  }
-
-  /* Panel */
-  .fab__panel {
-    width: min(320px, calc(100vw - 32px));
-    padding: 22px;
-    border-radius: var(--r-lg);
-    background: var(--white);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-card);
-    transform-origin: bottom right;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px) scale(0.96);
-    transition:
-      opacity 0.2s,
-      transform 0.25s var(--ease-out),
-      visibility 0s 0.25s;
-  }
-  .fab.is-open .fab__panel {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition:
-      opacity 0.2s,
-      transform 0.25s var(--ease-out);
-  }
-  .fab__title {
-    margin: 0;
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--ink);
-  }
-  .fab__sub {
-    margin: 4px 0 14px;
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--muted);
-  }
-  .fab__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .fab__opt {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: var(--r-sm);
-    color: var(--ink);
-    text-decoration: none;
-    transition: background 0.2s;
-  }
-  .fab__opt:hover {
-    background: var(--paper);
-    color: var(--ink);
-  }
-  .fab__opt b {
-    display: block;
-    font-size: 15px;
-  }
-  .fab__opt small {
-    display: block;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .fab__email {
-    overflow-wrap: anywhere;
-  }
-  .fab__ic {
-    flex: none;
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: grid;
     place-items: center;
+    background: var(--whatsapp);
+    color: var(--white);
+    box-shadow: var(--shadow-card);
+    transition:
+      transform 0.25s var(--ease-out),
+      opacity 0.25s,
+      visibility 0s;
+  }
+  .wa-fab:hover {
+    transform: scale(1.06);
     color: var(--white);
   }
-  .fab__ic--wa {
-    background: var(--whatsapp);
+  /* Hidden while the footer is visible. */
+  .wa-fab.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition:
+      transform 0.25s var(--ease-out),
+      opacity 0.25s,
+      visibility 0s 0.25s;
   }
-  .fab__ic--call {
-    background: var(--red);
+
+  /* Hover label (desktop only). */
+  .wa-fab__tip {
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    transform: translate(6px, -50%);
+    padding: 7px 12px;
+    border-radius: var(--r-pill);
+    background: var(--navy);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      transform 0.2s var(--ease-out);
   }
-  .fab__ic--mail {
-    background: var(--blue);
+  .wa-fab:hover .wa-fab__tip,
+  .wa-fab:focus-visible .wa-fab__tip {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+  @media (hover: none) {
+    .wa-fab__tip {
+      display: none;
+    }
   }
 
   @media (max-width: 640px) {
-    .fab {
+    .wa-fab {
       right: 16px;
       bottom: 16px;
-    }
-    /* Icon-only on phones to keep the corner small. */
-    .fab__toggle {
-      width: 56px;
-      height: 56px;
-      padding: 0;
-      justify-content: center;
-    }
-    .fab__label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
+      width: 50px;
+      height: 50px;
     }
   }
 </style>

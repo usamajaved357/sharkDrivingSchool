@@ -1,0 +1,216 @@
+---
+/**
+ * Legal document body: sticky contents list (desktop), numbered sections,
+ * then links to the other policies and a contact card.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import { mailtoHref, site, telHref } from '@/config/site';
+import { legalDocs, type LegalDoc } from '@/data/legal';
+import LegalBlocks from './LegalBlocks.astro';
+
+interface Props {
+  doc: LegalDoc;
+}
+const { doc } = Astro.props;
+const others = legalDocs.filter((d) => d.slug !== doc.slug);
+---
+
+<section class="lg">
+  <div class="wrap lg__grid">
+    <nav class="lg__toc" aria-label="On this page">
+      <p class="lg__toc-title">On this page</p>
+      <ol>
+        {
+          doc.sections.map((s) => (
+            <li>
+              <a href={`#${s.id}`}>{s.heading}</a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="lg__content">
+      {
+        doc.sections.map((s, i) => (
+          <section class="lg__section" id={s.id} aria-labelledby={`${s.id}-h`}>
+            <h2 id={`${s.id}-h`} class="lg__h">
+              <span class="lg__num">{String(i + 1).padStart(2, '0')}</span>
+              {s.heading}
+            </h2>
+            <LegalBlocks blocks={s.blocks} />
+          </section>
+        ))
+      }
+
+      <div class="lg__footer">
+        <div class="lg__others">
+          <p class="lg__label">Other policies</p>
+          <div class="lg__other-links">
+            {
+              others.map((d) => (
+                <a class="chip lg__chip" href={`/${d.slug}`}>
+                  {d.title}
+                  <Icon name="arrow-right" size={16} strokeWidth={2.4} />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+        <div class="lg__contact">
+          <p class="lg__label">Questions about this page?</p>
+          <p class="lg__contact-links">
+            <a href={mailtoHref}>{site.email}</a>
+            <a href={telHref}>{site.phone.display}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lg {
+    padding: 64px 0 100px;
+  }
+  .lg__grid {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+  }
+  .lg__toc {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+  .lg__toc-title,
+  .lg__label {
+    margin: 0 0 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .lg__toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 2px solid var(--line);
+  }
+  .lg__toc a {
+    display: block;
+    padding: 7px 0 7px 16px;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .lg__toc a:hover {
+    color: var(--ink);
+    border-left-color: var(--red);
+  }
+  .lg__content {
+    max-width: 760px;
+  }
+  .lg__section + .lg__section {
+    margin-top: 44px;
+    padding-top: 44px;
+    border-top: 1px solid var(--line);
+  }
+  .lg__h {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .lg__num {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--red);
+  }
+  .lg__content :global(p),
+  .lg__content :global(li) {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .lg__content :global(p) {
+    margin: 14px 0 0;
+  }
+  .lg__content :global(ul) {
+    margin: 12px 0 0;
+    padding-left: 22px;
+  }
+  .lg__content :global(li + li) {
+    margin-top: 6px;
+  }
+  .lg__content :global(li::marker) {
+    color: var(--red);
+  }
+  .lg__content :global(strong) {
+    color: var(--ink);
+  }
+  .lg__content :global(a) {
+    color: var(--blue);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .lg__footer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 56px;
+    padding: 28px;
+    border-radius: var(--r-lg);
+    background: var(--paper);
+  }
+  .lg__other-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .lg__content .lg__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .lg__content .lg__chip:hover {
+    color: var(--white);
+  }
+  .lg__contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .lg__grid {
+      /* minmax(0, …) lets wide tables scroll inside their box instead of stretching the page. */
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+    .lg__toc {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .lg {
+      padding: 40px 0 72px;
+    }
+    .lg__h {
+      font-size: 20px;
+    }
+    .lg__footer {
+      padding: 22px;
+    }
+  }
+</style>

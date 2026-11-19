@@ -14,7 +14,7 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
 
 <header class:list={['header', { 'header--minimal': variant === 'minimal' }]}>
   <div class="wrap header__inner">
-    <a href="/" aria-label={`${site.name} home`} class="header__logo"><Logo height={variant === 'minimal' ? 56 : 58} /></a>
+    <a href="/" aria-label={`${site.name} home`} class="header__logo"><Logo height={44} /></a>
 
     {
       variant === 'full' ? (
@@ -29,7 +29,7 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
           <div class="header__actions">
             <a class="header__phone" href={telHref}>
               <span class="header__phone-ic">
-                <Icon name="phone" size={18} />
+                <Icon name="phone" size={16} />
               </span>
               <span class="header__phone-txt">
                 <span>Call or text</span>
@@ -40,7 +40,7 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
               Book a lesson
             </a>
             <button class="header__menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
-              <Icon name="menu" size={24} />
+              <Icon name="menu" size={22} />
             </button>
           </div>
         </>
@@ -122,7 +122,7 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
   }
   .header__nav {
     display: flex;
-    gap: 26px;
+    gap: 22px;
     align-items: center;
   }
   .nav-link {
@@ -166,8 +166,8 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
     color: var(--ink);
   }
   .header__phone-ic {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: var(--paper);
     display: flex;
@@ -181,13 +181,19 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
     line-height: 1.15;
   }
   .header__phone-txt span {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     font-weight: 600;
   }
   .header__phone-txt strong {
     font-weight: 800;
-    font-size: 17px;
+    font-size: 15px;
+  }
+  /* Compact CTA so it matches the slimmer header. */
+  .header__actions .btn {
+    height: 42px;
+    padding: 0 20px;
+    font-size: 14px;
   }
   .header__help {
     font-weight: 800;
@@ -196,8 +202,8 @@ const isCurrent = (href: string) => !href.includes('#') && href === path;
   }
   .header__menu {
     display: none;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     border: 1px solid var(--line);
     background: var(--white);

@@ -18,7 +18,24 @@ export const site = {
   email: 'Sharkdrivingshools@gmail.com',
   googleRating: '[X.X]',
   googleReviewCount: '[XX]',
-  cancellationHours: '[48]',
+  /** Notice needed to cancel or move a lesson without charge (shown on the booking page and in the terms). */
+  cancellationHours: '48',
+} as const;
+
+/**
+ * Details used by the privacy policy, terms and cookie policy (data/legal/*).
+ * Empty strings are left out of the pages, so fill them in when known (see docs/ROADMAP.md).
+ */
+export const legal = {
+  /** Legal owner of the business, e.g. "Jane Smith" (sole trader) or "Shark Driving Ltd". */
+  ownerName: '',
+  /** Postal address for legal and data-protection requests. */
+  address: '',
+  /** ICO data-protection registration number (ico.org.uk). */
+  icoNumber: '',
+  lastUpdated: '19 November 2026',
+  /** How long block and course hours stay valid after purchase. */
+  blockValidityMonths: 12,
 } as const;
 
 export const telHref = `tel:${site.phone.tel}`;

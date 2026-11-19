@@ -1,0 +1,61 @@
+---
+import { legal } from '@/config/site';
+import type { LegalDoc } from '@/data/legal';
+
+interface Props {
+  doc: LegalDoc;
+}
+const { doc } = Astro.props;
+---
+
+<section class="lh">
+  <div class="wrap">
+    <nav aria-label="Breadcrumb" class="lh__crumbs"><a href="/">Home</a> / {doc.title}</nav>
+    <h1 class="d h-lg lh__title">{doc.title}</h1>
+    <p class="lh__intro">{doc.intro}</p>
+    <p class="lh__updated">Last updated {legal.lastUpdated}</p>
+  </div>
+</section>
+
+<style>
+  .lh {
+    background: var(--navy);
+    color: var(--white);
+    padding: 72px 0 64px;
+  }
+  .lh__crumbs {
+    font-size: 14px;
+    color: var(--on-dark-subtle);
+  }
+  .lh__crumbs a {
+    color: var(--on-dark-subtle);
+  }
+  .lh__title {
+    margin: 14px 0 0;
+  }
+  .lh__intro {
+    max-width: 720px;
+    margin: 20px 0 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--on-dark-muted);
+  }
+  .lh__updated {
+    display: inline-block;
+    margin: 24px 0 0;
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-dark-muted);
+  }
+  @media (max-width: 640px) {
+    .lh {
+      padding: 48px 0 44px;
+    }
+    .lh__intro {
+      font-size: 16px;
+    }
+  }
+</style>
