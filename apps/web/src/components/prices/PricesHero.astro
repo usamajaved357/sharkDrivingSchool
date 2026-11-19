@@ -17,7 +17,7 @@ import { site } from '@/config/site';
   .ph {
     background: var(--navy);
     color: var(--white);
-    padding: 90px 0 120px;
+    padding: clamp(56px, 6vw, 72px) 0 clamp(88px, 9vw, 112px);
     position: relative;
     overflow: hidden;
   }
@@ -25,7 +25,7 @@ import { site } from '@/config/site';
     position: absolute;
     right: -30px;
     bottom: -60px;
-    font-size: 260px;
+    font-size: 220px;
     color: transparent;
     -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.06);
   }

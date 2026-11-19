@@ -59,7 +59,7 @@ import { bookableLessons } from '@/data/pricing';
   .qbc :global(.qbc__fin) {
     position: absolute;
     right: 28px;
-    top: -58px;
+    top: -50px;
     z-index: 0;
   }
   .qbc__card {
@@ -68,7 +68,7 @@ import { bookableLessons } from '@/data/pricing';
     background: var(--white);
     color: var(--ink);
     border-radius: var(--r-xl);
-    padding: 32px;
+    padding: 28px 30px 26px;
     box-shadow: var(--shadow-float);
   }
   .qbc__head {
@@ -78,13 +78,13 @@ import { bookableLessons } from '@/data/pricing';
     gap: 12px;
   }
   .qbc__title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
   }
   .qbc__sub {
-    margin: 6px 0 0;
+    margin: 4px 0 0;
     color: var(--muted);
-    font-size: 15px;
+    font-size: 14px;
   }
   .qbc__chip {
     background: var(--success-bg);
@@ -96,16 +96,24 @@ import { bookableLessons } from '@/data/pricing';
     white-space: nowrap;
   }
   .qbc :global(.qbc__seg) {
-    margin-top: 24px;
+    margin-top: 18px;
+  }
+  .qbc :global(.seg) {
+    height: 40px;
   }
   .qbc__fields {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .qbc__fields :global(input),
+  .qbc__fields :global(select) {
+    height: 46px;
   }
   .qbc__submit {
-    margin-top: 6px;
+    margin-top: 4px;
+    height: 50px;
   }
   .qbc__alt {
     margin: 0;

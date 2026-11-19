@@ -17,10 +17,10 @@ import { shownStats } from '@/data/shown-content';
 
 <style>
   .stats {
-    padding: 110px 0 40px;
+    padding: clamp(64px, 7vw, 88px) 0 24px;
   }
   .stats__value {
-    font-size: 64px;
+    font-size: clamp(44px, 4.2vw, 56px);
   }
   .stats__value--blue {
     color: var(--blue);
@@ -35,7 +35,7 @@ import { shownStats } from '@/data/shown-content';
   }
   @media (max-width: 640px) {
     .stats__value {
-      font-size: 52px;
+      font-size: 44px;
     }
   }
 </style>

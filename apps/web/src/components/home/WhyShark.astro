@@ -67,7 +67,9 @@ import { features } from '@/data/home';
     position: relative;
     border-radius: 32px;
     overflow: hidden;
-    aspect-ratio: 4 / 5;
+    /* Roughly as tall as the text column beside it, never taller than a screen. */
+    aspect-ratio: 1 / 1;
+    max-height: 640px;
     background: repeating-linear-gradient(135deg, #0d2a60 0 18px, #0b2454 18px 36px);
     display: flex;
     align-items: center;

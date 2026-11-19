@@ -10,7 +10,7 @@ import { whatsappHref } from '@/config/site';
 ---
 
 <a class="wa-fab" href={whatsappHref} target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" data-wa-fab>
-  <Icon name="whatsapp" size={26} strokeWidth={2} />
+  <Icon name="whatsapp" size={26} strokeWidth={2} class="wa-fab__icon" />
   <span class="wa-fab__tip" aria-hidden="true">Chat on WhatsApp</span>
 </a>
 
@@ -41,6 +41,27 @@ import { whatsappHref } from '@/config/site';
   .wa-fab:hover {
     transform: scale(1.06);
     color: var(--white);
+  }
+
+  /* Soft green ripple spreading out from the button. */
+  .wa-fab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 50%;
+    background: var(--whatsapp);
+    animation: ripple 2.4s var(--ease-out) infinite;
+  }
+  /* The logo gives a short "ringing" wiggle every few seconds. */
+  .wa-fab :global(.wa-fab__icon) {
+    animation: wiggle 3.6s ease-in-out 1s infinite;
+    transform-origin: 50% 50%;
+  }
+  /* Calm down once the visitor is pointing at it. */
+  .wa-fab:hover::before,
+  .wa-fab:hover :global(.wa-fab__icon) {
+    animation: none;
   }
   /* Hidden while the footer is visible. */
   .wa-fab.is-hidden {
