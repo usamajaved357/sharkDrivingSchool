@@ -4,4 +4,4 @@ Allow: /
 Disallow: /api/
 
 # TODO(owner): update if the final domain changes (also astro.config.mjs and @shark/shared BUSINESS.url).
-Sitemap: https://www.sharkdrivingschool.co.uk/sitemap-index.xml
+Sitemap: https://www.sharkdrivingschools.com/sitemap-index.xml

@@ -5,7 +5,7 @@ import type { Notifier } from './notifier';
 
 export interface ResendOptions {
   apiKey: string;
-  /** Verified sender, e.g. "Shark Driving School <bookings@sharkdrivingschool.co.uk>". */
+  /** Verified sender, e.g. "Shark Driving School <bookings@sharkdrivingschools.com>". */
   from: string;
   /** Where booking and contact notifications go. */
   ownerEmail: string;

@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // Static site → Cloudflare Pages. The API lives in apps/api (Cloudflare Worker).
 export default defineConfig({
-  site: 'https://www.sharkdrivingschool.co.uk', // TODO(owner): confirm final domain
+  site: 'https://www.sharkdrivingschools.com',
   output: 'static',
   integrations: [
     // sitemap-index.xml for Google Search Console. The 404 page is excluded automatically.
@@ -13,7 +13,7 @@ export default defineConfig({
       changefreq: 'monthly',
       priority: 0.7,
       // The homepage is the most important URL.
-      serialize: (item) => (item.url === 'https://www.sharkdrivingschool.co.uk/' ? { ...item, priority: 1 } : item),
+      serialize: (item) => (item.url === 'https://www.sharkdrivingschools.com/' ? { ...item, priority: 1 } : item),
     }),
   ],
   build: { inlineStylesheets: 'auto' },

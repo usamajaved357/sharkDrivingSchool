@@ -7,12 +7,12 @@ compatibility_flags = ["nodejs_compat"]
 
 # Serve the API on the same domain as the site so the browser calls /api/* (no CORS needed).
 # Uncomment once the domain is on Cloudflare:
-# routes = [{ pattern = "sharkdrivingschool.co.uk/api/*", zone_name = "sharkdrivingschool.co.uk" }]
+# routes = [{ pattern = "sharkdrivingschools.com/api/*", zone_name = "sharkdrivingschools.com" }]
 
 [vars]
-ALLOWED_ORIGINS = "http://localhost:4321,https://sharkdrivingschool.co.uk,https://www.sharkdrivingschool.co.uk"
+ALLOWED_ORIGINS = "http://localhost:4321,https://sharkdrivingschools.com,https://www.sharkdrivingschools.com"
 NOTIFY_EMAIL = ""   # where booking alerts go; empty = the email on the site
-FROM_EMAIL = ""     # verified sender, e.g. "Shark Driving School <bookings@sharkdrivingschool.co.uk>"
+FROM_EMAIL = "Shark Driving School <bookings@sharkdrivingschools.com>"
 EMAIL_CUSTOMER = "true"          # also email the learner a confirmation
 WHATSAPP_PROVIDER = ""           # "callmebot" or "cloud" (empty = no WhatsApp alerts)
 WHATSAPP_TO = ""                 # empty = the number on the site (447440260063)

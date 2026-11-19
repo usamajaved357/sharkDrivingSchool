@@ -110,7 +110,7 @@ describe('createNotifier', () => {
       loadConfig({ RESEND_API_KEY: 'k', FROM_EMAIL: 'f', WHATSAPP_PROVIDER: 'callmebot', CALLMEBOT_API_KEY: 'c' }),
     );
     await notifier.bookingCreated(sampleBooking());
-    const owner = calls.find((c) => c.url.includes('resend') && JSON.parse(String(c.init?.body)).to === 'Sharkdrivingshools@gmail.com');
+    const owner = calls.find((c) => c.url.includes('resend') && JSON.parse(String(c.init?.body)).to === 'sharkdrivingschools@gmail.com');
     const wa = calls.find((c) => c.url.includes('callmebot'));
     expect(owner).toBeDefined();
     expect(new URL(wa!.url).searchParams.get('phone')).toBe('+447440260063');
