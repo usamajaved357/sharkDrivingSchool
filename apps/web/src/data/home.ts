@@ -30,11 +30,20 @@ export const features: { icon: IconName; title: string; text: string }[] = [
   { icon: 'chat', title: 'Multilingual instructors', text: '[Languages, e.g. English, Urdu]' },
 ];
 
+export interface Review {
+  text: string;
+  name: string;
+  meta: string;
+  initial: string;
+  color: string;
+}
+
 /**
  * Placeholder reviews. TODO: replace with real Google reviews
  * (or load them from the Google Places API — see docs/ROADMAP.md).
+ * Local dev shows sample reviews instead (data/preview-reviews.ts); production uses these.
  */
-export const reviews = [
+export const reviews: Review[] = [
   {
     text: '[Real Google review from a student — pulled automatically from your Google Business profile.]',
     name: '[Student name]',

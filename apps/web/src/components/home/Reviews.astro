@@ -2,8 +2,7 @@
 import GoogleLogo from '@/components/ui/GoogleLogo.astro';
 import Icon from '@/components/ui/Icon.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
-import { site } from '@/config/site';
-import { reviews } from '@/data/home';
+import { shownRating, shownReviews } from '@/data/review-content';
 ---
 
 <section id="reviews" class="section-lg">
@@ -13,15 +12,15 @@ import { reviews } from '@/data/home';
       <div class="card rv__badge reveal">
         <GoogleLogo />
         <div>
-          <div class="rv__score">{site.googleRating} <span class="rv__stars">★★★★★</span></div>
-          <div class="rv__count">{site.googleReviewCount} Google reviews</div>
+          <div class="rv__score">{shownRating.rating} <span class="rv__stars">★★★★★</span></div>
+          <div class="rv__count">{shownRating.count} Google reviews</div>
         </div>
       </div>
     </div>
 
     <div class="g3 rv__grid">
       {
-        reviews.map((r, i) => (
+        shownReviews.map((r, i) => (
           <figure class="card rv__card reveal" style={`--reveal-delay:${i * 0.1}s`}>
             <div class="rv__top">
               <span class="rv__stars rv__stars--lg" aria-label="5 out of 5 stars">
