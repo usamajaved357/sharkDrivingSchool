@@ -1,6 +1,7 @@
 import type { Booking } from '@shark/shared';
 import type { ContactMessage } from '../../repositories/contact.repository';
 import { contactEmail, customerBookingEmail, ownerBookingEmail, type EmailContent } from './booking-emails';
+import { EMAIL_LOGO } from './email-logo';
 import type { Notifier } from './notifier';
 
 export interface ResendOptions {
@@ -29,6 +30,8 @@ export class ResendNotifier implements Notifier {
         subject: content.subject,
         html: content.html,
         text: content.text,
+        // The logo travels with the email (cid:shark-logo), so it shows even before the site is live.
+        attachments: [{ filename: EMAIL_LOGO.filename, content: EMAIL_LOGO.base64, content_id: EMAIL_LOGO.contentId }],
         ...(replyTo ? { reply_to: replyTo } : {}),
       }),
     });

@@ -55,7 +55,7 @@ describe('booking emails', () => {
     expect(email.html).toContain('12 Test Street, M14 5RB');
     expect(email.html).toContain('href="tel:07123456789"');
     expect(email.html).toContain('href="https://wa.me/447123456789"');
-    expect(email.html).toContain('/images/logo.jpg');
+    expect(email.html).toContain('src="cid:shark-logo"');
     expect(email.text).toContain('Reference: SHK-ABC234');
   });
 

@@ -30,6 +30,32 @@ export function formatWhen(b: Pick<Booking, 'date' | 'time'>): string {
   return `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} at ${b.time}`;
 }
 
+const tileFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+/** Pieces for the email calendar tile: { weekday: 'Tue', day: '24', month: 'Nov' }. */
+export function dateParts(date: string): { weekday: string; day: string; month: string } {
+  const [y, m, d] = date.split('-').map(Number) as [number, number, number];
+  const parts = Object.fromEntries(tileFmt.formatToParts(new Date(Date.UTC(y, m - 1, d, 12))).map((p) => [p.type, p.value]));
+  return { weekday: parts.weekday ?? '', day: parts.day ?? '', month: parts.month ?? '' };
+}
+
+const receivedFmt = new Intl.DateTimeFormat('en-GB', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+  timeZone: 'Europe/London',
+});
+
+/** When the request came in, in UK time: "Thu 19 Nov 2026 at 13:37". */
+export function formatReceived(iso: string): string {
+  const parts = Object.fromEntries(receivedFmt.formatToParts(new Date(iso)).map((p) => [p.type, p.value]));
+  return `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} at ${parts.hour}:${parts.minute}`;
+}
+
 /** UK number → international digits for wa.me links ("07440 260063" → "447440260063"). */
 export function toInternational(phone: string): string {
   const digits = phone.replace(/[^\d+]/g, '');

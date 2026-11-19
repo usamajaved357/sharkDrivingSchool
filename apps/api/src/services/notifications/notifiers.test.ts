@@ -36,6 +36,11 @@ describe('ResendNotifier', () => {
     expect(bodies[0].reply_to).toBe('sam@example.com'); // owner can reply straight to the learner
     expect(bodies[0].subject).toContain('New booking SHK-ABC234');
     expect(bodies[0].text).toContain('Pick-up: 12 Test Street, M14 5RB');
+    // Logo travels inline with every email, matching the cid: in the HTML.
+    for (const body of bodies) {
+      expect(body.attachments[0]).toMatchObject({ content_id: 'shark-logo', filename: expect.stringMatching(/\.jpg$/) });
+      expect(body.html).toContain('cid:shark-logo');
+    }
   });
 
   it('can skip the learner email', async () => {

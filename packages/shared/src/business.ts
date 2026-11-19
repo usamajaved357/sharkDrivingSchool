@@ -4,7 +4,6 @@
  */
 export const BUSINESS = {
   name: 'Shark Driving School',
-  /** TODO(owner): confirm the final domain before launch. */
   url: 'https://www.sharkdrivingschools.com',
   phone: {
     display: '07440 260063',
@@ -22,5 +21,3 @@ export const BUSINESS = {
   region: 'Greater Manchester',
 } as const;
 
-/** Absolute URL of the logo used in emails. */
-export const BUSINESS_LOGO_URL = `${BUSINESS.url}/images/logo.jpg`;
