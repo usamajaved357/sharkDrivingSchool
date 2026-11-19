@@ -38,7 +38,7 @@ export const icons = {
   car: {
     body: '<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>',
   },
-  flag: { body: '<path d="M4 22V4c4-2 8 2 12 0v10c-4 2-8-2-12 0"/>' },
+  flag: { body: '<path d="M5 21V4"/><path d="M5 4h12l-3 4 3 4H5"/>' },
   plus: { body: '<path d="M12 5v14M5 12h14"/>' },
   menu: { body: '<path d="M4 7h16M4 12h16M4 17h16"/>' },
   close: { body: '<path d="M6 6l12 12M18 6 6 18"/>' },

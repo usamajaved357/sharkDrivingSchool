@@ -53,6 +53,7 @@ export const cookiePolicy: LegalDoc = {
           type: 'ul',
           items: [
             '**Google Fonts:** the fonts on this site load from Google. Google receives your IP address when the page loads but does not set cookies for this.',
+            '**OpenStreetMap and Unsplash:** the coverage map images and some photos load from their servers, which receive your IP address. They do not set cookies on this site.',
             '**WhatsApp, Google and other links:** if you follow a link to WhatsApp or another website, that site may set its own cookies under its own policy.',
           ],
         },

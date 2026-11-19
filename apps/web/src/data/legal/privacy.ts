@@ -78,6 +78,8 @@ export const privacyPolicy: LegalDoc = {
             '**Cloudflare**, which hosts this website and the database that stores bookings and messages',
             '**Resend**, which delivers booking confirmation emails',
             '**Google Fonts**, which serves the fonts on this site and receives your IP address when the page loads',
+            '**OpenStreetMap**, which serves the map images on the home page and receives your IP address when they load',
+            '**Unsplash**, which serves some of the photos on this site and receives your IP address when they load',
             '**WhatsApp (Meta)**, if you choose to message us on WhatsApp',
             '**the DVSA**, if you ask us to book or manage a driving test for you',
             'the police, courts or other authorities, if the law requires it',

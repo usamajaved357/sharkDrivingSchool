@@ -41,7 +41,7 @@ const pins = mapPins.map((p) => ({ ...p, ...toPercent(mapView, p.lat, p.lon) }))
     </div>
     <div class="cm__tint" aria-hidden="true"></div>
     <ul class="cm__pins" aria-label={`Areas on the map: ${mapPins.map((p) => p.label).join(', ')}`}>
-      {pins.map((p) => <MapPin label={p.label} left={p.left} top={p.top} side={p.side} main={p.main} />)}
+      {pins.map((p) => <MapPin label={p.label} left={p.left} top={p.top} side={p.side} main={p.main} nearCentre={p.nearCentre} />)}
     </ul>
     <p class="cm__credit">
       © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors

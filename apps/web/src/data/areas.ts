@@ -36,6 +36,8 @@ export interface MapPin {
   side?: 'left' | 'right';
   /** The central pin (Manchester) is drawn as a larger red marker. */
   main?: boolean;
+  /** Hidden on small maps, where it would sit on top of the Manchester marker. */
+  nearCentre?: boolean;
 }
 
 /**
@@ -47,7 +49,7 @@ export const mapView = { lat: 53.497, lon: -2.36, zoom: 11, width: 800, height: 
 /** Towns pinned on the coverage map, at their real positions. */
 export const mapPins: MapPin[] = [
   { label: 'Manchester', lat: 53.4794, lon: -2.2453, main: true },
-  { label: 'Salford', lat: 53.4875, lon: -2.2901, side: 'left' },
+  { label: 'Salford', lat: 53.4875, lon: -2.2901, side: 'left', nearCentre: true },
   { label: 'Bolton', lat: 53.5769, lon: -2.4282 },
   { label: 'Bury', lat: 53.5933, lon: -2.2966 },
   { label: 'Rochdale', lat: 53.6097, lon: -2.1561 },
