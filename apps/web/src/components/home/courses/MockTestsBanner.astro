@@ -1,0 +1,80 @@
+---
+/** Full-width closing strip ("Mock tests"): navy-to-blue gradient, glass icon and a white CTA pill. */
+import Icon from '@/components/ui/Icon.astro';
+import type { CourseTile } from '@/data/courses';
+
+interface Props {
+  tile: CourseTile;
+  style?: string;
+}
+const { tile, style } = Astro.props;
+---
+
+<a class="card reveal tile mb" href={tile.href} style={style}>
+  <span class="mb__ic">{tile.icon && <Icon name={tile.icon} size={30} strokeWidth={2} />}</span>
+  <div class="mb__body">
+    <h3 class="mb__title">{tile.title}</h3>
+    <p class="mb__text">{tile.text}</p>
+  </div>
+  <span class="btn btn--white btn--sm mb__cta">
+    {tile.cta}
+    <Icon name="arrow-right" size={16} strokeWidth={2.6} />
+  </span>
+</a>
+
+<style>
+  .mb {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+    padding: 26px 30px;
+    color: var(--white);
+    border-color: var(--navy-2);
+    background:
+      radial-gradient(500px 200px at 90% 50%, rgba(76, 141, 255, 0.35), transparent 70%),
+      linear-gradient(110deg, var(--navy) 0%, var(--navy-2) 55%, var(--blue) 100%);
+  }
+  .mb__ic {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    background: var(--glass-dark-bg);
+    border: 1px solid var(--glass-dark-border);
+    box-shadow: var(--glass-highlight);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+  }
+  .mb__body {
+    flex: 1;
+  }
+  .mb__title {
+    color: var(--white);
+    font-size: 21px;
+    font-weight: 800;
+    margin: 0 0 4px;
+  }
+  .mb__text {
+    margin: 0;
+    color: var(--on-dark-muted);
+    line-height: 1.5;
+  }
+  .mb__cta {
+    flex: none;
+    height: 44px;
+  }
+  .mb:hover .mb__cta {
+    color: var(--red);
+  }
+  @media (max-width: 640px) {
+    .mb {
+      grid-column: auto;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

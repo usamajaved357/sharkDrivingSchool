@@ -52,6 +52,23 @@
 
   /* Motion */
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Liquid glass (frosted, translucent surfaces with a bright top edge) */
+  --glass-blur: blur(22px) saturate(180%);
+  /* On dark backgrounds (hero, navy sections) */
+  --glass-dark-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%);
+  --glass-dark-border: rgba(255, 255, 255, 0.22);
+  /* On light backgrounds (white/paper panels) */
+  --glass-light-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(244, 247, 252, 0.72) 100%);
+  --glass-light-border: rgba(255, 255, 255, 0.9);
+  /* Specular highlight along the top edge + soft inner rim */
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  /* Glossy sheen used on buttons and active tabs */
+  --glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0) 52%);
+
+  /* Dropdown chevrons (select fields). Colours match --muted and --white. */
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234e5d78' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  --select-arrow-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
 @media (max-width: 640px) {

@@ -1,0 +1,98 @@
+---
+/** Small course tile (Automatic, Manual, Refresher, Pass Plus): tinted glow, icon pop and tone border on hover. */
+import Icon from '@/components/ui/Icon.astro';
+import type { CourseTile } from '@/data/courses';
+
+interface Props {
+  tile: CourseTile;
+  style?: string;
+}
+const { tile, style } = Astro.props;
+const tone = tile.tone ?? 'blue';
+---
+
+<a class:list={['card', 'reveal', 'tile', 'st', `st--${tone}`]} href={tile.href} style={style}>
+  <div class="st__top">
+    <span class:list={['ic', `ic--${tone}`, 'st__ic']}>
+      {tile.icon && <Icon name={tile.icon} size={24} strokeWidth={2} />}
+    </span>
+    <span class="st__go" aria-hidden="true"><Icon name="arrow-right" size={16} strokeWidth={2.6} /></span>
+  </div>
+  <div class="st__body">
+    <h3 class="st__title">{tile.title}</h3>
+    <p class="st__text">{tile.text}</p>
+    <span class="more st__more">
+      {tile.cta} <Icon name="arrow-right" size={16} strokeWidth={2.6} />
+    </span>
+  </div>
+</a>
+
+<style>
+  .st {
+    padding: 26px;
+    color: var(--ink);
+    --tone: var(--blue);
+    --tone-glow: rgba(11, 77, 186, 0.1);
+    background:
+      radial-gradient(260px 160px at 100% 0%, var(--tone-glow), transparent 70%),
+      var(--white);
+  }
+  .st--red {
+    --tone: var(--red);
+    --tone-glow: rgba(225, 6, 0, 0.08);
+  }
+  .st:hover {
+    border-color: var(--tone);
+  }
+  .st__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .st__ic {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .st:hover .st__ic {
+    transform: rotate(-8deg) scale(1.1);
+  }
+  /* Round arrow that fills with the tone colour on hover */
+  .st__go {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--tone);
+    border: 1px solid var(--line);
+    transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s;
+  }
+  .st:hover .st__go {
+    background: var(--tone);
+    border-color: var(--tone);
+    color: var(--white);
+    transform: rotate(-45deg);
+  }
+  .st__title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 4px;
+  }
+  .st__text {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .st__more {
+    margin-top: 12px;
+    color: var(--tone);
+  }
+  @media (max-width: 640px) {
+    .st {
+      min-height: 200px;
+    }
+  }
+</style>

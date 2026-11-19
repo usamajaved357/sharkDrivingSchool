@@ -20,7 +20,7 @@ import { bookableLessons } from '@/data/pricing';
       <span class="qbc__chip">Slots this week</span>
     </div>
 
-    <SegmentedToggle group="hero-trans" label="Transmission" class="qbc__seg" />
+    <SegmentedToggle group="hero-trans" label="Transmission" variant="dark" class="qbc__seg" />
     <input type="hidden" name="transmission" value="manual" />
 
     <div class="qbc__fields">
@@ -35,7 +35,7 @@ import { bookableLessons } from '@/data/pricing';
         </select>
       </div>
       <button class="btn btn--red btn--block qbc__submit" type="submit">
-        Check availability — <span data-bind-group="hero-trans" data-text-manual="Manual" data-text-automatic="Automatic">Manual</span>
+        <span>Check availability · <span data-bind-group="hero-trans" data-text-manual="Manual" data-text-automatic="Automatic">Manual</span></span>
       </button>
       <p class="qbc__alt">Prefer to chat? <a href={whatsappHref}>WhatsApp us</a></p>
     </div>
@@ -62,14 +62,18 @@ import { bookableLessons } from '@/data/pricing';
     top: -50px;
     z-index: 0;
   }
+  /* Liquid glass card: the hero (fin, watermark, glow) shows through, frosted. */
   .qbc__card {
     position: relative;
     z-index: 1;
-    background: var(--white);
-    color: var(--ink);
+    background: var(--glass-dark-bg);
+    border: 1px solid var(--glass-dark-border);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    color: var(--white);
     border-radius: var(--r-xl);
     padding: 28px 30px 26px;
-    box-shadow: var(--shadow-float);
+    box-shadow: var(--glass-highlight), var(--shadow-float);
   }
   .qbc__head {
     display: flex;
@@ -83,7 +87,7 @@ import { bookableLessons } from '@/data/pricing';
   }
   .qbc__sub {
     margin: 4px 0 0;
-    color: var(--muted);
+    color: var(--on-dark-muted);
     font-size: 14px;
   }
   .qbc__chip {
@@ -107,9 +111,31 @@ import { bookableLessons } from '@/data/pricing';
     gap: 12px;
     margin-top: 16px;
   }
+  .qbc__fields :global(label) {
+    color: var(--on-dark-muted);
+  }
+  /* Glass inputs */
   .qbc__fields :global(input),
   .qbc__fields :global(select) {
     height: 46px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--glass-dark-border);
+    color: var(--white);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .qbc__fields :global(select) {
+    background-image: var(--select-arrow-light);
+  }
+  .qbc__fields :global(option) {
+    color: var(--ink);
+  }
+  .qbc__fields :global(input::placeholder) {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .qbc__fields :global(input:focus),
+  .qbc__fields :global(select:focus) {
+    border-color: var(--sky);
+    background-color: rgba(255, 255, 255, 0.12);
   }
   .qbc__submit {
     margin-top: 4px;
@@ -119,10 +145,11 @@ import { bookableLessons } from '@/data/pricing';
     margin: 0;
     text-align: center;
     font-size: 14px;
-    color: var(--muted);
+    color: var(--on-dark-muted);
   }
   .qbc__alt a {
     font-weight: 700;
+    color: var(--sky-soft);
   }
   @media (max-width: 640px) {
     .qbc__card {

@@ -1,0 +1,139 @@
+---
+/** Wide red "Intensive & fast-track" tile: red gradient, speed streaks, glass chips and a glass gauge. */
+import Icon from '@/components/ui/Icon.astro';
+import type { CourseTile } from '@/data/courses';
+
+interface Props {
+  tile: CourseTile;
+  style?: string;
+}
+const { tile, style } = Astro.props;
+---
+
+<a class="card reveal tile it" href={tile.href} style={style}>
+  <span class="it__streaks" aria-hidden="true"></span>
+  <div class="it__body">
+    <div>
+      <h3 class="d it__title">{tile.title}</h3>
+      <p class="it__text">{tile.text}</p>
+    </div>
+    <div class="it__foot">
+      {
+        tile.tags && (
+          <ul class="it__tags">
+            {tile.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+      <span class="more it__cta">
+        {tile.cta} <Icon name="arrow-right" size={16} strokeWidth={2.6} />
+      </span>
+    </div>
+  </div>
+  {
+    tile.icon && (
+      <span class="hide-sm it__gauge">
+        <Icon name={tile.icon} size={72} strokeWidth={1.6} />
+      </span>
+    )
+  }
+</a>
+
+<style>
+  .it {
+    grid-column: span 2;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 24px;
+    padding: 30px 32px;
+    color: var(--white);
+    border-color: var(--red);
+    background:
+      radial-gradient(420px 220px at 85% 20%, rgba(255, 255, 255, 0.18), transparent 70%),
+      linear-gradient(135deg, var(--red) 0%, var(--red-2) 100%);
+  }
+  /* Diagonal speed streaks that slide on hover. */
+  .it__streaks {
+    position: absolute;
+    inset: -20% -10% -20% 45%;
+    background: repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 22px);
+    transition: transform 0.8s var(--ease-out);
+  }
+  .it:hover .it__streaks {
+    transform: translateX(-30px);
+  }
+  .it__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .it__title {
+    font-size: clamp(28px, 2.3vw, 34px);
+    color: var(--white);
+  }
+  .it__text {
+    color: var(--red-tint);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 8px 0 0;
+  }
+  .it__foot {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+  }
+  /* Glass chips */
+  .it__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+  }
+  .it__tags li {
+    padding: 5px 12px;
+    border-radius: var(--r-pill);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--glass-dark-bg);
+    border: 1px solid var(--glass-dark-border);
+    box-shadow: var(--glass-highlight);
+  }
+  .it__cta {
+    color: var(--white);
+  }
+  /* Glass dial around the gauge icon */
+  .it__gauge {
+    position: relative;
+    flex: none;
+    align-self: center;
+    width: 116px;
+    height: 116px;
+    margin-left: auto;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--glass-dark-bg);
+    border: 1px solid var(--glass-dark-border);
+    box-shadow: var(--glass-highlight), 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .it:hover .it__gauge {
+    transform: rotate(-12deg) scale(1.05);
+  }
+  @media (max-width: 640px) {
+    .it {
+      grid-column: auto;
+    }
+  }
+</style>

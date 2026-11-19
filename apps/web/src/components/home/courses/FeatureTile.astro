@@ -1,0 +1,121 @@
+---
+/** Tall "Beginner lessons" tile: full-bleed photo under a navy fade, glass badge, bold title. */
+import Icon from '@/components/ui/Icon.astro';
+import type { CourseTile } from '@/data/courses';
+
+interface Props {
+  tile: CourseTile;
+  style?: string;
+}
+const { tile, style } = Astro.props;
+const photo = (w: number) => `${tile.image?.src}?w=${w}&q=75&auto=format`;
+---
+
+<a class="card reveal tile ft" href={tile.href} style={style}>
+  {
+    tile.image && (
+      <img
+        class="ft__photo"
+        src={photo(700)}
+        srcset={`${photo(500)} 500w, ${photo(700)} 700w, ${photo(1000)} 1000w`}
+        sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 25vw"
+        alt={tile.image.alt}
+        width="700"
+        height="933"
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  <div class="ft__top">
+    {tile.badge && <span class="badge ft__badge">{tile.badge}</span>}
+  </div>
+  <div class="ft__body">
+    <h3 class="d ft__title">{tile.title}</h3>
+    <p class="ft__text">{tile.text}</p>
+    <span class="ft__cta">
+      {tile.cta}
+      <span class="ft__arrow"><Icon name="arrow-right" size={16} strokeWidth={2.6} /></span>
+    </span>
+  </div>
+</a>
+
+<style>
+  .ft {
+    grid-row: span 2;
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+    padding: 28px;
+  }
+  .ft__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 35% 50%;
+    transition: transform 0.8s var(--ease-out);
+  }
+  .ft:hover .ft__photo {
+    transform: scale(1.06);
+  }
+  /* Navy fade so the text always reads over the photo. */
+  .ft::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--navy) 18%, rgba(6, 20, 46, 0.55) 55%, rgba(6, 20, 46, 0.05) 100%);
+  }
+  .ft__top,
+  .ft__body {
+    position: relative;
+    z-index: 1;
+  }
+  .ft__badge {
+    box-shadow: var(--shadow-red);
+  }
+  .ft__title {
+    font-size: clamp(34px, 2.8vw, 42px);
+    margin: 0;
+    color: var(--white);
+  }
+  .ft__text {
+    color: var(--on-dark-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 12px 0 20px;
+  }
+  .ft__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--white);
+  }
+  /* Glass arrow button */
+  .ft__arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--glass-dark-bg);
+    border: 1px solid var(--glass-dark-border);
+    box-shadow: var(--glass-highlight);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    transition: transform 0.25s var(--ease-out), background 0.25s;
+  }
+  .ft:hover .ft__arrow {
+    transform: translateX(4px);
+    background: var(--red);
+  }
+  @media (max-width: 640px) {
+    .ft {
+      grid-row: auto;
+      min-height: 380px;
+    }
+  }
+</style>
