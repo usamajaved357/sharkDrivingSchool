@@ -1,14 +1,22 @@
 /**
- * LOCAL PREVIEW ONLY. Sample reviews and rating so the Reviews section looks finished
- * while running `npm run dev`. These are not real students and must never be published:
- * `data/review-content.ts` only uses them in dev, so production builds never include them.
+ * LOCAL PREVIEW ONLY. Sample reviews, rating and stats so the home page looks finished
+ * while running `npm run dev`. These are not real students or real figures and must never
+ * be published: `data/shown-content.ts` only uses them in dev, so production builds never
+ * include them.
  *
- * Replace `reviews` in `data/home.ts` and the rating in `config/site.ts` with real
- * Google data before launch.
+ * Before launch, put the real figures in `data/home.ts` (`stats`, `reviews`) and
+ * `config/site.ts` (`googleRating`, `googleReviewCount`).
  */
-import type { Review } from './home';
+import type { Review, Stat } from './home';
 
 export const previewRating = { rating: '4.9', count: '120+' };
+
+export const previewStats: Stat[] = [
+  { value: '78%', label: 'First-time pass rate', tone: 'blue' },
+  { value: '1,200+', label: 'Learners on the road', tone: 'blue' },
+  { value: `${previewRating.rating}★`, label: 'Average Google rating', tone: 'blue' },
+  { value: '2 in 1', label: 'Manual & automatic cars', tone: 'red' },
+];
 
 export const previewReviews: Review[] = [
   {

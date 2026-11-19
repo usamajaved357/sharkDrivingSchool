@@ -1,12 +1,21 @@
 import type { IconName } from '@/components/ui/icons';
 
-/** Stats band. [Placeholders] must be replaced with real figures before launch. */
-export const stats = [
+export interface Stat {
+  value: string;
+  label: string;
+  tone: 'blue' | 'red';
+}
+
+/**
+ * Stats band. [Placeholders] must be replaced with real figures before launch.
+ * Local dev shows sample figures instead (data/preview-data.ts); production uses these.
+ */
+export const stats: Stat[] = [
   { value: '[XX]%', label: 'First-time pass rate', tone: 'blue' },
   { value: '[X,XXX]+', label: 'Learners on the road', tone: 'blue' },
   { value: '[X.X]★', label: 'Average Google rating', tone: 'blue' },
   { value: '2 in 1', label: 'Manual & automatic cars', tone: 'red' },
-] as const;
+];
 
 export const heroTrust: { icon: IconName; label: string }[] = [
   { icon: 'shield-check', label: 'DVSA-approved' },
@@ -41,7 +50,7 @@ export interface Review {
 /**
  * Placeholder reviews. TODO: replace with real Google reviews
  * (or load them from the Google Places API — see docs/ROADMAP.md).
- * Local dev shows sample reviews instead (data/preview-reviews.ts); production uses these.
+ * Local dev shows sample reviews instead (data/preview-data.ts); production uses these.
  */
 export const reviews: Review[] = [
   {
