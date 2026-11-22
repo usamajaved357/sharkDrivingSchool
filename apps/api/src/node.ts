@@ -6,7 +6,7 @@ import { serve } from '@hono/node-server';
 import { createApp } from './app';
 import { loadConfig } from './config';
 import { buildDeps } from './deps';
-import { MemoryBookingRepository } from './repositories/memory/booking.memory';
+import { MemoryEnquiryRepository } from './repositories/memory/enquiry.memory';
 import { MemoryContactRepository } from './repositories/memory/contact.memory';
 
 try {
@@ -16,7 +16,7 @@ try {
 }
 
 const deps = buildDeps(loadConfig(process.env), {
-  bookings: new MemoryBookingRepository(),
+  enquiries: new MemoryEnquiryRepository(),
   contacts: new MemoryContactRepository(),
 });
 

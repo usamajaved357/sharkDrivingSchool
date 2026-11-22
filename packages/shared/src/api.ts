@@ -6,17 +6,7 @@ export type ApiFailure = {
 };
 export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
 
-export interface AvailabilitySlot {
-  time: string;
-  available: boolean;
-}
-
-export interface AvailabilityResponse {
-  date: string;
-  slots: AvailabilitySlot[];
-}
-
-export interface CreateBookingResponse {
+export interface CreateEnquiryResponse {
   id: string;
   reference: string;
 }

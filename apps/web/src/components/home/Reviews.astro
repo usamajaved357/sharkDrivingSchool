@@ -2,13 +2,15 @@
 /**
  * "Learners who passed": the learners' own pass photos from their Google reviews, with their
  * words (data/reviews.ts + data/passes.ts), the live Google rating, a note about the former
- * name, and links to read every review or leave one on Google.
+ * name, and links to read every review or leave one on Google. Every review appears once:
+ * cards with a pass photo first, then written reviews as quote cards.
  */
 import RailNav from '@/components/ui/RailNav.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import { site } from '@/config/site';
 import { hasReviews, shownReviews } from '@/data/shown-content';
 import RatingBadge from './reviews/RatingBadge.astro';
+import ReviewDialog from './reviews/ReviewDialog.astro';
 import StoryCard from './reviews/StoryCard.astro';
 
 // Pass photos first, then the written reviews; every review appears once.
@@ -22,13 +24,15 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
         <div class="st__head">
           <SectionHeader eyebrow="Google reviews" title="Learners who passed">
             <p class="st__former">
-              Real learners, real passes. Some mention <b>{site.formerName}</b>: that's us, same instructors, new name.{' '}
-              <a href={site.google.writeReviewUrl} target="_blank" rel="noopener">
-                Learned with us? Leave a review
-              </a>
+              Real learners, real passes. Some mention <b>{site.formerName}</b>: that's us, same instructors, new name.
             </p>
           </SectionHeader>
-          <RatingBadge class="reveal" />
+          <div class="st__side reveal">
+            <RatingBadge />
+            <a class="st__write" href={site.google.writeReviewUrl} target="_blank" rel="noopener">
+              Learned with us? Leave a review
+            </a>
+          </div>
         </div>
 
         <div class="rail st__rail reveal">
@@ -38,6 +42,7 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
           <RailNav label="pass stories" />
         </div>
       </div>
+      <ReviewDialog />
     </section>
   )
 }
@@ -66,15 +71,26 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
   .st__former b {
     color: var(--ink);
   }
-  .st__former a {
+  .st__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .st__write {
+    font-size: 14px;
     font-weight: 700;
-    white-space: nowrap;
+    padding-right: 12px;
+  }
+  @media (max-width: 640px) {
+    .st__side {
+      align-items: flex-start;
+    }
+    .st__write {
+      padding: 0 0 0 4px;
+    }
   }
   .st__rail {
     margin-top: clamp(20px, 3vh, 36px);
-  }
-  /* Cards keep their own height when one is expanded. */
-  .st__rail :global(.rail__track) {
-    align-items: flex-start;
   }
 </style>

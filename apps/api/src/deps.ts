@@ -1,14 +1,13 @@
 import type { AppConfig } from './config';
-import type { BookingRepository } from './repositories/booking.repository';
 import type { ContactRepository } from './repositories/contact.repository';
-import { AvailabilityService } from './services/availability.service';
-import { BookingService } from './services/booking.service';
+import type { EnquiryRepository } from './repositories/enquiry.repository';
 import { ContactService } from './services/contact.service';
 import { CoverageService } from './services/coverage.service';
+import { EnquiryService } from './services/enquiry.service';
 import { createNotifier } from './services/notifications';
 
 export interface Repositories {
-  bookings: BookingRepository;
+  enquiries: EnquiryRepository;
   contacts: ContactRepository;
 }
 
@@ -16,8 +15,7 @@ export interface Repositories {
 export interface AppDeps {
   config: AppConfig;
   services: {
-    availability: AvailabilityService;
-    bookings: BookingService;
+    enquiries: EnquiryService;
     contact: ContactService;
     coverage: CoverageService;
   };
@@ -25,12 +23,10 @@ export interface AppDeps {
 
 export function buildDeps(config: AppConfig, repos: Repositories): AppDeps {
   const notifier = createNotifier(config);
-  const availability = new AvailabilityService(repos.bookings);
   return {
     config,
     services: {
-      availability,
-      bookings: new BookingService(repos.bookings, availability, notifier),
+      enquiries: new EnquiryService(repos.enquiries, notifier),
       contact: new ContactService(repos.contacts, notifier),
       coverage: new CoverageService(),
     },

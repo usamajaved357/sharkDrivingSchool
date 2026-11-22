@@ -4,10 +4,9 @@ import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
 import type { AppDeps, AppEnv } from './deps';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
-import { availabilityRoutes } from './routes/availability';
-import { bookingRoutes } from './routes/bookings';
 import { contactRoutes } from './routes/contact';
 import { coverageRoutes } from './routes/coverage';
+import { enquiryRoutes } from './routes/enquiries';
 import { healthRoutes } from './routes/health';
 
 /**
@@ -34,8 +33,7 @@ export function createApp(resolveDeps: (c: Context) => AppDeps) {
   );
 
   app.route('/api/health', healthRoutes);
-  app.route('/api/availability', availabilityRoutes);
-  app.route('/api/bookings', bookingRoutes);
+  app.route('/api/enquiries', enquiryRoutes);
   app.route('/api/contact', contactRoutes);
   app.route('/api/coverage', coverageRoutes);
 
