@@ -1,0 +1,82 @@
+---
+/** Shown after the enquiry is sent. The form script fills in the name, reference and email line. */
+import Icon from '@/components/ui/Icon.astro';
+import { mailtoHref, site, telHref, whatsappHref } from '@/config/site';
+---
+
+<section class="ed" data-enquiry-done hidden tabindex="-1" aria-live="polite">
+  <div class="ed__tick"><Icon name="check" size={44} strokeWidth={3} /></div>
+  <h2 class="d ed__title">Thanks<span data-done-name></span>!</h2>
+  <p class="ed__text">
+    We've got your details. <b>We'll call or WhatsApp you soon</b> to arrange your lessons.
+  </p>
+  <p class="ed__ref">Your reference: <b data-done-ref>—</b></p>
+  <p class="ed__text ed__email" data-done-email hidden>We've also emailed you a copy.</p>
+  <div class="ed__actions">
+    <a class="btn btn--outline" href="/">Back to home</a>
+    <a class="btn btn--red" href={whatsappHref} data-done-whatsapp target="_blank" rel="noopener">
+      <Icon name="whatsapp" size={18} /> WhatsApp us now
+    </a>
+  </div>
+  <p class="ed__text ed__contact">
+    Need to change something? Call <a href={telHref}>{site.phone.display}</a> or email <a href={mailtoHref}>{site.email}</a>.
+  </p>
+</section>
+
+<style>
+  .ed {
+    text-align: center;
+    padding: 40px 0 10px;
+    outline: none;
+  }
+  .ed[hidden] {
+    display: none;
+  }
+  .ed__tick {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: var(--success);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    margin: 0 auto;
+    animation: pop 0.6s var(--ease-out) both;
+  }
+  .ed__title {
+    margin: 22px 0 0;
+    font-size: clamp(34px, 4vw, 46px);
+  }
+  .ed__text {
+    margin: 14px auto 0;
+    max-width: 480px;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .ed__text b {
+    color: var(--ink);
+  }
+  .ed__ref {
+    margin: 16px 0 0;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .ed__ref b {
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .ed__actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+  .ed__actions :global(.btn) {
+    gap: 8px;
+  }
+  .ed__contact {
+    font-size: 15px;
+  }
+</style>

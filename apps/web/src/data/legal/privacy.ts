@@ -24,14 +24,15 @@ export const privacyPolicy: LegalDoc = {
       id: 'what-we-collect',
       heading: 'What information we collect',
       blocks: [
-        { type: 'p', text: '**When you book a lesson online**, we collect:' },
+        { type: 'p', text: '**When you send your details through our booking form**, we collect:' },
         {
           type: 'ul',
           items: [
-            'your full name, mobile number and email address',
-            'your pick-up postcode',
-            'the lesson you chose (gearbox, lesson type, date and time)',
-            'your confirmation that you hold a valid UK provisional licence (we do not store a copy of your licence)',
+            'your full name, whether you are male or female (so we can respect your instructor preference), mobile number and, if you give it, your email address',
+            'your pick-up address and postcode',
+            'your gearbox choice, driving experience, instructor preference and the times you are free',
+            'whether your driving test is booked and, if so, the test centre, date and time',
+            'anything else you choose to tell us in the notes box',
           ],
         },
         {

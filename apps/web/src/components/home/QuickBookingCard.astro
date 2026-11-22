@@ -1,7 +1,7 @@
 ---
 /**
- * Hero "Find your instructor" card. Submits as a GET to /book so the
- * booking wizard opens with transmission, lesson and postcode prefilled.
+ * Hero "Find your instructor" card. Submits as a GET to /book so the enquiry
+ * form opens with gearbox, interest and postcode prefilled.
  */
 import Fin from '@/components/ui/Fin.astro';
 import SegmentedToggle from '@/components/ui/SegmentedToggle.astro';
@@ -15,9 +15,9 @@ import { bookableLessons } from '@/data/pricing';
     <div class="qbc__head">
       <div>
         <h2 class="qbc__title">Find your instructor</h2>
-        <p class="qbc__sub">See free slots near you in seconds.</p>
+        <p class="qbc__sub">Tell us where you are and we'll call you back.</p>
       </div>
-      <span class="qbc__chip">Slots this week</span>
+      <span class="qbc__chip">Free pick-up</span>
     </div>
 
     <SegmentedToggle group="hero-trans" label="Transmission" variant="dark" class="qbc__seg" />
@@ -35,7 +35,7 @@ import { bookableLessons } from '@/data/pricing';
         </select>
       </div>
       <button class="btn btn--red btn--block qbc__submit" type="submit">
-        <span>Check availability · <span data-bind-group="hero-trans" data-text-manual="Manual" data-text-automatic="Automatic">Manual</span></span>
+        <span>Get started · <span data-bind-group="hero-trans" data-text-manual="Manual" data-text-automatic="Automatic">Manual</span></span>
       </button>
       <p class="qbc__alt">Prefer to chat? <a href={whatsappHref}>WhatsApp us</a></p>
     </div>

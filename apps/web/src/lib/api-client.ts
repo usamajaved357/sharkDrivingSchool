@@ -1,13 +1,7 @@
 /**
  * Typed client for apps/api. All network calls from the browser go through here.
  */
-import type {
-  ApiResponse,
-  AvailabilityResponse,
-  BookingRequest,
-  CoverageResponse,
-  CreateBookingResponse,
-} from '@shark/shared';
+import type { ApiResponse, CoverageResponse, CreateEnquiryResponse, EnquiryRequest } from '@shark/shared';
 
 const BASE = (import.meta.env.PUBLIC_API_URL ?? '').replace(/\/$/, '');
 
@@ -36,17 +30,15 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     body = (await res.json()) as ApiResponse<T>;
   } catch {
-    throw new ApiError('Unexpected server response. Please call us to book.', 'BAD_RESPONSE');
+    throw new ApiError('Unexpected server response. Please call us instead.', 'BAD_RESPONSE');
   }
   if (!body.ok) throw new ApiError(body.error.message, body.error.code, body.error.fields);
   return body.data;
 }
 
-export const getAvailability = (date: string) =>
-  request<AvailabilityResponse>(`/availability?date=${encodeURIComponent(date)}`);
-
-export const createBooking = (booking: BookingRequest) =>
-  request<CreateBookingResponse>('/bookings', { method: 'POST', body: JSON.stringify(booking) });
+/** Sends a learner's details from the /book form. */
+export const createEnquiry = (enquiry: EnquiryRequest) =>
+  request<CreateEnquiryResponse>('/enquiries', { method: 'POST', body: JSON.stringify(enquiry) });
 
 export const checkCoverage = (postcode: string) =>
   request<CoverageResponse>(`/coverage?postcode=${encodeURIComponent(postcode)}`);

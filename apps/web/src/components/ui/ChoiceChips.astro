@@ -1,0 +1,121 @@
+---
+/**
+ * A question answered by tapping pill "chips": real radio buttons (pick one) or checkboxes
+ * (pick any) inside a fieldset, so keyboard and screen readers work as normal.
+ * Errors show in the `[data-error-for={name}]` slot (filled by the form script).
+ */
+interface Props {
+  name: string;
+  legend: string;
+  options: { value: string; label: string }[];
+  type?: 'radio' | 'checkbox';
+  /** Shown after the legend, e.g. "(tick any)". */
+  hint?: string;
+  required?: boolean;
+  /** Value checked on load (radio). */
+  checked?: string;
+  class?: string;
+}
+const { name, legend, options, type = 'radio', hint, required = false, checked, class: cls } = Astro.props;
+const errId = `err-${name}`;
+---
+
+<fieldset class:list={['cc', cls]} aria-describedby={errId} data-choice={name}>
+  <legend class="cc__legend">
+    {legend}
+    {required && ' *'}
+    {hint && <span class="cc__hint">{hint}</span>}
+  </legend>
+  <div class="cc__opts">
+    {
+      options.map((o) => (
+        <label class="cc__opt">
+          <input type={type} name={name} value={o.value} checked={o.value === checked} />
+          <span>{o.label}</span>
+        </label>
+      ))
+    }
+  </div>
+  <span class="field-error" id={errId} data-error-for={name}></span>
+</fieldset>
+
+<style>
+  .cc {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cc__legend {
+    padding: 0;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .cc__hint {
+    font-weight: 500;
+    margin-left: 6px;
+  }
+  .cc__opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cc__opt {
+    position: relative;
+    cursor: pointer;
+  }
+  /* The real input stays focusable and clickable, just invisible over the chip. */
+  .cc__opt input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .cc__opt span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: var(--r-pill);
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .cc__opt:hover span {
+    border-color: var(--sky-soft);
+  }
+  .cc__opt input:checked + span {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+    box-shadow: 0 8px 18px -10px rgba(6, 20, 46, 0.6);
+  }
+  .cc__opt input[type='checkbox']:checked + span::before {
+    content: '✓';
+    font-size: 13px;
+  }
+  .cc__opt input:focus-visible + span {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .cc[aria-invalid='true'] .cc__opt span {
+    border-color: var(--red);
+  }
+  @media (max-width: 600px) {
+    .cc__opt span {
+      min-height: 44px;
+      padding: 0 15px;
+      font-size: 14.5px;
+    }
+  }
+</style>

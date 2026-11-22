@@ -37,16 +37,20 @@ export const EnquiryRequestSchema = z
     notes: optionalText(500, 'Please keep notes under 500 characters'),
     agreeTerms: z.literal(true, { error: 'Please agree to the terms and privacy policy' }),
   })
-  .superRefine((v, ctx) => {
-    if (v.testBooked === 'yes') {
-      if (!v.testCentre) ctx.addIssue({ code: 'custom', path: ['testCentre'], message: 'Please enter the test centre' });
-      if (!v.testDate) ctx.addIssue({ code: 'custom', path: ['testDate'], message: 'Please enter the test date' });
-      if (!v.testTime) ctx.addIssue({ code: 'custom', path: ['testTime'], message: 'Please enter the test time' });
-    }
-    if (!v.availability.length && !v.availabilityNotes) {
-      ctx.addIssue({ code: 'custom', path: ['availability'], message: 'Please tell us when you are free' });
-    }
-  });
+  .superRefine(
+    (v, ctx) => {
+      if (v.testBooked === 'yes') {
+        if (!v.testCentre) ctx.addIssue({ code: 'custom', path: ['testCentre'], message: 'Please enter the test centre' });
+        if (!v.testDate) ctx.addIssue({ code: 'custom', path: ['testDate'], message: 'Please enter the test date' });
+        if (!v.testTime) ctx.addIssue({ code: 'custom', path: ['testTime'], message: 'Please enter the test time' });
+      }
+      if (!v.availability?.length && !v.availabilityNotes) {
+        ctx.addIssue({ code: 'custom', path: ['availability'], message: 'Please tell us when you are free' });
+      }
+    },
+    // Run even when other fields are invalid, so every error shows in one go.
+    { when: () => true },
+  );
 
 export type EnquiryRequest = z.infer<typeof EnquiryRequestSchema>;
 

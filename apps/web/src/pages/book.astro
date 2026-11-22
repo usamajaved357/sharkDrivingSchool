@@ -1,16 +1,16 @@
 ---
-import BookingWizard from '@/components/booking/BookingWizard.astro';
+import EnquiryForm from '@/components/enquiry/EnquiryForm.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Book a Driving Lesson"
-  description="Book a manual or automatic driving lesson in Manchester online in under a minute. Pick a time and we'll pick you up from home, work or college."
+  title="Book Driving Lessons in Manchester"
+  description="Send your details in a minute and we'll call or WhatsApp you to arrange manual or automatic driving lessons in Manchester, with free pick-up from home, work or college."
   chrome="focused"
   crumbs={[{ name: 'Book a lesson', path: '/book/' }]}
   bodyClass="page-book"
 >
-  <BookingWizard />
+  <EnquiryForm />
 </BaseLayout>
 
 <style is:global>

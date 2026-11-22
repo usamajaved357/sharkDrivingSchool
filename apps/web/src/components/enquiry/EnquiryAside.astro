@@ -1,0 +1,104 @@
+---
+/** Side card on the enquiry page: what happens after sending, and other ways to get in touch. */
+import Icon from '@/components/ui/Icon.astro';
+import { site, telHref, whatsappHref } from '@/config/site';
+
+const steps = [
+  { title: 'Send your details', text: 'Takes about a minute. No payment, no commitment.' },
+  { title: 'We contact you', text: 'We call or WhatsApp you to talk through your lessons.' },
+  { title: 'Start driving', text: 'We match you with an instructor near you and arrange your first lesson.' },
+];
+---
+
+<aside class="ea" aria-label="What happens next">
+  <h2 class="ea__h">What happens next</h2>
+  <ol class="ea__steps">
+    {
+      steps.map((s, i) => (
+        <li>
+          <span class="ea__n">{i + 1}</span>
+          <div>
+            <b>{s.title}</b>
+            <p>{s.text}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="ea__contact">
+    <p>Rather talk now?</p>
+    <a class="btn btn--red btn--block" href={telHref}><Icon name="phone" size={18} /> Call {site.phone.display}</a>
+    <a class="btn btn--ghost btn--block" href={whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp us</a>
+  </div>
+</aside>
+
+<style>
+  .ea {
+    position: sticky;
+    top: 24px;
+    padding: 30px;
+    border-radius: var(--r-xl);
+    color: var(--white);
+    background:
+      radial-gradient(300px 200px at 100% 0%, rgba(76, 141, 255, 0.25), transparent 70%),
+      linear-gradient(160deg, var(--navy-2), var(--navy));
+  }
+  .ea__h {
+    margin: 0 0 20px;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .ea__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .ea__steps li {
+    display: flex;
+    gap: 14px;
+  }
+  .ea__n {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--red);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .ea__steps b {
+    font-size: 16px;
+  }
+  .ea__steps p {
+    margin: 3px 0 0;
+    color: var(--on-dark-muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .ea__contact {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ea__contact p {
+    margin: 0 0 2px;
+    color: var(--on-dark-muted);
+    font-weight: 600;
+  }
+  .ea__contact :global(.btn) {
+    gap: 8px;
+  }
+  @media (max-width: 960px) {
+    .ea {
+      position: static;
+    }
+  }
+</style>

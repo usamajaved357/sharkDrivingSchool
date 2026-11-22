@@ -1,0 +1,39 @@
+---
+/** Enquiry form, part 1: who the learner is and how to reach them. Field names match EnquiryRequestSchema. */
+import ChoiceChips from '@/components/ui/ChoiceChips.astro';
+import { GENDER_LABELS } from '@shark/shared';
+
+const genders = Object.entries(GENDER_LABELS).map(([value, label]) => ({ value, label }));
+---
+
+<fieldset class="eq-group">
+  <legend class="eq-legend">About you</legend>
+  <div class="eq-grid">
+    <div class="field eq-wide">
+      <label for="eq-name">Full name *</label>
+      <input id="eq-name" name="fullName" type="text" autocomplete="name" aria-describedby="err-fullName" />
+      <span class="field-error" id="err-fullName" data-error-for="fullName"></span>
+    </div>
+    <ChoiceChips name="gender" legend="Male or female" options={genders} required class="eq-wide" />
+    <div class="field">
+      <label for="eq-phone">Mobile number *</label>
+      <input id="eq-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="07…" aria-describedby="err-phone" />
+      <span class="field-error" id="err-phone" data-error-for="phone"></span>
+    </div>
+    <div class="field">
+      <label for="eq-email">Email <span class="eq-opt">(optional, for your copy)</span></label>
+      <input id="eq-email" name="email" type="email" autocomplete="email" aria-describedby="err-email" />
+      <span class="field-error" id="err-email" data-error-for="email"></span>
+    </div>
+    <div class="field">
+      <label for="eq-address">Address *</label>
+      <input id="eq-address" name="address" type="text" autocomplete="address-line1" placeholder="House number and street" aria-describedby="err-address" />
+      <span class="field-error" id="err-address" data-error-for="address"></span>
+    </div>
+    <div class="field">
+      <label for="eq-postcode">Postcode *</label>
+      <input id="eq-postcode" name="postcode" type="text" autocomplete="postal-code" placeholder="e.g. M18 8UN" aria-describedby="err-postcode" />
+      <span class="field-error" id="err-postcode" data-error-for="postcode"></span>
+    </div>
+  </div>
+</fieldset>
