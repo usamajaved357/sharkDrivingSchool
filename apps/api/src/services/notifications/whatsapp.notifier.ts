@@ -1,10 +1,10 @@
-import { LESSON_TYPE_LABELS, TRANSMISSION_LABELS, type Booking } from '@shark/shared';
+import { EXPERIENCE_LABELS, TRANSMISSION_LABELS, type Enquiry } from '@shark/shared';
 import type { ContactMessage } from '../../repositories/contact.repository';
-import { bookingWhatsAppText, formatWhen } from './booking-format';
+import { enquiryWhatsAppText, formatTest } from './enquiry-format';
 import type { Notifier } from './notifier';
 import type { WhatsAppSender } from './whatsapp/senders';
 
-/** Sends booking and contact alerts to the owner's WhatsApp. */
+/** Sends enquiry and contact alerts to the owner's WhatsApp. */
 export class WhatsAppNotifier implements Notifier {
   constructor(
     private readonly sender: WhatsAppSender,
@@ -12,16 +12,17 @@ export class WhatsAppNotifier implements Notifier {
     private readonly to: string,
   ) {}
 
-  async bookingCreated(b: Booking): Promise<void> {
+  async enquiryReceived(e: Enquiry): Promise<void> {
     await this.sender.send(this.to, {
-      text: bookingWhatsAppText(b),
+      text: enquiryWhatsAppText(e),
+      // Approved template: "New booking {{1}}: {{2}}, {{3}}, {{4}}. Phone: {{5}}. Pick-up: {{6}}"
       templateParams: [
-        b.reference,
-        b.fullName,
-        `${LESSON_TYPE_LABELS[b.lessonType]} (${TRANSMISSION_LABELS[b.transmission]})`,
-        formatWhen(b),
-        b.phone,
-        `${b.address}, ${b.postcode}`,
+        e.reference,
+        e.fullName,
+        `${TRANSMISSION_LABELS[e.transmission]} (${EXPERIENCE_LABELS[e.experience].toLowerCase()})`,
+        `Test: ${formatTest(e)}`,
+        e.phone,
+        `${e.address}, ${e.postcode}`,
       ],
     });
   }

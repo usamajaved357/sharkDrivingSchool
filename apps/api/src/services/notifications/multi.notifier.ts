@@ -1,4 +1,4 @@
-import type { Booking } from '@shark/shared';
+import type { Enquiry } from '@shark/shared';
 import type { ContactMessage } from '../../repositories/contact.repository';
 import type { Notifier } from './notifier';
 
@@ -16,8 +16,8 @@ export class MultiNotifier implements Notifier {
     });
   }
 
-  bookingCreated(b: Booking): Promise<void> {
-    return this.fanOut('booking', (n) => n.bookingCreated(b));
+  enquiryReceived(e: Enquiry): Promise<void> {
+    return this.fanOut('enquiry', (n) => n.enquiryReceived(e));
   }
 
   contactReceived(m: ContactMessage): Promise<void> {

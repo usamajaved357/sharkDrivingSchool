@@ -1,6 +1,7 @@
-import type { Booking } from '@shark/shared';
+import type { Enquiry } from '@shark/shared';
 import type { ContactMessage } from '../../repositories/contact.repository';
-import { contactEmail, customerBookingEmail, ownerBookingEmail, type EmailContent } from './booking-emails';
+import { contactEmail } from './contact-email';
+import { customerEnquiryEmail, ownerEnquiryEmail, type EmailContent } from './enquiry-emails';
 import { EMAIL_LOGO } from './email-logo';
 import type { Notifier } from './notifier';
 
@@ -8,7 +9,7 @@ export interface ResendOptions {
   apiKey: string;
   /** Verified sender, e.g. "Shark Driving School <bookings@sharkdrivingschools.com>". */
   from: string;
-  /** Where booking and contact notifications go. */
+  /** Where enquiry and contact notifications go. */
   ownerEmail: string;
   /** Also email the learner a confirmation. */
   emailCustomer: boolean;
@@ -38,9 +39,11 @@ export class ResendNotifier implements Notifier {
     if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
   }
 
-  async bookingCreated(b: Booking): Promise<void> {
-    const sends = [this.send(this.opts.ownerEmail, ownerBookingEmail(b), b.email)];
-    if (this.opts.emailCustomer) sends.push(this.send(b.email, customerBookingEmail(b), this.opts.ownerEmail));
+  async enquiryReceived(e: Enquiry): Promise<void> {
+    // Owner can reply straight to the learner when they gave an email.
+    const sends = [this.send(this.opts.ownerEmail, ownerEnquiryEmail(e), e.email || undefined)];
+    // The learner's copy only goes out if they gave an email (it's optional on the form).
+    if (this.opts.emailCustomer && e.email) sends.push(this.send(e.email, customerEnquiryEmail(e), this.opts.ownerEmail));
     await Promise.all(sends);
   }
 
