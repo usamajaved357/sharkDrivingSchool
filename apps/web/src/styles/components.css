@@ -229,6 +229,40 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 6px 16px -8px rgba(6, 20, 46, 0.45);
 }
 
+/* Swipeable rail (reviews, pass stories, latest passes) — driven by scripts/carousel.ts.
+   Bleeds to the screen edge so cards slide in from off-screen; snaps card by card. */
+.rail { margin: 0 calc(var(--gutter) * -1); }
+.rail__track {
+  display: flex;
+  gap: 18px;
+  margin: 0;
+  padding: 6px var(--gutter) 22px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.rail__track::-webkit-scrollbar { display: none; }
+.rail__track > * { scroll-snap-align: start; flex: none; }
+.rail__track:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; border-radius: var(--r-lg); }
+.rail-nav { display: flex; gap: 10px; }
+.rail-nav__btn {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s, opacity .2s;
+}
+.rail-nav__btn:hover:not(:disabled) { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.rail-nav__btn:disabled { opacity: .35; cursor: default; }
+.rail-nav__btn--prev svg { transform: rotate(180deg); }
+@media (max-width: 640px) { .rail__track { gap: 12px; } }
+
 /* Form fields */
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 13px; font-weight: 600; color: var(--muted); }

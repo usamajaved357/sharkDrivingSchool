@@ -64,6 +64,7 @@ export function businessSchema() {
     '@type': 'DrivingSchool',
     '@id': BUSINESS_ID,
     name: site.name,
+    alternateName: site.formerName,
     url: abs('/'),
     logo: abs('/images/logo.jpg'),
     image: abs('/images/og-image.png'),
@@ -80,6 +81,7 @@ export function businessSchema() {
       addressCountry: site.address.country,
     },
     hasMap: mapsHref,
+    sameAs: [site.google.mapsUrl],
     areaServed: [{ '@type': 'AdministrativeArea', name: site.region }, ...areas.map((name) => ({ '@type': 'City', name }))],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

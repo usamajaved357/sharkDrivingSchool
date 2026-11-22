@@ -1,0 +1,117 @@
+---
+/**
+ * Every written Google review (data/reviews.ts) in a swipeable rail, like a Google reviews
+ * widget, with links to read them all or leave one on Google. Follows Reviews.astro.
+ */
+import GoogleLogo from '@/components/ui/GoogleLogo.astro';
+import RailNav from '@/components/ui/RailNav.astro';
+import { site } from '@/config/site';
+import { hasReviews, shownRating, shownReviews } from '@/data/shown-content';
+import ReviewCard from './reviews/ReviewCard.astro';
+
+const tones = ['red', 'blue', 'navy'] as const;
+---
+
+{
+  hasReviews && (
+    <section class="gr" aria-labelledby="google-reviews-title" data-carousel>
+      <div class="wrap">
+        <div class="gr__head reveal">
+          <div class="gr__title">
+            <GoogleLogo size={28} />
+            <h3 id="google-reviews-title">
+              What learners say on Google
+              {shownRating && (
+                <span class="gr__rating">
+                  {shownRating.rating} <span class="gr__stars">★★★★★</span> · {shownRating.count} reviews
+                </span>
+              )}
+            </h3>
+          </div>
+          <RailNav label="reviews" />
+        </div>
+
+        <div class="rail gr__rail reveal">
+          <ul class="rail__track" data-carousel-track aria-label="Google reviews" tabindex="0">
+            {shownReviews.map((r, i) => (
+              <ReviewCard review={r} tone={tones[i % tones.length]!} />
+            ))}
+          </ul>
+        </div>
+
+        <div class="gr__links">
+          <a class="btn btn--blue" href={site.google.reviewsUrl} target="_blank" rel="noopener">
+            Read all reviews on Google
+          </a>
+          <a class="gr__write" href={site.google.writeReviewUrl} target="_blank" rel="noopener">
+            Learned with us? Leave a review
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import { initCarousels } from '@/scripts/carousel';
+  import { initReviewCards } from '@/scripts/review-cards';
+  initCarousels();
+  initReviewCards();
+</script>
+
+<style>
+  .gr {
+    padding: 0 0 clamp(56px, min(8.5vw, 9vh), 104px);
+  }
+  .gr__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    padding-top: clamp(28px, 4vh, 40px);
+    border-top: 1px solid var(--line);
+  }
+  .gr__title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .gr__title h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+  }
+  .gr__rating {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .gr__stars {
+    color: var(--star);
+  }
+  .gr__rail {
+    margin-top: 22px;
+  }
+  .gr__links {
+    display: flex;
+    align-items: center;
+    gap: 12px 22px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .gr__write {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  @media (max-width: 640px) {
+    .gr__links {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+    }
+  }
+</style>

@@ -44,7 +44,9 @@ const year = new Date().getFullYear();
         <div class="footer__grid">
           <div>
             <Logo height={56} tile />
-            <p class="footer__blurb">Manual and automatic driving lessons across {site.region}.</p>
+            <p class="footer__blurb">
+              Manual and automatic driving lessons across {site.region}. Formerly <b>{site.formerName}</b>.
+            </p>
           </div>
           {footerNav.map((col) => (
             <div>
@@ -170,6 +172,9 @@ const year = new Date().getFullYear();
       grid-template-columns: 1.1fr 0.9fr 0.9fr 1.3fr;
       gap: 32px;
     }
+  }
+  .footer__blurb b {
+    color: var(--white);
   }
   .footer__blurb {
     color: #b9c6e0;

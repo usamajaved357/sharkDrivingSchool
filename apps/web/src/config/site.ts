@@ -17,16 +17,20 @@ export const site = {
   email: BUSINESS.email,
   /** Business address (footer, structured data for Google, policy contact details). */
   address: BUSINESS.address,
-  googleRating: '[X.X]',
-  googleReviewCount: '[XX]',
+  /** Previous trading name, shown so returning customers and older reviews make sense. */
+  formerName: BUSINESS.formerName,
+  /** From the Google Business Profile (22 Nov 2026). Update when the count changes. */
+  googleRating: '5.0',
+  googleReviewCount: '18',
+  google: BUSINESS.google,
   /** Notice needed to cancel or move a lesson without charge (shown on the booking page and in the terms). */
   cancellationHours: '48',
 } as const;
 
 /** One-line address in standard UK style (no comma before the postcode): "9 Havers Road, Manchester M18 8UN". */
 export const addressLine = `${site.address.street}, ${site.address.city} ${site.address.postcode}`;
-/** Opens the address in Google Maps (a plain link; nothing is loaded from Google until clicked). */
-export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name}, ${addressLine}`)}`;
+/** Opens the business's Google Maps listing (a plain link; nothing is loaded from Google until clicked). */
+export const mapsHref = BUSINESS.google.mapsUrl;
 
 /**
  * Details used by the privacy policy, terms and cookie policy (data/legal/*).

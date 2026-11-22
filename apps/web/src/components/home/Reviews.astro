@@ -1,136 +1,118 @@
 ---
+/**
+ * "Learners who passed": the learners' own pass photos from their Google reviews, with their
+ * words (data/reviews.ts + data/passes.ts), the live Google rating and a note about the
+ * former name. The full written reviews follow in GoogleReviews.astro.
+ */
 import GoogleLogo from '@/components/ui/GoogleLogo.astro';
-import Icon from '@/components/ui/Icon.astro';
+import RailNav from '@/components/ui/RailNav.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { site } from '@/config/site';
 import { hasReviews, shownRating, shownReviews } from '@/data/shown-content';
-// Hidden in production until real reviews are added (data/home.ts); see data/shown-content.ts.
+import StoryCard from './reviews/StoryCard.astro';
+
+const stories = shownReviews.filter((r) => r.passPhoto);
 ---
 
 {
-  hasReviews && (
-<section id="reviews" class="section-lg">
-  <div class="wrap">
-    <div class="rv__head">
-      <SectionHeader eyebrow="Reviews" title="Learners who passed" />
-      {
-        shownRating && (
-          <div class="card rv__badge reveal">
-            <GoogleLogo />
-            <div>
-              <div class="rv__score">
-                {shownRating.rating} <span class="rv__stars">★★★★★</span>
-              </div>
-              <div class="rv__count">{shownRating.count} Google reviews</div>
-            </div>
+  hasReviews && stories.length > 0 && (
+    <section id="reviews" class="section-lg st" data-carousel>
+      <div class="wrap">
+        <div class="st__head">
+          <SectionHeader eyebrow="Google reviews" title="Learners who passed">
+            <p class="st__former">
+              Real learners, real passes. Some mention <b>{site.formerName}</b>: that's us, same instructors, new name.
+            </p>
+          </SectionHeader>
+          <div class="st__side reveal">
+            {shownRating && (
+              <a class="card st__badge" href={site.google.reviewsUrl} target="_blank" rel="noopener" aria-label={`Rated ${shownRating.rating} out of 5 from ${shownRating.count} Google reviews (opens Google)`}>
+                <GoogleLogo size={30} />
+                <span>
+                  <span class="st__score">
+                    {shownRating.rating} <span class="st__stars">★★★★★</span>
+                  </span>
+                  <span class="st__count">{shownRating.count} reviews on Google</span>
+                </span>
+              </a>
+            )}
+            <RailNav label="pass stories" class="hide-sm" />
           </div>
-        )
-      }
-    </div>
+        </div>
 
-    <div class="g3 rv__grid">
-      {
-        shownReviews.map((r, i) => (
-          <figure class="card rv__card reveal" style={`--reveal-delay:${i * 0.1}s`}>
-            <div class="rv__top">
-              <span class="rv__stars rv__stars--lg" aria-label="5 out of 5 stars">
-                ★★★★★
-              </span>
-              <Icon name="quote" size={34} class="rv__quote" />
-            </div>
-            <blockquote class="rv__text">{r.text}</blockquote>
-            <figcaption class="rv__by">
-              <span class="rv__avatar" style={`background:${r.color}`}>
-                {r.initial}
-              </span>
-              <div>
-                <div class="rv__name">{r.name}</div>
-                <div class="rv__meta">{r.meta}</div>
-              </div>
-            </figcaption>
-          </figure>
-        ))
-      }
-    </div>
-  </div>
-</section>
+        <div class="rail st__rail reveal">
+          <ul class="rail__track" data-carousel-track aria-label="Pass stories from Google reviews" tabindex="0">
+            {stories.map((r) => <StoryCard review={r} />)}
+          </ul>
+        </div>
+      </div>
+    </section>
   )
 }
 
+<script>
+  import { initCarousels } from '@/scripts/carousel';
+  import { initReviewCards } from '@/scripts/review-cards';
+  initCarousels();
+  initReviewCards();
+</script>
+
 <style>
-  .rv__head {
+  .st__head {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 24px;
+    gap: 20px 24px;
     flex-wrap: wrap;
   }
-  .rv__badge {
-    padding: 18px 22px;
+  .st__former {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .st__former b {
+    color: var(--ink);
+  }
+  .st__side {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
   }
-  .rv__score {
-    font-weight: 800;
-    font-size: 20px;
+  .st__badge {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.25s, box-shadow 0.25s;
   }
-  .rv__stars {
-    color: var(--star);
+  .st__badge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
   }
-  .rv__stars--lg {
-    font-size: 20px;
-    letter-spacing: 2px;
-  }
-  .rv__count {
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .rv__grid {
-    margin-top: 56px;
-  }
-  .rv__card {
-    margin: 0;
-    padding: 32px;
+  .st__badge > span {
     display: flex;
     flex-direction: column;
-    gap: 20px;
   }
-  .rv__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .rv__card :global(.rv__quote) {
-    color: #e8f0ff;
-  }
-  .rv__text {
-    margin: 0;
-    font-size: 17px;
-    line-height: 1.65;
-    flex: 1;
-  }
-  .rv__by {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 18px;
-    border-top: 1px solid var(--line);
-  }
-  .rv__avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .st__score {
     font-weight: 800;
+    font-size: 19px;
   }
-  .rv__name {
-    font-weight: 800;
+  .st__stars {
+    color: var(--star);
   }
-  .rv__meta {
-    font-size: 13px;
+  .st__count {
+    font-size: 13.5px;
     color: var(--muted);
+  }
+  .st__rail {
+    margin-top: clamp(24px, 4vh, 36px);
+  }
+  @media (max-width: 640px) {
+    .st__side {
+      width: 100%;
+    }
   }
 </style>

@@ -1,3 +1,5 @@
+import { site } from '@/config/site';
+
 export interface Faq {
   q: string;
   a: string;
@@ -27,5 +29,9 @@ export const faqs: Faq[] = [
   {
     q: 'Can I use your car for my driving test?',
     a: 'Yes. We offer a pre-test warm-up lesson and you can sit your test in the same dual-control car you learned in.',
+  },
+  {
+    q: `Are you the same as ${site.formerName}?`,
+    a: `Yes. ${site.name} was previously called ${site.formerName}. Same instructors, same cars and same Google reviews, just a new name.`,
   },
 ];

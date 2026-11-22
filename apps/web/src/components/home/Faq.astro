@@ -54,7 +54,8 @@ const faqLd = {
 
 <style>
   .faq {
-    padding: 0 0 120px;
+    /* Height-aware so all questions still fit one laptop screen when the FAQ link is used. */
+    padding: 0 0 clamp(64px, 10vh, 120px);
   }
   .faq__grid {
     display: grid;
@@ -94,7 +95,7 @@ const faqLd = {
     gap: 24px;
     background: none;
     border: 0;
-    padding: 26px 0;
+    padding: clamp(16px, 2.6vh, 26px) 0;
     font-size: 19px;
     font-weight: 700;
     color: var(--ink);

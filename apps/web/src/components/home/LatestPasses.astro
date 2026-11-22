@@ -1,0 +1,116 @@
+---
+/** "Our latest passes": a swipeable strip of learners' pass photos (data/passes.ts). */
+import Icon from '@/components/ui/Icon.astro';
+import RailNav from '@/components/ui/RailNav.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { site } from '@/config/site';
+import { passImage, passPhotos } from '@/data/passes';
+---
+
+<section class="lp" aria-label="Our latest passes" data-carousel>
+  <div class="wrap">
+    <div class="lp__head">
+      <SectionHeader eyebrow="Pass gallery" title="Our latest passes" />
+      <RailNav label="pass photos" />
+    </div>
+
+    <div class="rail lp__rail reveal">
+      <ul class="rail__track" data-carousel-track aria-label="Pass photos" tabindex="0">
+        {
+          passPhotos.map((p) => {
+            const img = passImage(p.slug);
+            return (
+              <li class="lp__item">
+                <figure class="lp__fig">
+                  <img
+                    src={img.src}
+                    srcset={img.srcset}
+                    sizes="(max-width: 640px) 60vw, 240px"
+                    width={img.width}
+                    height={img.height}
+                    alt={p.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption class="lp__cap">
+                    <Icon name="check" size={13} strokeWidth={3} />
+                    {p.name ? `${p.name} passed` : 'Passed'}
+                  </figcaption>
+                </figure>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+    <p class="lp__note">
+      Photos shared by our learners on Google. Some show our previous name, {site.formerName}.
+    </p>
+  </div>
+</section>
+
+<script>
+  import { initCarousels } from '@/scripts/carousel';
+  initCarousels();
+</script>
+
+<style>
+  .lp {
+    padding: 0 0 clamp(56px, min(8.5vw, 9vh), 104px);
+  }
+  .lp__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+  }
+  .lp__rail {
+    margin-top: clamp(22px, 3.5vh, 32px);
+  }
+  .lp__item {
+    width: clamp(190px, 28vh, 250px);
+  }
+  .lp__fig {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: var(--paper);
+    box-shadow: 0 18px 40px -28px rgba(6, 20, 46, 0.45);
+  }
+  .lp__fig img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .lp__fig:hover img {
+    transform: scale(1.04);
+  }
+  .lp__cap {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--success);
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .lp__note {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    .lp__item {
+      width: 60%;
+    }
+  }
+</style>

@@ -4,6 +4,8 @@
  */
 export const BUSINESS = {
   name: 'Shark Driving School',
+  /** The business used to trade as this; older Google reviews mention it. */
+  formerName: '1-2 Drive',
   url: 'https://www.sharkdrivingschools.com',
   phone: {
     display: '07440 260063',
@@ -19,5 +21,12 @@ export const BUSINESS = {
     country: 'GB',
   },
   region: 'Greater Manchester',
+  /** Google Business Profile (reviews, map listing). */
+  google: {
+    placeId: 'ChIJ8f6ZyT6xe0gRJnndLD5SVfE',
+    mapsUrl: 'https://www.google.com/maps/place/?q=place_id:ChIJ8f6ZyT6xe0gRJnndLD5SVfE',
+    reviewsUrl: 'https://search.google.com/local/reviews?placeid=ChIJ8f6ZyT6xe0gRJnndLD5SVfE',
+    writeReviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJ8f6ZyT6xe0gRJnndLD5SVfE',
+  },
 } as const;
 
