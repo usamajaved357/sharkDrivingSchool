@@ -1,5 +1,5 @@
 /**
- * Review cards ([data-review]):
+ * Review cards ([data-review], e.g. reviews/StoryCard.astro):
  * - "Read more" appears only on reviews whose text is cut off, and expands them
  * - a reviewer's Google photo that fails to load is removed, leaving their initial
  */

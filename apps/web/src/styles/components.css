@@ -247,20 +247,37 @@
 .rail__track::-webkit-scrollbar { display: none; }
 .rail__track > * { scroll-snap-align: start; flex: none; }
 .rail__track:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; border-radius: var(--r-lg); }
-.rail-nav { display: flex; gap: 10px; }
+/* Prev/next arrows (ui/RailNav.astro): sit over the left and right edges of the rail,
+   centred on the cards, and fade out at either end. */
+.rail { position: relative; }
+.rail-nav {
+  position: absolute;
+  inset: 0 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(6px, calc(var(--gutter) - 24px));
+  pointer-events: none;
+  z-index: 2;
+}
 .rail-nav__btn {
-  width: 46px; height: 46px;
+  pointer-events: auto;
+  width: 48px; height: 48px;
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--white);
   color: var(--ink);
   display: grid; place-items: center;
   cursor: pointer;
-  transition: background .2s, color .2s, border-color .2s, opacity .2s;
+  box-shadow: 0 10px 26px -10px rgba(6, 20, 46, 0.45);
+  transition: background .2s, color .2s, border-color .2s, opacity .25s, transform .2s;
 }
-.rail-nav__btn:hover:not(:disabled) { background: var(--navy); border-color: var(--navy); color: var(--white); }
-.rail-nav__btn:disabled { opacity: .35; cursor: default; }
+.rail-nav__btn:hover { background: var(--navy); border-color: var(--navy); color: var(--white); transform: scale(1.06); }
+.rail-nav__btn:disabled { opacity: 0; pointer-events: none; }
 .rail-nav__btn--prev svg { transform: rotate(180deg); }
+@media (max-width: 640px) {
+  .rail-nav__btn { width: 40px; height: 40px; }
+}
 @media (max-width: 640px) { .rail__track { gap: 12px; } }
 
 /* Form fields */

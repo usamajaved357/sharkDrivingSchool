@@ -1,7 +1,9 @@
 ---
 /**
- * A "pass story": the learner's own pass photo from their Google review, with their name,
- * stars and words underneath. Behaviour (read full review): scripts/review-cards.ts.
+ * One Google review in the "Learners who passed" rail. With a pass photo: the photo on top,
+ * the learner's words underneath. Without one: their words on a navy quote panel, with their
+ * Google profile photo underneath. Behaviour (read full review, photo fallback):
+ * scripts/review-cards.ts.
  */
 import GoogleLogo from '@/components/ui/GoogleLogo.astro';
 import Icon from '@/components/ui/Icon.astro';
@@ -14,12 +16,14 @@ interface Props {
 const { review: r } = Astro.props;
 const img = r.passPhoto ? passImage(r.passPhoto) : null;
 const alt = passPhotos.find((p) => p.slug === r.passPhoto)?.alt ?? `${r.name} after passing`;
+const passed = r.tag?.startsWith('Passed first time') ? 'Passed first time' : r.tag?.startsWith('Passed') ? 'Passed' : null;
+const stars = '★'.repeat(r.rating);
 ---
 
-<li class="sc" data-review>
+<li class:list={['sc', { 'sc--quote': !img }]} data-review>
   <figure class="sc__card">
     {
-      img && (
+      img ? (
         <div class="sc__media">
           <img
             src={img.src}
@@ -33,8 +37,22 @@ const alt = passPhotos.find((p) => p.slug === r.passPhoto)?.alt ?? `${r.name} af
           />
           <span class="sc__pass">
             <Icon name="check" size={14} strokeWidth={3} />
-            {r.tag?.startsWith('Passed first time') ? 'Passed first time' : 'Passed'}
+            {passed ?? 'Passed'}
           </span>
+          <span class="sc__g" title="Google review">
+            <GoogleLogo size={18} />
+          </span>
+        </div>
+      ) : (
+        <div class="sc__media sc__panel">
+          <Icon name="quote" size={30} class="sc__q" />
+          <blockquote class="sc__text sc__text--panel" data-review-text>{r.text}</blockquote>
+          {passed && (
+            <span class="sc__pass sc__pass--static">
+              <Icon name="check" size={14} strokeWidth={3} />
+              {passed}
+            </span>
+          )}
           <span class="sc__g" title="Google review">
             <GoogleLogo size={18} />
           </span>
@@ -42,12 +60,32 @@ const alt = passPhotos.find((p) => p.slug === r.passPhoto)?.alt ?? `${r.name} af
       )
     }
     <figcaption class="sc__body">
-      <span class="sc__name">{r.name}</span>
-      <span class="sc__meta">
-        <span class="sc__stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{'★'.repeat(r.rating)}</span>
-        {r.date}
-      </span>
-      <blockquote class="sc__text" data-review-text>{r.text}</blockquote>
+      {
+        img ? (
+          <>
+            <span class="sc__name">{r.name}</span>
+            <span class="sc__meta">
+              <span class="sc__stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{stars}</span>
+              {r.date}
+            </span>
+            <blockquote class="sc__text" data-review-text>{r.text}</blockquote>
+          </>
+        ) : (
+          <span class="sc__who">
+            <span class="sc__avatar" aria-hidden="true">
+              {r.name.charAt(0).toUpperCase()}
+              {r.photo && <img src={r.photo} alt="" width="40" height="40" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-review-photo />}
+            </span>
+            <span>
+              <span class="sc__name">{r.name}</span>
+              <span class="sc__meta">
+                <span class="sc__stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{stars}</span>
+                {r.date}
+              </span>
+            </span>
+          </span>
+        )
+      }
       <button class="sc__more" type="button" aria-expanded="false" data-review-more data-label="Read full review" hidden>
         Read full review
       </button>
@@ -58,7 +96,7 @@ const alt = passPhotos.find((p) => p.slug === r.passPhoto)?.alt ?? `${r.name} af
 <style>
   .sc {
     /* Height-aware so the whole section fits one laptop screen. */
-    width: clamp(220px, 31vh, 290px);
+    width: clamp(210px, 27vh, 290px);
     display: flex;
   }
   .sc__card {
@@ -179,6 +217,71 @@ const alt = passPhotos.find((p) => p.slug === r.passPhoto)?.alt ?? `${r.name} af
   }
   .sc__more:hover {
     text-decoration: underline;
+  }
+  /* Quote card (no pass photo): the words sit on a navy panel the same size as a photo. */
+  .sc__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 20px 18px;
+    background:
+      radial-gradient(220px 160px at 100% 0%, rgba(76, 141, 255, 0.28), transparent 70%),
+      linear-gradient(160deg, var(--navy-2), var(--navy));
+    color: var(--white);
+  }
+  .sc__panel::after {
+    display: none;
+  }
+  .sc__panel :global(.sc__q) {
+    flex: none;
+    color: var(--sky);
+  }
+  .sc__text--panel {
+    margin: 0;
+    color: var(--white);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-line-clamp: 8;
+    line-clamp: 8;
+  }
+  .sc__panel:has(.is-open) {
+    aspect-ratio: auto;
+  }
+  .sc__pass--static {
+    position: static;
+    align-self: flex-start;
+    margin-top: auto;
+  }
+  .sc__who {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sc__who > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .sc__avatar {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 800;
+  }
+  .sc__avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   @media (max-width: 640px) {
     .sc {

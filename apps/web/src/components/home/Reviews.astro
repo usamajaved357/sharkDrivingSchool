@@ -1,17 +1,18 @@
 ---
 /**
  * "Learners who passed": the learners' own pass photos from their Google reviews, with their
- * words (data/reviews.ts + data/passes.ts), the live Google rating and a note about the
- * former name. The full written reviews follow in GoogleReviews.astro.
+ * words (data/reviews.ts + data/passes.ts), the live Google rating, a note about the former
+ * name, and links to read every review or leave one on Google.
  */
-import GoogleLogo from '@/components/ui/GoogleLogo.astro';
 import RailNav from '@/components/ui/RailNav.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import { site } from '@/config/site';
-import { hasReviews, shownRating, shownReviews } from '@/data/shown-content';
+import { hasReviews, shownReviews } from '@/data/shown-content';
+import RatingBadge from './reviews/RatingBadge.astro';
 import StoryCard from './reviews/StoryCard.astro';
 
-const stories = shownReviews.filter((r) => r.passPhoto);
+// Pass photos first, then the written reviews; every review appears once.
+const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.filter((r) => !r.passPhoto)];
 ---
 
 {
@@ -21,29 +22,20 @@ const stories = shownReviews.filter((r) => r.passPhoto);
         <div class="st__head">
           <SectionHeader eyebrow="Google reviews" title="Learners who passed">
             <p class="st__former">
-              Real learners, real passes. Some mention <b>{site.formerName}</b>: that's us, same instructors, new name.
+              Real learners, real passes. Some mention <b>{site.formerName}</b>: that's us, same instructors, new name.{' '}
+              <a href={site.google.writeReviewUrl} target="_blank" rel="noopener">
+                Learned with us? Leave a review
+              </a>
             </p>
           </SectionHeader>
-          <div class="st__side reveal">
-            {shownRating && (
-              <a class="card st__badge" href={site.google.reviewsUrl} target="_blank" rel="noopener" aria-label={`Rated ${shownRating.rating} out of 5 from ${shownRating.count} Google reviews (opens Google)`}>
-                <GoogleLogo size={30} />
-                <span>
-                  <span class="st__score">
-                    {shownRating.rating} <span class="st__stars">★★★★★</span>
-                  </span>
-                  <span class="st__count">{shownRating.count} reviews on Google</span>
-                </span>
-              </a>
-            )}
-            <RailNav label="pass stories" class="hide-sm" />
-          </div>
+          <RatingBadge class="reveal" />
         </div>
 
         <div class="rail st__rail reveal">
           <ul class="rail__track" data-carousel-track aria-label="Pass stories from Google reviews" tabindex="0">
             {stories.map((r) => <StoryCard review={r} />)}
           </ul>
+          <RailNav label="pass stories" />
         </div>
       </div>
     </section>
@@ -74,45 +66,15 @@ const stories = shownReviews.filter((r) => r.passPhoto);
   .st__former b {
     color: var(--ink);
   }
-  .st__side {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-  .st__badge {
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: var(--ink);
-    transition: transform 0.25s, box-shadow 0.25s;
-  }
-  .st__badge:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-card);
-  }
-  .st__badge > span {
-    display: flex;
-    flex-direction: column;
-  }
-  .st__score {
-    font-weight: 800;
-    font-size: 19px;
-  }
-  .st__stars {
-    color: var(--star);
-  }
-  .st__count {
-    font-size: 13.5px;
-    color: var(--muted);
+  .st__former a {
+    font-weight: 700;
+    white-space: nowrap;
   }
   .st__rail {
-    margin-top: clamp(24px, 4vh, 36px);
+    margin-top: clamp(20px, 3vh, 36px);
   }
-  @media (max-width: 640px) {
-    .st__side {
-      width: 100%;
-    }
+  /* Cards keep their own height when one is expanded. */
+  .st__rail :global(.rail__track) {
+    align-items: flex-start;
   }
 </style>

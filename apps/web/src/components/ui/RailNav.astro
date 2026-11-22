@@ -1,20 +1,22 @@
 ---
-/** Previous / next buttons for a `.rail` (scripts/carousel.ts wires them up). */
+/**
+ * Previous / next arrows over the left and right edges of a `.rail` (place inside the
+ * `.rail` element). scripts/carousel.ts wires them up and hides each one at its end.
+ */
 import Icon from '@/components/ui/Icon.astro';
 
 interface Props {
   /** What the rail holds, for screen readers, e.g. "reviews". */
   label: string;
-  class?: string;
 }
-const { label, class: cls } = Astro.props;
+const { label } = Astro.props;
 ---
 
-<div class:list={['rail-nav', cls]}>
+<div class="rail-nav">
   <button class="rail-nav__btn rail-nav__btn--prev" type="button" aria-label={`Previous ${label}`} data-carousel-prev>
-    <Icon name="arrow-right" size={18} />
+    <Icon name="arrow-right" size={20} />
   </button>
   <button class="rail-nav__btn" type="button" aria-label={`More ${label}`} data-carousel-next>
-    <Icon name="arrow-right" size={18} />
+    <Icon name="arrow-right" size={20} />
   </button>
 </div>
