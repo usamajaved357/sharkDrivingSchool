@@ -3,7 +3,7 @@ export const newId = (): string => crypto.randomUUID();
 
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I
 
-/** Short human-friendly booking reference, e.g. "SHK-7KQ2M9". */
+/** Short human-friendly reference for an enquiry, e.g. "SHK-7KQ2M9". */
 export function bookingReference(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(6));
   let out = '';

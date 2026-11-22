@@ -37,7 +37,7 @@ export function logoImg(width: number): string {
 export interface LayoutOptions {
   /** Grey preview line shown next to the subject in the inbox. */
   preheader: string;
-  /** Small red label above the heading, e.g. "New booking request". */
+  /** Small red label above the heading, e.g. "New learner enquiry". */
   eyebrow: string;
   heading: string;
   /** One or two sentences under the heading (HTML allowed, escape values first). */

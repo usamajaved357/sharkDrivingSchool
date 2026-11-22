@@ -22,7 +22,7 @@ function whatsappSender(w: AppConfig['whatsapp']): WhatsAppSender | null {
 
 /**
  * Builds the notifier from config: email (Resend) and/or WhatsApp, whichever are set up.
- * The console channel always runs, so every booking is also visible in the server logs.
+ * The console channel always runs, so every enquiry is also visible in the server logs.
  */
 export function createNotifier(config: AppConfig): Notifier {
   const channels: { name: string; notifier: Notifier }[] = [{ name: 'console', notifier: new ConsoleNotifier() }];

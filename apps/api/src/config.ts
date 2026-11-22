@@ -6,7 +6,7 @@ export interface AppConfig {
   email: {
     resendApiKey?: string;
     fromEmail?: string;
-    /** Where booking alerts go (defaults to the business email on the site). */
+    /** Where enquiry alerts go (defaults to the business email on the site). */
     notifyEmail: string;
     /** Send the learner a confirmation email too (default on). */
     emailCustomer: boolean;
