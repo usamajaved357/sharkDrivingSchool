@@ -1,0 +1,78 @@
+---
+/** Step 3: who they are and how to reach them, plus notes and consent. */
+import ChoiceChips from '@/components/ui/ChoiceChips.astro';
+import { GENDER_LABELS } from '@shark/shared';
+
+const genders = Object.entries(GENDER_LABELS).map(([value, label]) => ({ value, label }));
+---
+
+<section class="bk__panel" data-step-panel="3" aria-labelledby="bk-s3" hidden>
+  <h2 id="bk-s3" class="bk__h">Your details</h2>
+  <p class="bk__sub">We'll call or WhatsApp you to arrange your lessons. Fields marked * are required.</p>
+
+  <div class="bk__grid">
+    <div class="field">
+      <label for="eq-name">Full name *</label>
+      <input id="eq-name" name="fullName" type="text" autocomplete="name" aria-describedby="err-fullName" />
+      <span class="field-error" id="err-fullName" data-error-for="fullName"></span>
+    </div>
+    <ChoiceChips name="gender" legend="Male or female" options={genders} required />
+    <div class="field">
+      <label for="eq-phone">Mobile number *</label>
+      <input id="eq-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="07…" aria-describedby="err-phone" />
+      <span class="field-error" id="err-phone" data-error-for="phone"></span>
+    </div>
+    <div class="field">
+      <label for="eq-email">Email <span class="bk__opt">(optional, for your copy)</span></label>
+      <input id="eq-email" name="email" type="email" autocomplete="email" aria-describedby="err-email" />
+      <span class="field-error" id="err-email" data-error-for="email"></span>
+    </div>
+    <div class="field">
+      <label for="eq-address">Address *</label>
+      <input id="eq-address" name="address" type="text" autocomplete="address-line1" placeholder="House number and street" aria-describedby="err-address" />
+      <span class="field-error" id="err-address" data-error-for="address"></span>
+    </div>
+    <div class="field">
+      <label for="eq-postcode">Postcode *</label>
+      <input id="eq-postcode" name="postcode" type="text" autocomplete="postal-code" placeholder="e.g. M18 8UN" aria-describedby="err-postcode" />
+      <span class="field-error" id="err-postcode" data-error-for="postcode"></span>
+    </div>
+    <div class="field bk__wide">
+      <label for="eq-notes">Anything else we should know? <span class="bk__opt">(optional)</span></label>
+      <textarea id="eq-notes" name="notes" rows="3" maxlength="500" placeholder="e.g. nervous driver, best time to call" aria-describedby="err-notes"></textarea>
+      <span class="field-error" id="err-notes" data-error-for="notes"></span>
+    </div>
+  </div>
+
+  <label class="sd__check">
+    <input type="checkbox" name="agreeTerms" value="true" aria-describedby="err-agreeTerms" />
+    <span>
+      I agree to the <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">privacy policy</a>, and to being contacted about lessons *
+    </span>
+  </label>
+  <span class="field-error" id="err-agreeTerms" data-error-for="agreeTerms"></span>
+</section>
+
+<style>
+  .sd__check {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 22px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .sd__check input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--red);
+  }
+  .sd__check a {
+    color: var(--blue);
+    font-weight: 600;
+  }
+</style>

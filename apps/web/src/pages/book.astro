@@ -1,5 +1,5 @@
 ---
-import EnquiryForm from '@/components/enquiry/EnquiryForm.astro';
+import EnquiryWizard from '@/components/enquiry/EnquiryWizard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
@@ -10,7 +10,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   crumbs={[{ name: 'Book a lesson', path: '/book/' }]}
   bodyClass="page-book"
 >
-  <EnquiryForm />
+  <EnquiryWizard />
 </BaseLayout>
 
 <style is:global>

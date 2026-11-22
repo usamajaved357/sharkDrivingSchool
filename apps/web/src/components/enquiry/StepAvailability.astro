@@ -1,0 +1,59 @@
+---
+/** Step 2: when they're free, whether a driving test is booked, experience and instructor preference. */
+import ChoiceChips from '@/components/ui/ChoiceChips.astro';
+import { AVAILABILITY_LABELS, EXPERIENCE_LABELS } from '@shark/shared';
+
+const options = (labels: Record<string, string>) => Object.entries(labels).map(([value, label]) => ({ value, label }));
+const yesNo = [
+  { value: 'yes', label: 'Yes, it’s booked' },
+  { value: 'no', label: 'No, not yet' },
+];
+const instructor = [
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
+  { value: 'any', label: 'No preference' },
+];
+---
+
+<section class="bk__panel" data-step-panel="2" aria-labelledby="bk-s2" hidden>
+  <h2 id="bk-s2" class="bk__h">When can you learn?</h2>
+  <p class="bk__sub">Tell us when you're free. We'll fit lessons around you.</p>
+
+  <div class="bk__grid">
+    <ChoiceChips name="availability" type="checkbox" legend="When are you free?" hint="(tick any)" options={options(AVAILABILITY_LABELS)} required class="bk__wide" />
+    <div class="field bk__wide">
+      <label for="eq-avail-notes">Anything specific? <span class="bk__opt">(optional)</span></label>
+      <input id="eq-avail-notes" name="availabilityNotes" type="text" maxlength="200" placeholder="e.g. after 5pm, not Wednesdays" aria-describedby="err-availabilityNotes" />
+      <span class="field-error" id="err-availabilityNotes" data-error-for="availabilityNotes"></span>
+    </div>
+
+    <ChoiceChips name="testBooked" legend="Is your driving test booked?" options={yesNo} required class="bk__wide" />
+    <div class="bk__grid bk__wide" data-test-details hidden>
+      <div class="field bk__wide">
+        <label for="eq-centre">Test centre *</label>
+        <input id="eq-centre" name="testCentre" type="text" placeholder="e.g. Manchester (Cheetham Hill)" aria-describedby="err-testCentre" />
+        <span class="field-error" id="err-testCentre" data-error-for="testCentre"></span>
+      </div>
+      <div class="field">
+        <label for="eq-date">Test date *</label>
+        <input id="eq-date" name="testDate" type="date" aria-describedby="err-testDate" />
+        <span class="field-error" id="err-testDate" data-error-for="testDate"></span>
+      </div>
+      <div class="field">
+        <label for="eq-time">Test time *</label>
+        <input id="eq-time" name="testTime" type="time" aria-describedby="err-testTime" />
+        <span class="field-error" id="err-testTime" data-error-for="testTime"></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="eq-experience">Driving experience *</label>
+      <select id="eq-experience" name="experience" aria-describedby="err-experience">
+        <option value="" selected disabled>Choose one</option>
+        {options(EXPERIENCE_LABELS).map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+      <span class="field-error" id="err-experience" data-error-for="experience"></span>
+    </div>
+    <ChoiceChips name="instructorPref" legend="Male or female instructor?" options={instructor} required />
+  </div>
+</section>

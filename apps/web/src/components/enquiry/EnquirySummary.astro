@@ -1,0 +1,94 @@
+---
+/** Navy summary card beside the form (same look as before); scripts/enquiry-wizard.ts fills it in. */
+import Fin from '@/components/ui/Fin.astro';
+---
+
+<aside class="sum" aria-label="Your summary">
+  <Fin width={140} class="sum__fin" />
+  <h2 class="sum__title">Your summary</h2>
+  <dl class="sum__list">
+    <div><dt>Gearbox</dt><dd data-summary="transmission">Manual</dd></div>
+    <div><dt>Lesson</dt><dd data-summary="lesson">—</dd></div>
+    <div><dt>Available</dt><dd data-summary="availability">—</dd></div>
+    <div><dt>Driving test</dt><dd data-summary="test">—</dd></div>
+    <div><dt>Instructor</dt><dd data-summary="instructor">—</dd></div>
+  </dl>
+  <div class="sum__total">
+    <span>Price</span>
+    <span class="d" data-summary="price">—</span>
+  </div>
+  <p class="sum__note">No payment now. We'll call or WhatsApp you to arrange everything.</p>
+</aside>
+
+<style>
+  .sum {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: var(--r-xl);
+    padding: 30px;
+    position: sticky;
+    top: 24px;
+    overflow: hidden;
+  }
+  .sum :global(.sum__fin) {
+    position: absolute;
+    right: -20px;
+    bottom: -14px;
+    opacity: 0.5;
+  }
+  .sum__title {
+    margin: 0 0 22px;
+    font-size: 20px;
+    font-weight: 800;
+    position: relative;
+  }
+  .sum__list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 15px;
+    position: relative;
+  }
+  .sum__list div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .sum__list dt {
+    color: var(--on-dark-subtle);
+    flex: none;
+  }
+  .sum__list dd {
+    margin: 0;
+    font-weight: 700;
+    text-align: right;
+  }
+  .sum__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    position: relative;
+  }
+  .sum__total > span:first-child {
+    color: var(--on-dark-subtle);
+  }
+  .sum__total .d {
+    font-size: 40px;
+  }
+  .sum__note {
+    margin: 18px 0 0;
+    font-size: 13px;
+    color: var(--on-dark-subtle);
+    position: relative;
+  }
+  @media (max-width: 960px) {
+    .sum {
+      position: relative;
+      top: 0;
+    }
+  }
+</style>

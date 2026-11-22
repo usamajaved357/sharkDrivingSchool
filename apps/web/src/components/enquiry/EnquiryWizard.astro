@@ -1,0 +1,219 @@
+---
+/**
+ * The /book page: a 3-step form (lesson → availability → your details). The learner sends
+ * their details and the school calls or WhatsApps them; there are no time slots to pick.
+ * Field names match EnquiryRequestSchema in @shark/shared; scripts/enquiry-wizard.ts moves
+ * between steps, validates each step with that schema, keeps the summary in sync and submits.
+ */
+import { mailtoHref, site, telHref } from '@/config/site';
+import EnquiryDone from './EnquiryDone.astro';
+import EnquirySummary from './EnquirySummary.astro';
+import StepAvailability from './StepAvailability.astro';
+import StepDetails from './StepDetails.astro';
+import StepLesson from './StepLesson.astro';
+
+const steps = ['Choose lesson', 'Availability', 'Your details'];
+---
+
+<div class="wrap bk">
+  <h1 class="d bk__title">Book your lessons</h1>
+
+  <ol class="bk__steps" aria-label="Progress">
+    {
+      steps.map((label, i) => (
+        <li class:list={['bk__step', { 'is-current': i === 0 }]} data-step-indicator={i + 1}>
+          <i>{i + 1}</i>
+          <span class="bk__step-label">{label}</span>
+          {i < steps.length - 1 && <span class="bk__step-bar" aria-hidden="true" />}
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="bk__layout">
+    <div class="bk__card">
+      <form data-enquiry-form novalidate>
+        <noscript>
+          <p class="bk__noscript">
+            This form needs JavaScript. Please call <a href={telHref}>{site.phone.display}</a> or email <a href={mailtoHref}>{site.email}</a>.
+          </p>
+        </noscript>
+
+        <StepLesson />
+        <StepAvailability />
+        <StepDetails />
+
+        <p class="bk__form-error" data-form-error role="alert" hidden></p>
+
+        <div class="bk__nav" data-wizard-nav>
+          <button type="button" class="btn btn--outline" data-back hidden>Back</button>
+          <button type="submit" class="btn btn--red" data-next>Continue</button>
+        </div>
+      </form>
+      <EnquiryDone />
+    </div>
+
+    <EnquirySummary />
+  </div>
+</div>
+
+<script>
+  import { initEnquiryWizard } from '@/scripts/enquiry-wizard';
+  const form = document.querySelector<HTMLFormElement>('[data-enquiry-form]');
+  if (form) initEnquiryWizard(form);
+</script>
+
+<style>
+  .bk {
+    padding-top: 56px;
+    padding-bottom: 100px;
+  }
+  .bk__title {
+    font-size: clamp(44px, 5vw, 64px);
+  }
+  .bk__steps {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin: 30px 0 40px;
+    flex-wrap: wrap;
+  }
+  .bk__step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .bk__step i {
+    font-style: normal;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border: 2px solid var(--line);
+    transition: all 0.3s;
+  }
+  .bk__step.is-current {
+    color: var(--ink);
+  }
+  .bk__step.is-current i {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+  }
+  .bk__step.is-done {
+    color: var(--ink);
+  }
+  .bk__step.is-done i {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+  }
+  .bk__step-bar {
+    width: 48px;
+    height: 2px;
+    background: var(--line);
+    margin-left: 6px;
+  }
+  .bk__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 32px;
+    align-items: start;
+  }
+  .bk__card {
+    background: var(--white);
+    border-radius: var(--r-xl);
+    padding: 36px;
+    border: 1px solid var(--line);
+  }
+  /* Shared by the step components (StepLesson, StepAvailability, StepDetails). */
+  .bk :global(.bk__panel:not([hidden])) {
+    animation: rise 0.5s var(--ease-out) both;
+  }
+  .bk :global(.bk__h) {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 6px;
+  }
+  .bk :global(.bk__sub) {
+    margin: 0 0 26px;
+    color: var(--muted);
+  }
+  .bk :global(.bk__fs) {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+  .bk :global(.bk__grid) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 16px;
+  }
+  .bk :global(.bk__grid[hidden]) {
+    display: none;
+  }
+  .bk :global(.bk__wide) {
+    grid-column: 1 / -1;
+  }
+  .bk :global(.bk__opt) {
+    font-weight: 500;
+  }
+  .bk :global(.field label) {
+    font-size: 14px;
+  }
+  .bk :global(.field input),
+  .bk :global(.field select) {
+    height: 50px;
+    font-size: 16px;
+  }
+  .bk__form-error {
+    margin: 24px 0 0;
+    padding: 12px 16px;
+    border-radius: var(--r-sm);
+    background: var(--red-tint);
+    color: var(--red-2);
+    font-weight: 600;
+  }
+  .bk__nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 34px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+  .bk__nav [data-back]:not([hidden]) {
+    margin-right: auto;
+  }
+  .bk__noscript {
+    padding: 16px;
+    background: var(--paper);
+    border-radius: var(--r-sm);
+  }
+
+  @media (max-width: 960px) {
+    .bk__layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .bk__card {
+      padding: 24px;
+    }
+    .bk__step-label {
+      display: none;
+    }
+    .bk :global(.bk__grid) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
