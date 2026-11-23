@@ -26,6 +26,7 @@ WHATSAPP_CLOUD_TEMPLATE_LANG = "en_GB"
 #   RESEND_API_KEY
 #   CALLMEBOT_API_KEY      (if WHATSAPP_PROVIDER = "callmebot")
 #   WHATSAPP_CLOUD_TOKEN   (if WHATSAPP_PROVIDER = "cloud")
+#   GOOGLE_PLACES_API_KEY  (live Google reviews on the home page; see docs/DEPLOYMENT.md)
 
 [[d1_databases]]
 binding = "DB"

@@ -32,6 +32,7 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
             <a class="st__write" href={site.google.writeReviewUrl} target="_blank" rel="noopener">
               Learned with us? Leave a review
             </a>
+            <p class="st__live" data-live-note hidden>Includes the latest reviews from Google Maps, most relevant first.</p>
           </div>
         </div>
 
@@ -43,15 +44,21 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
         </div>
       </div>
       <ReviewDialog />
+      {/* Empty card for reviews fetched live from Google (scripts/live-reviews.ts). */}
+      <template data-live-review-template>
+        <StoryCard review={{ name: '', date: '', text: '', rating: 5 }} live />
+      </template>
     </section>
   )
 }
 
 <script>
   import { initCarousels } from '@/scripts/carousel';
+  import { initLiveReviews } from '@/scripts/live-reviews';
   import { initReviewCards } from '@/scripts/review-cards';
   initCarousels();
   initReviewCards();
+  initLiveReviews();
 </script>
 
 <style>
@@ -77,6 +84,12 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
     align-items: flex-end;
     gap: 10px;
   }
+  .st__live {
+    margin: 0;
+    padding-right: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
   .st__write {
     font-size: 14px;
     font-weight: 700;
@@ -86,7 +99,13 @@ const stories = [...shownReviews.filter((r) => r.passPhoto), ...shownReviews.fil
     .st__side {
       align-items: flex-start;
     }
-    .st__write {
+    .st__live {
+    margin: 0;
+    padding-right: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .st__write {
       padding: 0 0 0 4px;
     }
   }

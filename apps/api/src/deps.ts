@@ -4,6 +4,7 @@ import type { EnquiryRepository } from './repositories/enquiry.repository';
 import { ContactService } from './services/contact.service';
 import { CoverageService } from './services/coverage.service';
 import { EnquiryService } from './services/enquiry.service';
+import { GoogleReviewsService } from './services/google-reviews.service';
 import { createNotifier } from './services/notifications';
 
 export interface Repositories {
@@ -18,6 +19,7 @@ export interface AppDeps {
     enquiries: EnquiryService;
     contact: ContactService;
     coverage: CoverageService;
+    reviews: GoogleReviewsService;
   };
 }
 
@@ -29,6 +31,7 @@ export function buildDeps(config: AppConfig, repos: Repositories): AppDeps {
       enquiries: new EnquiryService(repos.enquiries, notifier),
       contact: new ContactService(repos.contacts, notifier),
       coverage: new CoverageService(),
+      reviews: new GoogleReviewsService(config.google),
     },
   };
 }

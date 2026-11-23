@@ -30,7 +30,7 @@ const word = (n: number) => (n >= 4.5 ? 'Excellent' : n >= 4 ? 'Great' : 'Good')
       <span class="rb__main">
         <span class="rb__top">
           <b class="rb__word">{word(Number(shownRating.rating))}</b>
-          <span class="rb__score">{shownRating.rating}</span>
+          <span class="rb__score" data-live-rating>{shownRating.rating}</span>
           <span class="rb__stars" aria-hidden="true">
             ★★★★★
           </span>
@@ -45,7 +45,7 @@ const word = (n: number) => (n >= 4.5 ? 'Excellent' : n >= 4 ? 'Great' : 'Good')
             ))}
           </span>
           <span class="rb__count">
-            {shownRating.count} reviews on Google <span aria-hidden="true">›</span>
+            <span data-live-count>{shownRating.count}</span> reviews on Google <span aria-hidden="true">›</span>
           </span>
         </span>
       </span>

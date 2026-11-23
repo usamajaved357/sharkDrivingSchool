@@ -4,6 +4,8 @@ export interface Stat {
   value: string;
   label: string;
   tone: 'blue' | 'red';
+  /** 'google': the Google rating stat, kept up to date live by scripts/live-reviews.ts. */
+  live?: 'google';
 }
 
 /**

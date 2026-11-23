@@ -7,6 +7,7 @@ import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { contactRoutes } from './routes/contact';
 import { coverageRoutes } from './routes/coverage';
 import { enquiryRoutes } from './routes/enquiries';
+import { reviewRoutes } from './routes/reviews';
 import { healthRoutes } from './routes/health';
 
 /**
@@ -34,6 +35,7 @@ export function createApp(resolveDeps: (c: Context) => AppDeps) {
 
   app.route('/api/health', healthRoutes);
   app.route('/api/enquiries', enquiryRoutes);
+  app.route('/api/reviews', reviewRoutes);
   app.route('/api/contact', contactRoutes);
   app.route('/api/coverage', coverageRoutes);
 

@@ -14,7 +14,7 @@ import { shownRating } from '@/data/shown-content';
       shownRating ? (
         <span class="topbar__rating hide-sm">
           <Icon name="star" size={14} class="tb-star" />
-          {shownRating.rating} rated on Google
+          <span data-live-rating>{shownRating.rating}</span>&nbsp;rated on Google
         </span>
       ) : (
         <span class="topbar__rating hide-sm">

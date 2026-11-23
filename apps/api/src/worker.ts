@@ -21,6 +21,8 @@ export interface WorkerBindings {
   WHATSAPP_CLOUD_PHONE_NUMBER_ID?: string;
   WHATSAPP_CLOUD_TEMPLATE?: string;
   WHATSAPP_CLOUD_TEMPLATE_LANG?: string;
+  GOOGLE_PLACES_API_KEY?: string;
+  GOOGLE_PLACE_ID?: string;
 }
 
 const app = createApp((c) => {

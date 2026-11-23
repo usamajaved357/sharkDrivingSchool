@@ -12,6 +12,12 @@ export interface AppConfig {
     emailCustomer: boolean;
     apiUrl?: string;
   };
+  /** Google Places API (New): live reviews and rating for GET /api/reviews. */
+  google: {
+    placesApiKey?: string;
+    placeId: string;
+    placesApiUrl?: string;
+  };
   whatsapp: {
     provider?: 'callmebot' | 'cloud';
     /** Owner's WhatsApp number, international digits (defaults to the site's number). */
@@ -45,6 +51,11 @@ export function loadConfig(env: RawEnv): AppConfig {
       notifyEmail: str(env.NOTIFY_EMAIL) ?? BUSINESS.email,
       emailCustomer: str(env.EMAIL_CUSTOMER) !== 'false',
       apiUrl: str(env.RESEND_API_URL),
+    },
+    google: {
+      placesApiKey: str(env.GOOGLE_PLACES_API_KEY),
+      placeId: str(env.GOOGLE_PLACE_ID) ?? BUSINESS.google.placeId,
+      placesApiUrl: str(env.GOOGLE_PLACES_API_URL),
     },
     whatsapp: {
       provider: provider === 'callmebot' || provider === 'cloud' ? provider : undefined,

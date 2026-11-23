@@ -36,7 +36,7 @@ const factStats: Stat[] = [
   { value: `${areas.length}+`, label: 'Areas across Greater Manchester', tone: 'blue' },
   { value: fromPrice('single'), label: 'Lessons from, per hour', tone: 'blue' },
   shownRating
-    ? { value: `${shownRating.rating}★`, label: `From ${shownRating.count} Google reviews`, tone: 'blue' }
+    ? { value: `${shownRating.rating}★`, label: `From ${shownRating.count} Google reviews`, tone: 'blue', live: 'google' }
     : { value: 'DVSA', label: 'Approved instructors', tone: 'blue' },
   { value: '2 in 1', label: 'Manual & automatic cars', tone: 'red' },
 ];

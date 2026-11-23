@@ -1,7 +1,7 @@
 /**
  * Typed client for apps/api. All network calls from the browser go through here.
  */
-import type { ApiResponse, CoverageResponse, CreateEnquiryResponse, EnquiryRequest } from '@shark/shared';
+import type { ApiResponse, CoverageResponse, CreateEnquiryResponse, EnquiryRequest, LiveReviewsResponse } from '@shark/shared';
 
 const BASE = (import.meta.env.PUBLIC_API_URL ?? '').replace(/\/$/, '');
 
@@ -42,3 +42,6 @@ export const createEnquiry = (enquiry: EnquiryRequest) =>
 
 export const checkCoverage = (postcode: string) =>
   request<CoverageResponse>(`/coverage?postcode=${encodeURIComponent(postcode)}`);
+
+/** Live Google rating and reviews (null when the Google key isn't set up). */
+export const getLiveReviews = () => request<LiveReviewsResponse | null>('/reviews');
